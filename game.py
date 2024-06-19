@@ -17,14 +17,14 @@ pygame.display.set_caption('Juego 100 Argentinos dicen')
 # Fuente
 font = pygame.font.Font(None, 36)
 
-
+#------------------------------------------------------
 def draw_text(text, font, color, surface, x, y):
     textobj = font.render(text, True, color)
     textrect = textobj.get_rect()
     textrect.center = (x, y)
     surface.blit(textobj, textrect)
 
-
+#------------------------------------------------------
 def main_menu():
     while True:
         screen.fill(WHITE)
@@ -71,7 +71,7 @@ def main_menu():
 
         pygame.display.update()
 
-
+#------------------------------------------------------
 def game():
     running = True
     while running:
@@ -86,7 +86,7 @@ def game():
 
         pygame.display.update()
 
-
+#------------------------------------------------------
 def instructions():
     running = True
     while running:

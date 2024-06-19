@@ -4,6 +4,8 @@ import random
 import pygame
 from config import *
 from preguntas import PREGUNTAS
+import sys
+from Modulos import *
 
 
 class Juego100ARG:
@@ -15,7 +17,7 @@ class Juego100ARG:
         self.font = pygame.font.Font(FONT_PATH, FONT_SIZE)
         self.clock = pygame.time.Clock()
         self.resetear_juego()
-
+#------------------------------------------------------
     def resetear_juego(self):
         self.puntaje = 0
         self.oportunidades = 3
@@ -27,20 +29,44 @@ class Juego100ARG:
             "menos_votada": False,
             "multiplicar_puntos": False
         }
-
+#------------------------------------------------------
     def seleccionar_preguntar_aleatoriamente(self):
         self.pregunta_actual = random.choice(PREGUNTAS)
         self.tiempo_restante = RESPONSE_TIME
-
+#------------------------------------------------------
     def mostrar_pregunta(self):
         texto_pregunta = self.font.render(
             self.pregunta_actual["pregunta"], True, BLACK)
         self.screen.blit(texto_pregunta, (50, 50))
-
+#------------------------------------------------------
     def obtener_input_usuario(self):
         # Obtener entrada del usuario
-        pass
+        respuesta_usuario = ""
+        ingresando = True
 
+        while ingresando:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        ingresando = False
+                    elif event.key == pygame.K_BACKSPACE:
+                        respuesta_usuario = respuesta_usuario[:-1]
+                    else:
+                        respuesta_usuario += event.unicode
+
+            self.screen.fill(WHITE)
+            self.mostrar_pregunta()
+            draw_text(self.screen, respuesta_usuario, self.font, BLACK, 50, 150)
+            pygame.display.flip()
+            self.clock.tick(30)
+
+        respuesta_usuario = normalizar_respuesta(respuesta_usuario)
+        return respuesta_usuario
+
+#------------------------------------------------------
     def chequear_respuesta(self, respuesta):
         respuestas = self.pregunta_actual["respuestas"]
         if respuesta in respuestas:
@@ -48,11 +74,11 @@ class Juego100ARG:
             self.bonus_multiplicar = 1  # Reset multiplier
             return True
         return False
-
+#------------------------------------------------------
     def actualizar_estado_juego(self):
         # Actualizar el estado del juego, manejar oportunidades, tiempo restante, etc.
         pass
-
+#------------------------------------------------------
     def run(self):
         running = True
         self.seleccionar_preguntar_aleatoriamente()
