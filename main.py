@@ -24,6 +24,7 @@ class Juego100ARG:
             self.fondo_menu, (SCREEN_WIDTH, SCREEN_HEIGHT))
         self.fondo_preguntas = pygame.transform.scale(
             self.fondo_preguntas, (SCREEN_WIDTH, SCREEN_HEIGHT))
+# ------------------------------------------------------
 
     def resetear_juego(self):
         self.puntaje = 0
@@ -38,6 +39,8 @@ class Juego100ARG:
         }
         self.input_text = ""
 
+# ------------------------------------------------------
+
     def seleccionar_preguntar_aleatoriamente(self):
         self.pregunta_actual = random.choice(PREGUNTAS)
         self.tiempo_restante = RESPONSE_TIME
@@ -48,11 +51,15 @@ class Juego100ARG:
             self.pregunta_actual["pregunta"], True, WHITE)
         self.screen.blit(texto_pregunta, (50, 50))
 
+# ------------------------------------------------------
+
     def mostrar_input_usuario(self):
         input_box = pygame.Rect(50, 100, 700, 50)
         pygame.draw.rect(self.screen, WHITE, input_box, 2)
         texto_input = self.font.render(self.input_text, True, WHITE)
         self.screen.blit(texto_input, (input_box.x + 5, input_box.y + 5))
+
+# ------------------------------------------------------
 
     def obtener_input_usuario(self, event):
         if event.type == pygame.KEYDOWN:
@@ -88,6 +95,7 @@ class Juego100ARG:
         return respuesta_usuario
 
 # ------------------------------------------------------
+
     def chequear_respuesta(self, respuesta):
         respuestas = self.pregunta_actual["respuestas"]
         if respuesta in respuestas:
@@ -95,6 +103,7 @@ class Juego100ARG:
             self.bonus_multiplicar = 1  # Reset multiplier
             return True
         return False
+
 # ------------------------------------------------------
 
     def actualizar_estado_juego(self):
@@ -109,10 +118,14 @@ class Juego100ARG:
                 pygame.time.wait(3000)
                 self.resetear_juego()
 
+# ------------------------------------------------------
+
     def mostrar_game_over(self):
         texto_game_over = self.font.render("¡Juego Terminado!", True, BLACK)
         self.screen.blit(texto_game_over, (SCREEN_WIDTH //
                          2 - 100, SCREEN_HEIGHT // 2))
+
+# ------------------------------------------------------
 
     def run(self):
         running = True
@@ -147,48 +160,9 @@ class Juego100ARG:
 
         pygame.quit()
 
+# ------------------------------------------------------
+
 
 if __name__ == "__main__":
     juego = Juego100ARG()
     juego.run()
-
-
-# # Inicializa Pygame
-# pygame.init()
-
-# # Colores
-# WHITE = (255, 255, 255)
-# BLACK = (0, 0, 0)
-
-# # Dimensiones de la pantalla
-# WIDTH, HEIGHT = 800, 600
-# screen = pygame.display.set_mode((WIDTH, HEIGHT))
-# pygame.display.set_caption('Juego de Barassi')
-
-# # Fuente
-# font = pygame.font.Font(None, 36)
-
-
-# def draw_text(text, font, color, surface, x, y):
-#     textobj = font.render(text, True, color)
-#     textrect = textobj.get_rect()
-#     textrect.center = (x, y)
-#     surface.blit(textobj, textrect)
-
-
-# def game():
-#     running = True
-#     while running:
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT:
-#                 pygame.quit()
-#                 sys.exit()
-
-#         screen.fill(WHITE)
-#         draw_text('Aquí va el juego', font, BLACK,
-#                   screen, WIDTH // 2, HEIGHT // 2)
-
-#         pygame.display.update()
-
-
-# game()
