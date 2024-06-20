@@ -13,7 +13,6 @@ font = pygame.font.Font(FONT_PATH, FONT_SIZE)
 
 # Colores
 WHITE = (255, 255, 255)
-
 BLUE = (0, 0, 255)
 
 # Dimensiones de la pantalla
@@ -24,10 +23,13 @@ pygame.display.set_caption('100 Argentinos dicen')
 # Cargar imágenes de fondo
 fondo_menu = pygame.image.load("assets/imgs/fondo_menu2.jpg")
 fondo_preguntas = pygame.image.load("assets/imgs/fondo_menu.jpg")
+fondo_instrucciones = pygame.image.load("assets/imgs/fondo_instrucciones.jpg")
 fondo_menu = pygame.transform.scale(
     fondo_menu, (WIDTH, HEIGHT))
 fondo_preguntas = pygame.transform.scale(
     fondo_preguntas, (WIDTH, HEIGHT))
+fondo_instrucciones = pygame.transform.scale(
+    fondo_instrucciones, (WIDTH, HEIGHT))
 
 
 def draw_text(text, font, color, surface, x, y):
@@ -98,7 +100,7 @@ def show_instructions():
                 pygame.quit()
                 sys.exit()
 
-        screen.blit(fondo_preguntas, (0, 0))
+        screen.blit(fondo_instrucciones, (0, 0))
         draw_text('Instrucciones del juego', font,
                   BLACK, screen, WIDTH // 2, HEIGHT // 4)
         draw_text('1. Selecciona una temática al azar.', font,
@@ -111,7 +113,7 @@ def show_instructions():
                   font, BLACK, screen, WIDTH // 2, HEIGHT // 4 + 300)
         draw_text('Presiona ESC para volver al menú', font,
                   BLACK, screen, WIDTH // 2, HEIGHT // 4 + 350)
-
+        # ------------------------- Texto en blanco -------------------------
         draw_text('Instrucciones del juego', font,
                   WHITE, screen, WIDTH // 2, HEIGHT // 4)
         draw_text('1. Selecciona una temática al azar.', font,

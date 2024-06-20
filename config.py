@@ -15,7 +15,7 @@ BACKGROUND_image = '/assets/imgs/fondo_menu.jpg'
 
 # Fuente
 FONT_PATH = 'assets/fonts/Roboto-Bold.ttf'
-FONT_SIZE = 24
+FONT_SIZE = 30
 
 # Tiempo de respuesta
 RESPONSE_TIME = 10  # en segundos

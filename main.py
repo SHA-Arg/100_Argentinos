@@ -1,5 +1,3 @@
-# game.py
-
 import sys
 import random
 import pygame
