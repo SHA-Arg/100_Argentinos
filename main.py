@@ -5,6 +5,8 @@ import random
 import pygame
 from config import *
 from preguntas import PREGUNTAS
+import sys
+from Modulos import *
 
 
 class Juego100ARG:
@@ -41,6 +43,7 @@ class Juego100ARG:
     def seleccionar_preguntar_aleatoriamente(self):
         self.pregunta_actual = random.choice(PREGUNTAS)
         self.tiempo_restante = RESPONSE_TIME
+# ------------------------------------------------------
 
     def mostrar_pregunta(self):
         texto_pregunta = self.font.render(
@@ -63,6 +66,30 @@ class Juego100ARG:
                 self.input_text += event.unicode
         return None
 
+        while ingresando:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        ingresando = False
+                    elif event.key == pygame.K_BACKSPACE:
+                        respuesta_usuario = respuesta_usuario[:-1]
+                    else:
+                        respuesta_usuario += event.unicode
+
+            self.screen.fill(WHITE)
+            self.mostrar_pregunta()
+            draw_text(self.screen, respuesta_usuario,
+                      self.font, BLACK, 50, 150)
+            pygame.display.flip()
+            self.clock.tick(30)
+
+        respuesta_usuario = normalizar_respuesta(respuesta_usuario)
+        return respuesta_usuario
+
+# ------------------------------------------------------
     def chequear_respuesta(self, respuesta):
         respuestas = self.pregunta_actual["respuestas"]
         if respuesta in respuestas:
@@ -70,6 +97,7 @@ class Juego100ARG:
             self.bonus_multiplicar = 1  # Reset multiplier
             return True
         return False
+# ------------------------------------------------------
 
     def actualizar_estado_juego(self):
         self.tiempo_restante -= 1 / 60
