@@ -98,20 +98,32 @@ def show_instructions():
                 pygame.quit()
                 sys.exit()
 
-        screen.fill(WHITE)
         screen.blit(fondo_preguntas, (0, 0))
+        draw_text('Instrucciones del juego', font,
+                  BLACK, screen, WIDTH // 2, HEIGHT // 4)
+        draw_text('1. Selecciona una temática al azar.', font,
+                  BLACK, screen, WIDTH // 2, HEIGHT // 4 + 150)
+        draw_text('2. Ingresa tu respuesta antes de que se acabe el tiempo.',
+                  font, BLACK, screen, WIDTH // 2, HEIGHT // 4 + 200)
+        draw_text('3. Gana puntos según las respuestas de los argentinos.',
+                  font, BLACK, screen, WIDTH // 2, HEIGHT // 4 + 250)
+        draw_text('4. Acumula 500 puntos para ganar el premio mayor.',
+                  font, BLACK, screen, WIDTH // 2, HEIGHT // 4 + 300)
+        draw_text('Presiona ESC para volver al menú', font,
+                  BLACK, screen, WIDTH // 2, HEIGHT // 4 + 350)
+
         draw_text('Instrucciones del juego', font,
                   WHITE, screen, WIDTH // 2, HEIGHT // 4)
         draw_text('1. Selecciona una temática al azar.', font,
-                  WHITE, screen, WIDTH // 2, HEIGHT // 4 + 50)
+                  WHITE, screen, WIDTH // 2, HEIGHT // 4 + 155)
         draw_text('2. Ingresa tu respuesta antes de que se acabe el tiempo.',
-                  font, WHITE, screen, WIDTH // 2, HEIGHT // 4 + 100)
+                  font, WHITE, screen, WIDTH // 2, HEIGHT // 4 + 205)
         draw_text('3. Gana puntos según las respuestas de los argentinos.',
-                  font, WHITE, screen, WIDTH // 2, HEIGHT // 4 + 150)
+                  font, WHITE, screen, WIDTH // 2, HEIGHT // 4 + 255)
         draw_text('4. Acumula 500 puntos para ganar el premio mayor.',
-                  font, WHITE, screen, WIDTH // 2, HEIGHT // 4 + 200)
+                  font, WHITE, screen, WIDTH // 2, HEIGHT // 4 + 305)
         draw_text('Presiona ESC para volver al menú', font,
-                  WHITE, screen, WIDTH // 2, HEIGHT // 4 + 300)
+                  WHITE, screen, WIDTH // 2, HEIGHT // 4 + 355)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
