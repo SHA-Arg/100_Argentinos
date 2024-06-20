@@ -1,5 +1,3 @@
-# preguntas.py
-
 PREGUNTAS = [
     {
         "tematica": "Cantantes argentinas",

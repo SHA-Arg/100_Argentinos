@@ -1,5 +1,3 @@
-# config.py
-
 # Dimensiones de la pantalla
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -12,7 +10,7 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 
 # Fondo
-BACKGROUND_image = '/assets/imgs/100ARG_fondo.jpg'
+BACKGROUND_image = '/assets/imgs/fondo_menu.jpg'
 
 
 # Fuente
