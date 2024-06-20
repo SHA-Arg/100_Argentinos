@@ -40,40 +40,16 @@ def draw_text(text, font, color, surface, x, y):
 main_font = pygame.font.SysFont("cambria", 50)
 
 
-class Button():
-    def __init__(self, x_pos, y_pos, text_input):
-        self.x_pos = x_pos
-        self.y_pos = y_pos
-        self.text_input = text_input
-        self.text = main_font.render(self.text_input, True, "white")
-        self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
-
-    def update(self):
-        screen.blit(self.text, self.text_rect)
-
-    def checkForInput(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            print("Button Press!")
-
-    def changeColor(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            self.text = main_font.render(self.text_input, True, "green")
-        else:
-            self.text = main_font.render(self.text_input, True, "white")
-
-
 def main_menu():
     while True:
         # Imágen de fondo
         screen.blit(fondo_menu, (0, 0))
 
         mx, my = pygame.mouse.get_pos()
-        # button_1 = Button(400, 300, "Button")
-        button_1 = pygame.Rect(WIDTH // 3, HEIGHT // 2, 200, 50)
-        # button_2 = Button(400, 300, "Button")
-        button_2 = pygame.Rect(WIDTH // 3, HEIGHT // 2 + 70, 200, 50)
-        # button_3 = Button(400, 300, "Button")
-        button_3 = pygame.Rect(WIDTH // 3, HEIGHT // 2 + 140, 200, 50)
+
+        button_1 = pygame.Rect(WIDTH - 300, HEIGHT // 2, 200, 50)
+        button_2 = pygame.Rect(WIDTH - 300, HEIGHT // 2 + 70, 200, 50)
+        button_3 = pygame.Rect(WIDTH - 300, HEIGHT // 2 + 140, 200, 50)
 
         if button_1.collidepoint((mx, my)):
             if click:
@@ -91,7 +67,7 @@ def main_menu():
         pygame.draw.rect(screen, BLUE, button_3)
 
         draw_text('Jugar', font, WHITE, screen,
-                  button_1.right - 50, button_1.centery)
+                  button_1.centerx, button_1.centery)
         draw_text('Instrucciones', font, WHITE, screen,
                   button_2.centerx, button_2.centery)
         draw_text('Salir', font, WHITE, screen,
@@ -106,8 +82,6 @@ def main_menu():
                 if event.button == 1:
                     click = True
 
-        # button_1.update()
-        # button_1.changeColor(pygame.mouse.get_pos())
         pygame.display.update()
 
 
