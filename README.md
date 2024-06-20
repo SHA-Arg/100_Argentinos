@@ -12,8 +12,11 @@ El juego consta de 5 partidas para llegar al final del juego. Si el jugador acum
 
 ## Funcionamiento del juego:
 
-Selección de temática: Al comienzo de cada partida, el juego elige aleatoriamente una temática. Sobre esa temática se realiza una pregunta. Por ejemplo.
+### Selección de temática: 
 
+Al comienzo de cada partida, el juego elige aleatoriamente una temática. Sobre esa temática se realiza una pregunta. 
+
+Por ejemplo:
 Temática: Cantantes argentinas
 Pregunta: Cantantes argentinas que tienen menos de 40 años.
 Respuestas posibles: 	
@@ -23,17 +26,22 @@ Nicki Nicole: 	  20 argentinos
 Maria Becerra:  14 argentinos
 Mercedes Sosa: 1 argentino
 
-Respuesta: El jugador ingresa su respuesta desde la pantalla (o teclado). Si la respuesta coincide con la elección de algún argentino el jugador puede seguir jugando. Deberá aparecer en pantalla la respuesta correcta junto con la cantidad de argentinos que la eligieron.
+### Respuesta: 
+El jugador ingresa su respuesta desde la pantalla (o teclado). Si la respuesta coincide con la elección de algún argentino el jugador puede seguir jugando. Deberá aparecer en pantalla la respuesta correcta junto con la cantidad de argentinos que la eligieron.
 
-Puntuación: Por cada argentino que eligió la palabra el jugador ganará un punto
+### Puntuación: 
+Por cada argentino que eligió la palabra el jugador ganará un punto
 
-Tiempo: El jugador tiene 10 segundos para elegir una palabra sino perderá su oportunidad.
+### Tiempo: 
+El jugador tiene 10 segundos para elegir una palabra sino perderá su oportunidad.
 
-Oportunidades:El jugador tiene 3 oportunidades para adivinar al menos una palabra, por cada 50 puntos el jugador ganará una oportunidad extra para seguir jugando.
+### Oportunidades:
+El jugador tiene 3 oportunidades para adivinar al menos una palabra, por cada 50 puntos el jugador ganará una oportunidad extra para seguir jugando.
 
-Consejo: Al armar el set de datos tener en cuenta como mínimo 5 respuestas diferentes de argentinos, con la cantidad de argentinos que eligieron esa respuesta.
+### Consejo: 
+Al armar el set de datos tener en cuenta como mínimo 5 respuestas diferentes de argentinos, con la cantidad de argentinos que eligieron esa respuesta.
 
-Comodines (Solo se pueden usar una sola vez en todo el juego):
+### Comodines (Solo se pueden usar una sola vez en todo el juego):
 Retrasar el tiempo 10 segundos (10 segundos extra).
 Que aparezca la respuesta menos votada.
 Multiplicador de puntuación. Se multiplica x2 la puntuación de la próxima respuesta encontrada.
