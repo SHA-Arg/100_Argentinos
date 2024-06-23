@@ -18,7 +18,8 @@ class Juego100ARG:
 
         # Cargar imágenes de fondo
         self.fondo_menu = pygame.image.load("assets/imgs/fondo_menu2.jpg")
-        self.fondo_preguntas = pygame.image.load("assets/imgs/fondo_instrucciones.jpg")
+        self.fondo_preguntas = pygame.image.load(
+            "assets/imgs/fondo_instrucciones.jpg")
         self.fondo_menu = pygame.transform.scale(
             self.fondo_menu, (SCREEN_WIDTH, SCREEN_HEIGHT))
         self.fondo_preguntas = pygame.transform.scale(
@@ -46,18 +47,39 @@ class Juego100ARG:
 # ------------------------------------------------------
 
     def mostrar_pregunta(self):
+        # Renderizar el texto de la temática y obtener su tamaño
         texto_tematica = self.font.render(
-            self.pregunta_actual["tematica"], True, WHITE)
-        self.pantalla.blit(texto_tematica, (150, 290))
+            self.pregunta_actual["tematica"] + ":", True, WHITE)
         texto_pregunta = self.font.render(
-            self.pregunta_actual["pregunta"], True, WHITE)
-        self.pantalla.blit(texto_pregunta, (150, 320))
+            self.pregunta_actual["pregunta"] + "?", True, WHITE)
+
+        # Obtener el tamaño del texto renderizado para centrarlo
+        tematica_rect = texto_tematica.get_rect()
+        pregunta_rect = texto_pregunta.get_rect()
+
+        # Posición de los textos
+        tematica_rect.topleft = (100, 290)
+        pregunta_rect.topleft = (100, 350)
+
+        # Dibujar un fondo azul sólido según el tamaño del texto
+        padding = 10  # Espacio adicional alrededor del texto
+        fondo_tematica = pygame.Rect(tematica_rect.x - padding, tematica_rect.y - padding,
+                                     tematica_rect.width + 2 * padding, tematica_rect.height + 2 * padding)
+        fondo_pregunta = pygame.Rect(pregunta_rect.x - padding, pregunta_rect.y - padding,
+                                     pregunta_rect.width + 2 * padding, pregunta_rect.height + 2 * padding)
+
+        pygame.draw.rect(self.pantalla, BLUE, fondo_tematica)
+        pygame.draw.rect(self.pantalla, BLUE, fondo_pregunta)
+
+        # Dibujar el texto sobre el fondo azul
+        self.pantalla.blit(texto_tematica, tematica_rect)
+        self.pantalla.blit(texto_pregunta, pregunta_rect)
 
 # ------------------------------------------------------
 
     def mostrar_input_usuario(self):
-        input_respuesta = pygame.Rect(150, 360, 600, 50)
-        pygame.draw.rect(self.pantalla, WHITE, input_respuesta, 2)
+        input_respuesta = pygame.Rect(90, 400, 600, 50)
+        pygame.draw.rect(self.pantalla, WHITE, input_respuesta, 1)
         texto_input = self.font.render(self.input_text, True, WHITE)
         self.pantalla.blit(
             texto_input, (input_respuesta.x + 5, input_respuesta.y + 5))
@@ -136,6 +158,7 @@ class Juego100ARG:
 
         while running:
             self.pantalla.blit(self.fondo_preguntas, (0, 0))
+            # self.mostrar_tematica()
             self.mostrar_pregunta()
             self.mostrar_input_usuario()
             self.actualizar_estado_juego()
