@@ -18,7 +18,7 @@ class Juego100ARG:
 
         # Cargar imágenes de fondo
         self.fondo_menu = pygame.image.load("assets/imgs/fondo_menu2.jpg")
-        self.fondo_preguntas = pygame.image.load("assets/imgs/fondo_menu.jpg")
+        self.fondo_preguntas = pygame.image.load("assets/imgs/fondo_instrucciones.jpg")
         self.fondo_menu = pygame.transform.scale(
             self.fondo_menu, (SCREEN_WIDTH, SCREEN_HEIGHT))
         self.fondo_preguntas = pygame.transform.scale(
@@ -48,15 +48,15 @@ class Juego100ARG:
     def mostrar_pregunta(self):
         texto_tematica = self.font.render(
             self.pregunta_actual["tematica"], True, WHITE)
-        self.pantalla.blit(texto_tematica, (50, 10))
+        self.pantalla.blit(texto_tematica, (150, 290))
         texto_pregunta = self.font.render(
             self.pregunta_actual["pregunta"], True, WHITE)
-        self.pantalla.blit(texto_pregunta, (50, 50))
+        self.pantalla.blit(texto_pregunta, (150, 320))
 
 # ------------------------------------------------------
 
     def mostrar_input_usuario(self):
-        input_respuesta = pygame.Rect(50, 100, 700, 50)
+        input_respuesta = pygame.Rect(150, 360, 600, 50)
         pygame.draw.rect(self.pantalla, WHITE, input_respuesta, 2)
         texto_input = self.font.render(self.input_text, True, WHITE)
         self.pantalla.blit(
