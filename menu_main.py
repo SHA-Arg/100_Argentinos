@@ -12,7 +12,7 @@ pygame.init()
 font = pygame.font.Font(FONT_PATH, FONT_SIZE)
 
 # Dimensiones de la pantalla
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pantalla = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('100 Argentinos dicen')
 
 # Cargar imágenes de fondo
@@ -40,7 +40,7 @@ def draw_text(text, font, color, surface, x, y):
 def main_menu():
     while True:
         # Imágen de fondo
-        screen.blit(fondo_menu, (0, 0))
+        pantalla.blit(fondo_menu, (0, 0))
 
         mx, my = pygame.mouse.get_pos()
 
@@ -52,24 +52,24 @@ def main_menu():
 
         if button_1.collidepoint((mx, my)):
             if click:
-                play_game()
+                jugar()
         if button_2.collidepoint((mx, my)):
             if click:
-                show_instructions()
+                instrucciones()
         if button_3.collidepoint((mx, my)):
             if click:
                 pygame.quit()
                 sys.exit()
 
-        pygame.draw.rect(screen, BLUE, button_1)
-        pygame.draw.rect(screen, BLUE, button_2)
-        pygame.draw.rect(screen, BLUE, button_3)
+        pygame.draw.rect(pantalla, BLUE, button_1)
+        pygame.draw.rect(pantalla, BLUE, button_2)
+        pygame.draw.rect(pantalla, BLUE, button_3)
 
-        draw_text('Jugar', font, WHITE, screen,
+        draw_text('Jugar', font, WHITE, pantalla,
                   button_1.centerx, button_1.centery)
-        draw_text('Instrucciones', font, WHITE, screen,
+        draw_text('Instrucciones', font, WHITE, pantalla,
                   button_2.centerx, button_2.centery)
-        draw_text('Salir', font, WHITE, screen,
+        draw_text('Salir', font, WHITE, pantalla,
                   button_3.centerx, button_3.centery)
 
         click = False
@@ -86,14 +86,14 @@ def main_menu():
 # ------------------------------------------------------
 
 
-def play_game():
+def jugar():
     # Ejecuta main.py
     subprocess.run(["python", "main.py"])
 
 # ------------------------------------------------------
 
 
-def show_instructions():
+def instrucciones():
     running = True
     while running:
         for event in pygame.event.get():
@@ -101,30 +101,30 @@ def show_instructions():
                 pygame.quit()
                 sys.exit()
 
-        screen.blit(fondo_instrucciones, (0, 0))
+        pantalla.blit(fondo_instrucciones, (0, 0))
 
         draw_text('1.Selecciona una temática al azar.', font,
-                  BLACK, screen, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 150)
+                  BLACK, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 150)
         draw_text('2.Ingresa tu respuesta antes de que se acabe el tiempo.',
-                  font, BLACK, screen, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 200)
+                  font, BLACK, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 200)
         draw_text('3.Gana puntos según las respuestas de los argentinos.',
-                  font, BLACK, screen, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 250)
+                  font, BLACK, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 250)
         draw_text('4.Acumula 500 puntos para ganar el premio mayor.',
-                  font, BLACK, screen, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 300)
+                  font, BLACK, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 300)
         draw_text('Presiona ESC para volver al menú', font,
-                  BLACK, screen, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 350)
+                  BLACK, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 350)
         # ------------------------- Texto en blanco -------------------------
 
         draw_text('1.Selecciona una temática al azar.', font,
-                  WHITE, screen, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 155)
+                  WHITE, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 155)
         draw_text('2.Ingresa tu respuesta antes de que se acabe el tiempo.',
-                  font, WHITE, screen, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 205)
+                  font, WHITE, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 205)
         draw_text('3.Gana puntos según las respuestas de los argentinos.',
-                  font, WHITE, screen, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 255)
+                  font, WHITE, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 255)
         draw_text('4.Acumula 500 puntos para ganar el premio mayor.',
-                  font, WHITE, screen, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 305)
+                  font, WHITE, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 305)
         draw_text('Presiona ESC para volver al menú', font,
-                  WHITE, screen, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 355)
+                  WHITE, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 355)
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:

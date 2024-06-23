@@ -2,8 +2,7 @@ import sys
 import random
 import pygame
 from config import *
-from preguntas import PREGUNTAS
-import sys
+from preguntas import *
 from Modulos import *
 
 
@@ -11,7 +10,7 @@ class Juego100ARG:
     def __init__(self):
         pygame.init()
         # Inicializar pantalla
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.pantalla = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("100 Argentinos dicen")
         self.font = pygame.font.Font(FONT_PATH, FONT_SIZE)
         self.clock = pygame.time.Clock()
@@ -47,17 +46,21 @@ class Juego100ARG:
 # ------------------------------------------------------
 
     def mostrar_pregunta(self):
+        texto_tematica = self.font.render(
+            self.pregunta_actual["tematica"], True, WHITE)
+        self.pantalla.blit(texto_tematica, (50, 10))
         texto_pregunta = self.font.render(
             self.pregunta_actual["pregunta"], True, WHITE)
-        self.screen.blit(texto_pregunta, (50, 50))
+        self.pantalla.blit(texto_pregunta, (50, 50))
 
 # ------------------------------------------------------
 
     def mostrar_input_usuario(self):
-        input_box = pygame.Rect(50, 100, 700, 50)
-        pygame.draw.rect(self.screen, WHITE, input_box, 2)
+        input_respuesta = pygame.Rect(50, 100, 700, 50)
+        pygame.draw.rect(self.pantalla, WHITE, input_respuesta, 2)
         texto_input = self.font.render(self.input_text, True, WHITE)
-        self.screen.blit(texto_input, (input_box.x + 5, input_box.y + 5))
+        self.pantalla.blit(
+            texto_input, (input_respuesta.x + 5, input_respuesta.y + 5))
 
 # ------------------------------------------------------
 
@@ -84,9 +87,9 @@ class Juego100ARG:
                     else:
                         respuesta_usuario += event.unicode
 
-            self.screen.fill(WHITE)
+            self.pantalla.fill(WHITE)
             self.mostrar_pregunta()
-            draw_text(self.screen, respuesta_usuario,
+            draw_text(self.pantalla, respuesta_usuario,
                       self.font, BLACK, 50, 150)
             pygame.display.flip()
             self.clock.tick(30)
@@ -115,15 +118,15 @@ class Juego100ARG:
             self.tiempo_restante = RESPONSE_TIME
             if self.oportunidades <= 0:
                 self.mostrar_game_over()
-                pygame.time.wait(3000)
+                pygame.time.wait(1000)
                 self.resetear_juego()
 
 # ------------------------------------------------------
 
     def mostrar_game_over(self):
         texto_game_over = self.font.render("¡Juego Terminado!", True, BLACK)
-        self.screen.blit(texto_game_over, (SCREEN_WIDTH //
-                         2 - 100, SCREEN_HEIGHT // 2))
+        self.pantalla.blit(texto_game_over, (SCREEN_WIDTH //
+                                             2 - 100, SCREEN_HEIGHT // 2))
 
 # ------------------------------------------------------
 
@@ -132,7 +135,7 @@ class Juego100ARG:
         self.seleccionar_preguntar_aleatoriamente()
 
         while running:
-            self.screen.blit(self.fondo_preguntas, (0, 0))
+            self.pantalla.blit(self.fondo_preguntas, (0, 0))
             self.mostrar_pregunta()
             self.mostrar_input_usuario()
             self.actualizar_estado_juego()
@@ -161,6 +164,74 @@ class Juego100ARG:
         pygame.quit()
 
 # ------------------------------------------------------
+# intefaz del juego
+# ------------------------------------------------------
+
+    def draw_text(self, text, font, color, surface, x, y):
+        textobj = font.render(text, True, color)
+        textrect = textobj.get_rect()
+        textrect.center = (x, y)
+        surface.blit(textobj, textrect)
+
+    def respuestas(self):
+        while True:
+            # Imágen de fondo
+            self.pantalla.blit(self.fondo_menu, (0, 0))
+
+            mx, my = pygame.mouse.get_pos()
+
+            respuesta_A = pygame.Rect(
+                SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2, 200, 50)
+            respuesta_B = pygame.Rect(
+                SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2 + 70, 200, 50)
+            respuesta_C = pygame.Rect(
+                SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2 + 140, 200, 50)
+            respuesta_D = pygame.Rect(
+                SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2 + 210, 200, 50)
+
+            if respuesta_A.collidepoint((mx, my)):
+                if click:
+                    self.respuesta_a()
+            if respuesta_B.collidepoint((mx, my)):
+                if click:
+                    self.respuesta_b()
+            if respuesta_C.collidepoint((mx, my)):
+                if click:
+                    self.respuesta_c()
+            if respuesta_D.collidepoint((mx, my)):
+                if click:
+                    self.respuesta_d()
+
+            pygame.draw.rect(self.pantalla, BLUE, respuesta_A)
+            pygame.draw.rect(self.pantalla, BLUE, respuesta_B)
+            pygame.draw.rect(self.pantalla, BLUE, respuesta_C)
+            pygame.draw.rect(self.pantalla, BLUE, respuesta_D)
+
+            self.draw_text('A', self.font, WHITE, self.pantalla,
+                           respuesta_A.centerx, respuesta_A.centery)
+            self.draw_text('B', self.font, WHITE,
+                           self.pantalla, respuesta_B.centerx, respuesta_B.centery)
+            self.draw_text('C', self.font, WHITE, self.pantalla,
+                           respuesta_C.centerx, respuesta_C.centery)
+            self.draw_text('D', self.font, WHITE,
+                           self.pantalla, respuesta_D.centerx, respuesta_D.centery)
+
+            click = False
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == respuesta_A:
+                        click = True
+                    if event.button == respuesta_B:
+                        click = True
+                    if event.button == respuesta_C:
+                        click = True
+                    if event.button == respuesta_D:
+                        click = True
+
+            pygame.display.update()
 
 
 if __name__ == "__main__":
