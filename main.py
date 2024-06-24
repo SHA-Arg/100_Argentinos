@@ -87,39 +87,11 @@ class Juego100ARG:
 # ------------------------------------------------------
 
     def obtener_input_usuario(self, event):
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RETURN:
-                return self.input_text.lower().strip()
-            elif event.key == pygame.K_BACKSPACE:
-                self.input_text = self.input_text[:-1]
-            else:
-                self.input_text += event.unicode
-        return None
+        pass
 
-        while ingresando:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:
-                        ingresando = False
-                    elif event.key == pygame.K_BACKSPACE:
-                        respuesta_usuario = respuesta_usuario[:-1]
-                    else:
-                        respuesta_usuario += event.unicode
-
-            self.pantalla.fill(WHITE)
-            self.mostrar_pregunta()
-            draw_text(self.pantalla, respuesta_usuario,
-                      self.font, BLACK, 50, 150)
-            pygame.display.flip()
-            self.clock.tick(30)
-
-        respuesta_usuario = normalizar_respuesta(respuesta_usuario)
-        return respuesta_usuario
 
 # ------------------------------------------------------
+
 
     def chequear_respuesta(self, respuesta):
         respuestas = self.pregunta_actual["respuestas"]
@@ -185,76 +157,7 @@ class Juego100ARG:
             self.clock.tick(60)
 
         pygame.quit()
-
-# ------------------------------------------------------
-# intefaz del juego
-# ------------------------------------------------------
-
-    def draw_text(self, text, font, color, surface, x, y):
-        textobj = font.render(text, True, color)
-        textrect = textobj.get_rect()
-        textrect.center = (x, y)
-        surface.blit(textobj, textrect)
-
-    def respuestas(self):
-        while True:
-            # Imágen de fondo
-            self.pantalla.blit(self.fondo_menu, (0, 0))
-
-            mx, my = pygame.mouse.get_pos()
-
-            respuesta_A = pygame.Rect(
-                SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2, 200, 50)
-            respuesta_B = pygame.Rect(
-                SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2 + 70, 200, 50)
-            respuesta_C = pygame.Rect(
-                SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2 + 140, 200, 50)
-            respuesta_D = pygame.Rect(
-                SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2 + 210, 200, 50)
-
-            if respuesta_A.collidepoint((mx, my)):
-                if click:
-                    self.respuesta_a()
-            if respuesta_B.collidepoint((mx, my)):
-                if click:
-                    self.respuesta_b()
-            if respuesta_C.collidepoint((mx, my)):
-                if click:
-                    self.respuesta_c()
-            if respuesta_D.collidepoint((mx, my)):
-                if click:
-                    self.respuesta_d()
-
-            pygame.draw.rect(self.pantalla, BLUE, respuesta_A)
-            pygame.draw.rect(self.pantalla, BLUE, respuesta_B)
-            pygame.draw.rect(self.pantalla, BLUE, respuesta_C)
-            pygame.draw.rect(self.pantalla, BLUE, respuesta_D)
-
-            self.draw_text('A', self.font, WHITE, self.pantalla,
-                           respuesta_A.centerx, respuesta_A.centery)
-            self.draw_text('B', self.font, WHITE,
-                           self.pantalla, respuesta_B.centerx, respuesta_B.centery)
-            self.draw_text('C', self.font, WHITE, self.pantalla,
-                           respuesta_C.centerx, respuesta_C.centery)
-            self.draw_text('D', self.font, WHITE,
-                           self.pantalla, respuesta_D.centerx, respuesta_D.centery)
-
-            click = False
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == respuesta_A:
-                        click = True
-                    if event.button == respuesta_B:
-                        click = True
-                    if event.button == respuesta_C:
-                        click = True
-                    if event.button == respuesta_D:
-                        click = True
-
-            pygame.display.update()
+        sys.exit()
 
 
 if __name__ == "__main__":
