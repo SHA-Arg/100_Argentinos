@@ -27,6 +27,7 @@ class Juego100ARG:
             self.fondo_preguntas, (SCREEN_WIDTH, SCREEN_HEIGHT))
 # ------------------------------------------------------
 
+
     def resetear_juego(self):
         self.puntaje = 0
         self.oportunidades = 3
