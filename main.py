@@ -27,7 +27,6 @@ class Juego100ARG:
             self.fondo_preguntas, (SCREEN_WIDTH, SCREEN_HEIGHT))
 # ------------------------------------------------------
 
-
     def resetear_juego(self):
         self.puntaje = 0
         self.oportunidades = 3
@@ -50,7 +49,7 @@ class Juego100ARG:
 # ------------------------------------------------------
 
     def mostrar_pregunta(self):
-        # Renderizar el texto de la temática y obtener su tamaño
+        # Renderizar el texto de la temática
         texto_tematica = self.font.render(
             self.pregunta_actual["tematica"] + ":", True, WHITE)
         texto_pregunta = self.font.render(
@@ -105,6 +104,7 @@ class Juego100ARG:
 
 # ------------------------------------------------------
 
+
     def obtener_input_usuario(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
@@ -139,7 +139,6 @@ class Juego100ARG:
 
 
 # ------------------------------------------------------
-
 
     def mostrar_puntaje(self):
         texto_puntaje = self.font.render(
