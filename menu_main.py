@@ -126,44 +126,6 @@ def instrucciones():
             running = False
 
         pygame.display.update()
-# def instrucciones():
-#     running = True
-#     while running:
-#         for event in pygame.event.get():
-#             if event.type == pygame.QUIT:
-#                 pygame.quit()
-#                 sys.exit()
-
-#         pantalla.blit(fondo_instrucciones, (0, 0))
-
-#         escribir_texto('1.Selecciona una temática al azar.', font,
-#                        BLACK, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 150)
-#         escribir_texto('2.Ingresa tu respuesta antes de que se acabe el tiempo.',
-#                        font, BLACK, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 200)
-#         escribir_texto('3.Gana puntos según las respuestas de los argentinos.',
-#                        font, BLACK, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 250)
-#         escribir_texto('4.Acumula 500 puntos para ganar el premio mayor.',
-#                        font, BLACK, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 300)
-#         escribir_texto('Presiona ESC para volver al menú', font,
-#                        BLACK, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 350)
-#         # ------------------------- Texto en blanco -------------------------
-
-#         escribir_texto('1.Selecciona una temática al azar.', font,
-#                        WHITE, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 155)
-#         escribir_texto('2.Ingresa tu respuesta antes de que se acabe el tiempo.',
-#                        font, WHITE, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 205)
-#         escribir_texto('3.Gana puntos según las respuestas de los argentinos.',
-#                        font, WHITE, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 255)
-#         escribir_texto('4.Acumula 500 puntos para ganar el premio mayor.',
-#                        font, WHITE, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 305)
-#         escribir_texto('Presiona ESC para volver al menú', font,
-#                        WHITE, pantalla, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 355)
-
-#         keys = pygame.key.get_pressed()
-#         if keys[pygame.K_ESCAPE]:
-#             running = False
-
-#         pygame.display.update()
 
 # ------------------------------------------------------
 
