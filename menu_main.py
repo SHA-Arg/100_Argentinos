@@ -9,8 +9,8 @@ from config import *
 pygame.init()
 
 # Fuente
-font = pygame.font.Font(FONT_PATH, FONT_SIZE)
-
+font = pygame.font.Font(FONT_PATH1, FONT_SIZE)
+font_instrucciones = pygame.font.Font(FONT_PATH2, FONT_INSTRUCCIONES)
 # Dimensiones de la pantalla
 pantalla = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('100 Argentinos dicen')
@@ -102,23 +102,23 @@ def instrucciones():
                 pygame.quit()
                 sys.exit()
 
-        pantalla.blit(fondo_instrucciones, (0, 0))
+        pantalla.blit(fondo_instrucciones, (120, 230))
 
         # Instrucciones con fondo legible
         instrucciones_texto = [
-            'El juego seleccionara una temática al azar.',
-            'El jugador debe ingresar su respuesta ',
-            'antes de que se acabe el tiempo.',
-            'Gana un punto por cada vez que',
-            'conincide con las respuestas de los 100 argentinos.',
-            'Al acumular 500 puntos gana el premio mayor.',
             '',
+            '1-El juego seleccionara una temática al azar con su respectiva pregunta.',
+            '2-El jugador debe ingresar su respuesta ',
+            '"antes de que se acabe el tiempo, tiene 3 errores como maximo".',
+            '3-Ganara un punto por la cantidad de argentinos que',
+            'coninciden con las respuestas.',
+            '4-Al acumular 500 puntos gana el premio mayor.',
             'Presiona ESC para volver al menú'
         ]
 
         # Posiciones dinámicas para los textos
         for i, linea in enumerate(instrucciones_texto):
-            escribir_texto(linea, font, WHITE, pantalla,
+            escribir_texto(linea, font_instrucciones, WHITE, pantalla,
                            SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 50 * (i + 1))
 
         keys = pygame.key.get_pressed()
