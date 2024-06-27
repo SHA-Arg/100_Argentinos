@@ -4,27 +4,22 @@ import pygame
 from config import *
 from preguntas import *
 from Modulos import *
+from utils import *
 
 
 class Juego100ARG:
     def __init__(self):
-
         pygame.init()
-        # Inicializar pantalla
         self.pantalla = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("100 Argentinos dicen")
         self.font = pygame.font.Font(FONT_PATH1, FONT_SIZE)
         self.clock = pygame.time.Clock()
         self.resetear_juego()
+        self.fondo_menu = cargar_imagen(
+            "assets/imgs/fondo_menu2.jpg", SCREEN_WIDTH, SCREEN_HEIGHT)
+        self.fondo_preguntas = cargar_imagen(
+            "assets/imgs/fondo_instrucciones.jpg", SCREEN_WIDTH, SCREEN_HEIGHT)
 
-        # Cargar imágenes de fondo
-        self.fondo_menu = pygame.image.load("assets/imgs/fondo_menu2.jpg")
-        self.fondo_preguntas = pygame.image.load(
-            "assets/imgs/fondo_instrucciones.jpg")
-        self.fondo_menu = pygame.transform.scale(
-            self.fondo_menu, (SCREEN_WIDTH, SCREEN_HEIGHT))
-        self.fondo_preguntas = pygame.transform.scale(
-            self.fondo_preguntas, (SCREEN_WIDTH, SCREEN_HEIGHT))
 # ------------------------------------------------------
 
     def resetear_juego(self):
@@ -94,6 +89,10 @@ class Juego100ARG:
 
         self.pantalla.blit(texto_reloj, texto_reloj_rect)
 
+
+# ------------------------------------------------------
+
+    def obtener_input_usuario(self, event):
         # Respuestas
         input_respuesta = pygame.Rect(90, 400, 600, 50)
         pygame.draw.rect(self.pantalla, WHITE, input_respuesta, 1)
@@ -101,11 +100,6 @@ class Juego100ARG:
         self.pantalla.blit(
             texto_input, (input_respuesta.x + 5, input_respuesta.y + 5))
 
-
-# ------------------------------------------------------
-
-
-    def obtener_input_usuario(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 respuesta = self.input_text.strip().lower()
@@ -115,13 +109,13 @@ class Juego100ARG:
                 self.input_text = self.input_text[:-1]
             else:
                 self.input_text += event.unicode
-        return None
+        return input_respuesta
 
 # ------------------------------------------------------
 
-    def chequear_respuesta(self, respuesta):
+    def chequear_respuesta(self, respuesta_ingresada):
         puntos = 0
-        respuesta_ingresada = respuesta.lower()
+
         for respuesta_ingresada in self.pregunta_actual["respuestas"].items():
             if respuesta_ingresada in self.pregunta_actual["respuestas"]:
                 puntos += self.pregunta_actual["respuestas"][respuesta_ingresada]
@@ -139,6 +133,7 @@ class Juego100ARG:
 
 
 # ------------------------------------------------------
+
 
     def mostrar_puntaje(self):
         texto_puntaje = self.font.render(

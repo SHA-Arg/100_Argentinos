@@ -102,7 +102,7 @@ def instrucciones():
                 pygame.quit()
                 sys.exit()
 
-        pantalla.blit(fondo_instrucciones, (120, 230))
+        pantalla.blit(fondo_instrucciones, (290, 230))
 
         # Instrucciones con fondo legible
         instrucciones_texto = [
@@ -119,7 +119,7 @@ def instrucciones():
         # Posiciones dinámicas para los textos
         for i, linea in enumerate(instrucciones_texto):
             escribir_texto(linea, font_instrucciones, WHITE, pantalla,
-                           SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4 + 50 * (i + 1))
+                           SCREEN_WIDTH // 1.5, SCREEN_HEIGHT // 4 + 50 * (i + 1))
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_ESCAPE]:
