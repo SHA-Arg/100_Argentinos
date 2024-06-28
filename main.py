@@ -2,7 +2,6 @@ import sys
 import random
 import pygame
 from config import *
-from preguntas import *
 from Modulos import *
 from utils import *
 
@@ -10,10 +9,12 @@ from utils import *
 class Juego100ARG:
     def __init__(self):
         pygame.init()
+        self.lista_preguntas = cargar_preguntas()
         self.pantalla = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("100 Argentinos dicen")
         self.font = pygame.font.Font(FONT_PATH1, FONT_SIZE)
         self.clock = pygame.time.Clock()
+        self.pregunta_actual = None
         self.resetear_juego()
         self.fondo_menu = cargar_imagen(
             "assets/imgs/fondo_menu2.jpg", SCREEN_WIDTH, SCREEN_HEIGHT)
@@ -24,8 +25,8 @@ class Juego100ARG:
 
     def resetear_juego(self):
         self.puntaje = 0
-        self.oportunidades = 3
-        self.pregunta_actual = None
+        self.oportunidades = 4
+        self.respuesta_correcta = None
         self.tiempo_restante = RESPONSE_TIME
         self.bonus_multiplicar = 1
         self.used_hints = {
@@ -37,19 +38,26 @@ class Juego100ARG:
 
 # ------------------------------------------------------
 
-    def seleccionar_preguntar_aleatoriamente(self):
-        self.pregunta_actual = random.choice(PREGUNTAS)
-        self.tiempo_restante = RESPONSE_TIME
+    def seleccionar_preguntar_aleatoriamente(self, p):
+        self.pregunta_actual = random.choice(p)
+        self.respuesta_correcta = None
+
 
 # ------------------------------------------------------
 
-    def mostrar_pregunta(self):
-        # Renderizar el texto de la temática
-        texto_tematica = self.font.render(
-            self.pregunta_actual["tematica"] + ":", True, WHITE)
-        texto_pregunta = self.font.render(
-            self.pregunta_actual["pregunta"] + "?", True, WHITE)
 
+    def mostrar_pregunta(self, lista_preguntas):
+        if self.pregunta_actual is None:
+            if lista_preguntas:
+                self.pregunta_actual = lista_preguntas[0]
+            else:
+                print("No hay preguntas para mostrar.")
+                return
+        # # Renderizar el texto de la temática
+        texto_tematica = self.font.render(
+            self.pregunta_actual[0] + "?", True, WHITE)
+        texto_pregunta = self.font.render(
+            self.pregunta_actual[0] + "?", True, WHITE)
         # Obtener el tamaño del texto renderizado para centrarlo
         tematica_rect = texto_tematica.get_rect()
         pregunta_rect = texto_pregunta.get_rect()
@@ -65,7 +73,7 @@ class Juego100ARG:
         fondo_pregunta = pygame.Rect(pregunta_rect.x - padding, pregunta_rect.y - padding,
                                      pregunta_rect.width + 2 * padding, pregunta_rect.height + 2 * padding)
 
-        pygame.draw.rect(self.pantalla, BLUE, fondo_tematica)
+        # pygame.draw.rect(self.pantalla, BLUE, fondo_tematica)
         pygame.draw.rect(self.pantalla, BLUE, fondo_pregunta)
 
         # Dibujar el texto sobre el fondo azul
@@ -74,7 +82,7 @@ class Juego100ARG:
 
 # ------------------------------------------------------
 
-    def mostrar_input_usuario_reloj(self):
+    def mostrar_reloj(self):
         # Mostrar cuenta regresiva
         texto_reloj = self.font.render(
             f"{int(self.tiempo_restante)}s", True, WHITE)
@@ -91,6 +99,7 @@ class Juego100ARG:
 
 
 # ------------------------------------------------------
+
 
     def obtener_input_usuario(self, event):
         # Respuestas
@@ -113,27 +122,34 @@ class Juego100ARG:
 
 # ------------------------------------------------------
 
-    def chequear_respuesta(self, respuesta_ingresada):
-        puntos = 0
+    def chequear_respuesta(self, input_respuesta):
+        pass
+        # puntos = 0
+        # respuesta_correcta = False
 
-        for respuesta_ingresada in self.pregunta_actual["respuestas"].items():
-            if respuesta_ingresada in self.pregunta_actual["respuestas"]:
-                puntos += self.pregunta_actual["respuestas"][respuesta_ingresada]
-                self.puntaje += puntos
-                return True
+        # for respuesta_valida in self.pregunta_actual[0]:
+        #     if input_respuesta == respuesta_valida.lower():
+        #         for respuesta, puntos in self.pregunta_actual[0]:
+        #             if respuesta == respuesta_valida:
+        #                 puntos *= self.bonus_multiplicar
+        #         self.puntaje += puntos
+        #         respuesta_correcta = True
+        #         self.respuesta_correcta = respuesta_valida
+        #         break
 
     def mostrar_respuestas(self):
         y_offset = 500
-        for respuesta, puntos in self.pregunta_actual["respuestas"].items():
+        for respuesta, puntos in self.pregunta_actual[0]:
+            if respuesta == self.respuesta_correcta:
+                color = BLUE
+            else:
+                color = WHITE
             texto_respuesta = self.font.render(
-                f"{respuesta}: {puntos}", True, WHITE)
+                f"{respuesta}: {puntos}", True, color)
             self.pantalla.blit(texto_respuesta, (100, y_offset))
             y_offset += 40
-        return puntos
-
 
 # ------------------------------------------------------
-
 
     def mostrar_puntaje(self):
         texto_puntaje = self.font.render(
@@ -151,12 +167,12 @@ class Juego100ARG:
 
     def actualizar_estado_juego(self):
         self.tiempo_restante -= 1 / 60
-        if self.tiempo_restante <= 0:
+        if self.tiempo_restante == 0:
             self.oportunidades -= 1
             self.seleccionar_preguntar_aleatoriamente()
             self.input_text = ""
             self.tiempo_restante = RESPONSE_TIME
-            if self.oportunidades <= 0:
+            if self.oportunidades == 0:
                 self.mostrar_game_over()
                 pygame.time.wait(1000)
                 self.resetear_juego()
@@ -172,12 +188,12 @@ class Juego100ARG:
 
     def run(self):
         running = True
-        self.seleccionar_preguntar_aleatoriamente()
-
+        self.seleccionar_preguntar_aleatoriamente(self.lista_preguntas)
         while running:
             self.pantalla.blit(self.fondo_preguntas, (0, 0))
-            self.mostrar_pregunta()
-            self.mostrar_input_usuario_reloj()
+            preguntas = cargar_preguntas()
+            self.mostrar_pregunta(preguntas)
+            self.mostrar_reloj()
             self.mostrar_puntaje()
             self.actualizar_estado_juego()
 
@@ -187,12 +203,13 @@ class Juego100ARG:
                 respuesta = self.obtener_input_usuario(event)
                 if respuesta:
                     if self.chequear_respuesta(respuesta):
-                        self.seleccionar_preguntar_aleatoriamente()
+                        self.seleccionar_preguntar_aleatoriamente(
+                            self.lista_preguntas)
                         self.input_text = ""
                         self.tiempo_restante = RESPONSE_TIME
                     else:
                         self.oportunidades -= 1
-                        if self.oportunidades <= 0:
+                        if self.oportunidades == 0:
                             self.mostrar_game_over()
                             pygame.time.wait(3000)
                             self.resetear_juego()
