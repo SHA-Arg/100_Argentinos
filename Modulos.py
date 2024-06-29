@@ -1,3 +1,4 @@
+import json
 import pygame
 import csv
 
@@ -28,12 +29,11 @@ def guardar_puntaje(puntaje):
 # Abrimos archivo Json y cargamos y devolvemos los datos del mismo
 
 
-# def cargar_preguntas():
-    # import json
-    # with open('preguntas.json', 'r') as file:
-    #     return json.load(file)
-def cargar_preguntas():
-    import json
-    with open("preguntas.json", "r") as archivo:
-        preguntas = json.load(archivo)
-    return preguntas
+def cargar_archivo_jason(ruta_archivo):
+    with open("preguntas.json", "r",  encoding="utf-8") as preguntas_json:
+        pregunta = json.load(preguntas_json)
+        return pregunta
+
+
+if __name__ == "__main__":
+    ruta_archivo = "preguntas.json"
