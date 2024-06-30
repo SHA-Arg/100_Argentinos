@@ -21,7 +21,7 @@ class Juego100ARG:
             "assets/imgs/fondo_instrucciones.jpg", SCREEN_WIDTH, SCREEN_HEIGHT)
         self.cruz_roja = cargar_imagen(
             "assets/imgs/cruz_roja.gif", SCREEN_WIDTH, SCREEN_HEIGHT)
-
+        self.input_respuesta = ""
 # ------------------------------------------------------
 
     def resetear_juego(self):
@@ -62,8 +62,8 @@ class Juego100ARG:
         tematica_rect.topleft = (100, 290)
         pregunta_rect.topleft = (100, 350)
 
-        # Dibujar un fondo azul sólido según el tamaño del texto
-        padding = 10  # Espacio adicional alrededor del texto
+        # Dibuja un fondo azul sólido según el tamaño del texto
+        padding = 10
         fondo_tematica = pygame.Rect(tematica_rect.x - padding, tematica_rect.y - padding,
                                      tematica_rect.width + 2 * padding, tematica_rect.height + 2 * padding)
         fondo_pregunta = pygame.Rect(pregunta_rect.x - padding, pregunta_rect.y - padding,
@@ -93,43 +93,36 @@ class Juego100ARG:
 
         self.pantalla.blit(texto_reloj, texto_reloj_rect)
 
-    def mostrar_input(self, event):
+    def mostrar_input(self):
         # Respuestas
         input_respuesta = pygame.Rect(90, 400, 600, 50)
-        pygame.draw.rect(self.pantalla, WHITE, input_respuesta, 1)
+        pygame.draw.rect(self.pantalla, WHITE, input_respuesta, 2)
+
         texto_input = self.font.render(self.input_respuesta, True, WHITE)
         self.pantalla.blit(
             texto_input, (input_respuesta.x + 5, input_respuesta.y + 5))
-
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RETURN:
-                respuesta = self.input_respuesta.strip().lower()
-                self.input_respuesta = ""
-                return respuesta
-            elif event.key == pygame.K_BACKSPACE:
-                self.input_respuesta = self.input_respuesta[:-1]
-            else:
-                self.input_respuesta += event.unicode
-        return None
-
-
-# ------------------------------------------------------
+        # limpiar input
+        if self.input_respuesta == "":
+            self.input_respuesta = ""
+        else:
+            self.input_respuesta = self.input_respuesta
 
 
 # ------------------------------------------------------
 
     def chequear_respuesta(self, input_respuesta):
-        if input_respuesta == self.pregunta_actual["respuestas"]:
+        if input_respuesta in self.pregunta_actual["respuestas"]:
             self.puntaje += 1
-            self.seleccionar_preguntar_aleatoriamente()
-            self.tiempo_restante = RESPONSE_TIME
-        elif input_respuesta != self.pregunta_actual["respuestas"]:
+        else:
             self.oportunidades -= 1
-            self.seleccionar_preguntar_aleatoriamente()
-            self.tiempo_restante = RESPONSE_TIME
+
+        self.seleccionar_preguntar_aleatoriamente()
+        self.input_respuesta = ""
+        self.tiempo_restante = RESPONSE_TIME
+
+# ------------------------------------------------------
 
     def mostrar_respuestas(self):
-        cargar_archivo_jason("preguntas.json")
         for respuesta in cargar_archivo_jason("preguntas.json"):
             texto_respuesta = self.font.render(
                 respuesta["respuestas"], True, WHITE)
@@ -185,14 +178,19 @@ class Juego100ARG:
             self.mostrar_pregunta()
             self.mostrar_reloj()
             self.mostrar_puntaje()
+            self.mostrar_input()
             self.actualizar_estado_juego()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
                 if event.type == pygame.KEYDOWN:
-                    self.input_text = self.mostrar_input(event)
-                    self.chequear_respuesta(self.input_text)
+                    if event.key == pygame.K_RETURN:
+                        self.chequear_respuesta(self.input_respuesta)
+                    elif event.key == pygame.K_BACKSPACE:
+                        self.input_respuesta = self.input_respuesta[:-1]
+                    else:
+                        self.input_respuesta += event.unicode
 
             pygame.display.flip()
             self.clock.tick(60)
