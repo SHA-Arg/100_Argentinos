@@ -22,6 +22,7 @@ class Juego100ARG:
         self.cruz_roja = cargar_imagen(
             "assets/imgs/cruz_roja.gif", SCREEN_WIDTH, SCREEN_HEIGHT)
         self.input_respuesta = ""
+
 # ------------------------------------------------------
 
     def resetear_juego(self):
@@ -39,6 +40,7 @@ class Juego100ARG:
 
 # ------------------------------------------------------
 
+
     def seleccionar_preguntar_aleatoriamente(self):
         self.pregunta_actual = random.choice(
             cargar_archivo_jason("preguntas.json"))
@@ -46,6 +48,7 @@ class Juego100ARG:
 
 
 # ------------------------------------------------------
+
 
     def mostrar_pregunta(self):
         # Renderizar el texto de la temática
@@ -93,6 +96,8 @@ class Juego100ARG:
 
         self.pantalla.blit(texto_reloj, texto_reloj_rect)
 
+# ------------------------------------------------------
+
     def mostrar_input(self):
         # Respuestas
         input_respuesta = pygame.Rect(90, 400, 600, 50)
@@ -110,11 +115,23 @@ class Juego100ARG:
 
 # ------------------------------------------------------
 
+
     def chequear_respuesta(self, input_respuesta):
-        if input_respuesta in self.pregunta_actual["respuestas"]:
-            self.puntaje += 1
+        respuestas = self.pregunta_actual["respuestas"]
+        # respuesta_correcta = respuestas[0]
+        if input_respuesta in respuestas:
+            self.puntaje += 100 * self.bonus_multiplicar
+            self.seleccionar_preguntar_aleatoriamente()
+            self.input_respuesta = ""
+            self.tiempo_restante = RESPONSE_TIME
         else:
             self.oportunidades -= 1
+            self.input_respuesta = ""
+            self.tiempo_restante = RESPONSE_TIME
+            if self.oportunidades <= 0:
+                self.mostrar_game_over()
+                pygame.time.wait(1000)
+                self.resetear_juego()
 
         self.seleccionar_preguntar_aleatoriamente()
         self.input_respuesta = ""
@@ -132,7 +149,6 @@ class Juego100ARG:
 
 
 # ------------------------------------------------------
-
 
     def mostrar_puntaje(self):
         texto_puntaje = self.font.render(
