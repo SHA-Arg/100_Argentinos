@@ -1,3 +1,4 @@
+
 # Dimensiones de la pantalla
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -8,12 +9,14 @@ BLUE = (0, 0, 255)
 BLACK = (0, 0, 0)
 YELLOW = (255, 255, 0)
 GREEN = (0, 255, 0)
-
+RED = (255, 0, 0)
 # Fuente
 FONT_PATH1 = 'assets/fonts/Roboto-Bold.ttf'
 FONT_SIZE = 21
 FONT_PATH2 = 'assets/fonts/Roboto-Bold.ttf'
 FONT_INSTRUCCIONES = 15
+RADIUS_Time = 30
+RADIUS_Puntaje = 60
 
 # Tiempo de respuesta
 RESPONSE_TIME = 10  # en segundos

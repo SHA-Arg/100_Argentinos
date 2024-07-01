@@ -18,7 +18,7 @@ class Juego100ARG:
         self.fondo_menu = cargar_imagen(
             "assets/imgs/fondo_menu2.jpg", SCREEN_WIDTH, SCREEN_HEIGHT)
         self.fondo_preguntas = cargar_imagen(
-            "assets/imgs/fondo_instrucciones.jpg", SCREEN_WIDTH, SCREEN_HEIGHT)
+            "assets/imgs/Fondo_Juego_100Arg.png", SCREEN_WIDTH, SCREEN_HEIGHT)
         self.cruz_roja = cargar_imagen(
             "assets/imgs/cruz_roja.gif", SCREEN_WIDTH, SCREEN_HEIGHT)
         self.input_respuesta = ""
@@ -37,9 +37,7 @@ class Juego100ARG:
             "multiplicar_puntos": False
         }
 
-
 # ------------------------------------------------------
-
 
     def seleccionar_preguntar_aleatoriamente(self):
         self.pregunta_actual = random.choice(
@@ -54,7 +52,7 @@ class Juego100ARG:
 
         pregunta_rect = texto_pregunta.get_rect()
 
-        pregunta_rect.topleft = (100, 300)
+        pregunta_rect.topleft = (20, 60)
 
         padding = 10
         fondo_pregunta = pygame.Rect(pregunta_rect.x - padding, pregunta_rect.y - padding,
@@ -70,19 +68,24 @@ class Juego100ARG:
         texto_reloj = self.font.render(
             f"{int(self.tiempo_restante)}s", True, WHITE)
         texto_reloj_rect = texto_reloj.get_rect()
-        texto_reloj_rect.topleft = (SCREEN_WIDTH - 760, 350)
+        texto_reloj_rect.topleft = (SCREEN_WIDTH - 780, 120)
         circle_center = (texto_reloj_rect.x + texto_reloj_rect.width //
                          2, texto_reloj_rect.y + texto_reloj_rect.height // 2)
 
-        pygame.draw.circle(self.pantalla, BLACK, circle_center, RADIUS)
-        pygame.draw.circle(self.pantalla, YELLOW, circle_center, RADIUS, WIDTH)
+        pygame.draw.circle(self.pantalla, BLACK, circle_center, RADIUS_Time)
+        pygame.draw.circle(self.pantalla, YELLOW,
+                           circle_center, RADIUS_Time, WIDTH)
 
         self.pantalla.blit(texto_reloj, texto_reloj_rect)
+
+        if self.tiempo_restante <= 5:
+            pygame.draw.circle(self.pantalla, RED,
+                               circle_center, RADIUS_Time, WIDTH)
 
 # ------------------------------------------------------
 
     def mostrar_input(self):
-        input_respuesta = pygame.Rect(110, 350, 580, 50)
+        input_respuesta = pygame.Rect(70, 110, 500, 50)
         pygame.draw.rect(self.pantalla, WHITE, input_respuesta, 2)
 
         texto_input = self.font.render(self.input_respuesta, True, WHITE)
@@ -115,10 +118,8 @@ class Juego100ARG:
         self.tiempo_restante = RESPONSE_TIME
 
 # ------------------------------------------------------
+
     def mostrar_comodines(self):
-        comodin_tiempo_extra = "tiempo_extra"
-        comodin_menos_votada = "menos_votada"
-        comodin_multiplicar_puntos = "multiplicar_puntos"
         texto_comodin_tiempo_extra = self.font.render(
             f"Tiempo Extra", True, WHITE)
         texto_comodin_menos_votada = self.font.render(
@@ -130,9 +131,9 @@ class Juego100ARG:
         texto_comodin_menos_votada_rect = texto_comodin_menos_votada.get_rect()
         texto_comodin_multiplicar_puntos_rect = texto_comodin_multiplicar_puntos.get_rect()
 
-        texto_comodin_tiempo_extra_rect.topleft = (100, 500)
-        texto_comodin_menos_votada_rect.topleft = (100, 550)
-        texto_comodin_multiplicar_puntos_rect.topleft = (100, 600)
+        texto_comodin_tiempo_extra_rect.topleft = (500, 450)
+        texto_comodin_menos_votada_rect.topleft = (500, 500)
+        texto_comodin_multiplicar_puntos_rect.topleft = (500, 550)
 
         pygame.draw.rect(self.pantalla, BLUE, texto_comodin_tiempo_extra_rect)
         pygame.draw.rect(self.pantalla, BLUE, texto_comodin_menos_votada_rect)
@@ -156,46 +157,50 @@ class Juego100ARG:
             pygame.draw.rect(self.pantalla, GREEN,
                              texto_comodin_multiplicar_puntos_rect)
 
+        return texto_comodin_tiempo_extra_rect, texto_comodin_menos_votada_rect, texto_comodin_multiplicar_puntos_rect
+
+    def click_comodin(self, pos):
+        comodin_tiempo_extra, comodin_menos_votada, comodin_multiplicar_puntos = self.mostrar_comodines()
+
+        if comodin_tiempo_extra.collidepoint(pos):
+            self.used_hints["tiempo_extra"] = True
+        elif comodin_menos_votada.collidepoint(pos):
+            self.used_hints["menos_votada"] = True
+        elif comodin_multiplicar_puntos.collidepoint(pos):
+            self.used_hints["multiplicar_puntos"] = True
+
+    def usar_comodin(self, comodin):
+        if not self.used_hints[comodin]:
+            self.used_hints[comodin] = True
+            return True
 
 # ------------------------------------------------------
 
-
     def mostrar_respuestas(self):
-        y_offset = 450
-        x_offset_left = 130
-        x_offset_right = 500
-        column = 0  # Variable para alternar entre columnas
-
+        y_offset = 200
         for respuesta, puntaje in self.pregunta_actual["respuestas"].items():
             texto_respuesta = self.font.render(
                 f"{respuesta}: {puntaje}", True, WHITE)
             texto_respuesta_rect = texto_respuesta.get_rect()
-
-            if column % 2 == 0:
-                texto_respuesta_rect.topleft = (x_offset_left, y_offset)
-            else:
-                texto_respuesta_rect.topleft = (x_offset_right, y_offset)
-                y_offset += texto_respuesta_rect.height + 10
-
-            column += 1
-
-            padding = 10
-            fondo_respuesta = pygame.Rect(texto_respuesta_rect.x - padding, texto_respuesta_rect.y - padding,
-                                          texto_respuesta_rect.width + 2 * padding, texto_respuesta_rect.height + 2 * padding)
-            pygame.draw.rect(self.pantalla, BLUE, fondo_respuesta)
+            texto_respuesta_rect.topleft = (100, y_offset)
+            pygame.draw.rect(self.pantalla, BLUE, texto_respuesta_rect)
             self.pantalla.blit(texto_respuesta, texto_respuesta_rect)
+            y_offset += 50
+
 
 # ------------------------------------------------------
+
 
     def mostrar_puntaje(self):
         texto_puntaje = self.font.render(
             f"Puntos: {self.puntaje}", True, WHITE)
         texto_puntaje_rect = texto_puntaje.get_rect()
-        texto_puntaje_rect.topright = (SCREEN_WIDTH - 6, 350)
+        texto_puntaje_rect.topright = (SCREEN_WIDTH - 400, 500)
         circle_center = (texto_puntaje_rect.x + texto_puntaje_rect.width //
                          2, texto_puntaje_rect.y + texto_puntaje_rect.height // 2)
-        pygame.draw.circle(self.pantalla, BLACK, circle_center, RADIUS)
-        pygame.draw.circle(self.pantalla, YELLOW, circle_center, RADIUS, WIDTH)
+        pygame.draw.circle(self.pantalla, BLACK, circle_center, RADIUS_Puntaje)
+        pygame.draw.circle(self.pantalla, YELLOW,
+                           circle_center, RADIUS_Puntaje, WIDTH)
 
         self.pantalla.blit(texto_puntaje, texto_puntaje_rect)
 
@@ -216,9 +221,11 @@ class Juego100ARG:
 # ------------------------------------------------------
 
     def mostrar_game_over(self):
-        texto_game_over = self.font.render("¡Juego Terminado!", True, BLACK)
+        texto_game_over = self.font.render(
+            "¡Juego Terminado!", True, WHITE, RED)
         self.pantalla.blit(texto_game_over, (SCREEN_WIDTH //
                                              2 - 100, SCREEN_HEIGHT // 2))
+        self.pantalla.blit(self.cruz_roja, (100, 100))
 
 # ------------------------------------------------------
 
@@ -234,7 +241,7 @@ class Juego100ARG:
             self.mostrar_input()
             self.actualizar_estado_juego()
             self.mostrar_respuestas()
-            # self.mostrar_comodines()
+            self.mostrar_comodines()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
