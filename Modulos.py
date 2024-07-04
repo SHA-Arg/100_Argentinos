@@ -2,6 +2,7 @@ import json
 import pygame
 import csv
 
+
 # ------------------------------------------------------
 # Renderizamos el texto, obtenemos el rectangulo del mismo, centramos el rectangulo y dibujamos el texto en la superficie
 
@@ -27,13 +28,3 @@ def guardar_puntaje(puntaje):
         writer.writerow([puntaje])
 # ------------------------------------------------------
 # Abrimos archivo Json y cargamos y devolvemos los datos del mismo
-
-
-def cargar_archivo_jason(ruta_archivo):
-    with open("preguntas.json", "r",  encoding="utf-8") as preguntas_json:
-        pregunta = json.load(preguntas_json)
-        return pregunta
-
-
-if __name__ == "__main__":
-    ruta_archivo = "preguntas.json"

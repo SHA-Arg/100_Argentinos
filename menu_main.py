@@ -3,6 +3,7 @@ import sys
 import subprocess
 import os
 from config import *
+from utils import *
 
 
 # Inicializa Pygame
