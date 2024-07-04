@@ -1,4 +1,4 @@
-# import random
+"""# import random
 # import pygame
 # import sys
 # from ordenamiento import *
@@ -447,7 +447,7 @@
 # if __name__ == "__main__":
 #     juego = Juego100ARG()
 #     juego.ejecutar()
-# # --------------------######################################################################-------------------------------#
+# # --------------------######################################################################-------------------------------#"""
 
 import random
 import pygame
@@ -455,6 +455,7 @@ import csv
 import sys
 from config import *
 from utils import cargar_imagen, cargar_archivo_json
+from ordenamiento import *
 
 
 class Juego100ARG:
@@ -515,16 +516,37 @@ class Juego100ARG:
 ######################################################################
 
     def premio_ganado(self):
+        pozo_acumulado = 0
         if self.puntaje == 500:
             self.premio = 1000000
-            mensaje = f"Usted gano el gran premio de ${self.premio}"
+            mensaje = f"Usted gano el gran premio\n de\n ${self.premio}"
         elif self.puntaje > 0 and self.puntaje < 500:
             pozo_acumulado = self.puntaje * 500
             self.puntajes_acumulados.append(pozo_acumulado)
-            mensaje = f"Usted gano ${pozo_acumulado}"
-        else:
-            self.puntaje = 0
-            mensaje = "Usted a perdido"
+            mensaje = f" Usted gano \n ${pozo_acumulado}"
+        elif self.puntaje == 0:
+            mensaje = f" Usted a perdido,\n no gano nada! ${
+                pozo_acumulado}\n"
+
+        volver_a_jugar = f"\n¿Desea volver a jugar? (S/N)"
+        mensaje += "\n" + volver_a_jugar
+
+        self.pantalla.blit(self.fondo_game_over, (0, 0))
+
+        # Dividir el mensaje en líneas
+        lineas = mensaje.split('\n')
+
+        # Posición inicial del texto
+        x, y = 300, 350
+
+        # Renderizar y dibujar cada línea de texto
+        for linea in lineas:
+            texto_premio = self.font.render(linea, True, WHITE)
+            texto_premio_rect = texto_premio.get_rect(topleft=(x, y))
+            self.pantalla.blit(texto_premio, texto_premio_rect)
+            # Ajustar la posición Y para la siguiente línea
+            y += texto_premio.get_height() + 5
+        pygame.display.flip()  # Actualizar la pantalla
 
         # # Guardar el puntaje en el archivo CSV
         # with open('ranking.csv', 'a', newline='') as file:
@@ -532,19 +554,40 @@ class Juego100ARG:
         #     writer.writerow([self.puntaje])
 
         # Mostrar el mensaje en pantalla
-        self.pantalla.blit(self.fondo_game_over, (0, 0))
-        texto_premio = self.font.render(mensaje, True, WHITE)
-        texto_premio_rect = texto_premio.get_rect(
-            center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
-        self.pantalla.blit(texto_premio, texto_premio_rect)
-        pygame.display.update()
+
+        # pygame.display.update()
+
+    # def premio_ganado(self):
+    #     if self.puntaje == 500:
+    #         self.premio = 1000000
+    #         mensaje = f"Usted gano el gran premio de ${self.premio}"
+    #     elif self.puntaje > 0 and self.puntaje < 500:
+    #         pozo_acumulado = self.puntaje * 500
+    #         self.puntajes_acumulados.append(pozo_acumulado)
+    #         mensaje = f"Usted gano ${pozo_acumulado}"
+    #     else:
+    #         self.puntaje = 0
+    #         mensaje = "Usted a perdido"
+
+    #     # # Guardar el puntaje en el archivo CSV
+    #     # with open('ranking.csv', 'a', newline='') as file:
+    #     #     writer = csv.writer(file)
+    #     #     writer.writerow([self.puntaje])
+
+    #     # Mostrar el mensaje en pantalla
+    #     self.pantalla.blit(self.fondo_game_over, (0, 0))
+    #     texto_premio = self.font.render(mensaje, True, WHITE)
+    #     texto_premio_rect = texto_premio.get_rect(
+    #         center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+    #     self.pantalla.blit(texto_premio, texto_premio_rect)
+    #     pygame.display.update()
 
 ######################################################################
 
     # def mostrar_ranking(self):
     #     with open('ranking.csv', 'r') as file:
     #         reader = csv.reader(file)
-    #         ranking = sorted(reader, key=lambda row: int(row[0]), reverse=True)
+    #         ranking = ranking = ordenar_respuestas(reader)
 
     #     y_offset = 100
     #     for i, row in enumerate(ranking):
@@ -607,8 +650,7 @@ class Juego100ARG:
 
     def mostrar_respuestas_ingresadas(self):
         # Ordenar las respuestas ingresadas por puntos de mayor a menor
-        respuestas_ordenadas = sorted(
-            self.respuestas_ingresadas, key=lambda x: x[1], reverse=True)
+        respuestas_ordenadas = ordenar_respuestas(self.respuestas_ingresadas)
 
         y_offset = 200
         for respuesta, puntos in respuestas_ordenadas:
