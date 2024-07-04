@@ -97,5 +97,28 @@
 			"Cerveza": 7,
 			"Gaseosa": 3
 		}
+	},
+	{
+		"tematica": "Equipos de fútbol argentinos",
+		"pregunta": "Equipos de fútbol argentinos más populares.",
+		"respuestas": {
+			"River Plate": 50,
+			"Boca Juniors": 40,
+			"Independiente": 30,
+			"Racing Club": 20,
+			"San Lorenzo": 10
+		}
+	},
+	{
+		"tematica": "Jugadores de fútbol argentinos",
+		"pregunta": "Jugadores de fútbol argentinos más famosos.",
+		"respuestas": {
+			"Lionel Messi": 50,
+			"Diego Maradona": 40,
+			"Sergio Agüero": 30,
+			"Gabriel Batistuta": 20,
+			"Javier Zanetti": 10
+		}
 	}
 ]
+

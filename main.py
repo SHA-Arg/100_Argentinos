@@ -50,6 +50,19 @@ class Juego100ARG:
         self.pregunta_actual = random.choice(self.preguntas)
         self.tiempo_restante = RESPONSE_TIME
 
+    def premio_ganado(self):
+        pozo_acumulado = self.puntaje * 500
+        mensaje = f"Usted gano ${pozo_acumulado}"
+
+
+        # Mostrar el mensaje en pantalla
+        self.pantalla.blit(self.fondo_game_over, (0, 0))
+        texto_premio = self.font.render(mensaje, True, WHITE)
+        texto_premio_rect = texto_premio.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        texto_premio_rect.topleft = (310, 390)
+        self.pantalla.blit(texto_premio, texto_premio_rect)
+        pygame.display.update()
+
     def mostrar_pregunta(self):
         if self.pregunta_actual is None:
             raise ValueError("No se ha seleccionado ninguna pregunta.")
@@ -217,10 +230,16 @@ class Juego100ARG:
         self.pantalla.blit(self.fondo_game_over, (0, 0))
 
         # Texto de Game Over
-        game_over_text = self.font.render("Game Over", True, RED)
+        self.premio_ganado()
+        game_over_text = self.font.render("¡EL JUEGO A FINALIZADO!", True, WHITE)
         game_over_rect = game_over_text.get_rect()
-        game_over_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        game_over_rect.topleft = (270, 50)
+        padding = 10
+        fondo_game_over = pygame.Rect(game_over_rect.x - padding, game_over_rect.y - padding,
+                                     game_over_rect.width + 2 * padding, game_over_rect.height + 2 * padding)
         self.pantalla.blit(game_over_text, game_over_rect)
+        pygame.display.update()
+
 
     def actualizar_reloj(self):
         self.tiempo_restante -= 1 / FPS
