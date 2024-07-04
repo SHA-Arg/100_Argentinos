@@ -1,4 +1,4 @@
-
+import pygame
 # Dimensiones de la pantalla
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -31,3 +31,10 @@ WIDTH = 5
 
 # Frames Per Second
 FPS = 60
+
+# MUSICA
+# MUSIC_PATH = 'assets/sounds/music.mp3'
+# pygame.mixer.init()
+# pygame.mixer.music.load(MUSIC_PATH)
+# pygame.mixer.music.set_volume(0.5)
+# pygame.mixer.music.play(-1)

@@ -19,7 +19,7 @@ class Juego100ARG:
         self.fondo_preguntas = cargar_imagen(
             "assets/imgs/Fondo_Juego_100Arg.png", SCREEN_WIDTH, SCREEN_HEIGHT)
         self.fondo_game_over = cargar_imagen(
-            "assets/imgs/Fondo_violeta.jpg", SCREEN_WIDTH, SCREEN_HEIGHT)
+            "assets/imgs/Fondo_de_Pantalla_con_Frase_e_Imagen_.jpg", SCREEN_WIDTH, SCREEN_HEIGHT)
         self.cruz_roja_gif = cargar_imagen(
             "assets/imgs/cruz_roja.gif", 100, 100)
         self.input_respuesta = ""
@@ -214,10 +214,13 @@ class Juego100ARG:
         self.pantalla.blit(texto_oportunidades, texto_oportunidades_rect)
 
     def mostrar_game_over(self):
-        self.fondo_game_over()
+        self.pantalla.blit(self.fondo_game_over, (0, 0))
+
+        # Texto de Game Over
         game_over_text = self.font.render("Game Over", True, RED)
-        self.pantalla.blit(game_over_text, (SCREEN_WIDTH //
-                           2 - 100, SCREEN_HEIGHT // 2))
+        game_over_rect = game_over_text.get_rect()
+        game_over_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        self.pantalla.blit(game_over_text, game_over_rect)
 
     def actualizar_reloj(self):
         self.tiempo_restante -= 1 / FPS

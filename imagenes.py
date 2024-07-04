@@ -12,6 +12,8 @@ def cargar_imagenes(self):
         "assets/imgs/cruz_roja.gif", SCREEN_WIDTH, SCREEN_HEIGHT)
     self.cruz_error = self.cargar_imagen(
         "assets/imgs/cruz_error.png", 100, 100)
+    self.fondo_game_over = cargar_imagen(
+        "assets/imgs/Fondo_de_pantalla_con_frase_e_imagen.jpg", SCREEN_WIDTH, SCREEN_HEIGHT)
 
 
 def cargar_imagen(self, ruta, ancho, alto):
