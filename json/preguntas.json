@@ -1,7 +1,7 @@
 [
 	{
 		"tematica": "Cantantes argentinas",
-		"pregunta": "Cantantes argentinas que tienen menos de 40 años.",
+		"pregunta": "Cantantes argentinas que tienen menos de 40 años",
 		"respuestas": {
 			"Lali": 43,
 			"Tini": 22,
@@ -12,7 +12,7 @@
 	},
 	{
 		"tematica": "Actores de Hollywood",
-		"pregunta": "Actores de Hollywood ganadores de un Oscar.",
+		"pregunta": "Actores de Hollywood ganadores de un Oscar",
 		"respuestas": {
 			"Leonardo DiCaprio": 30,
 			"Brad Pitt": 25,
@@ -23,7 +23,7 @@
 	},
 	{
 		"tematica": "Bandas de rock nacional",
-		"pregunta": "Bandas de rock nacional de Argentina.",
+		"pregunta": "Bandas de rock nacional de Argentina",
 		"respuestas": {
 			"Soda Stereo": 40,
 			"Patricio Rey y sus Redonditos de Ricota": 30,
@@ -34,7 +34,7 @@
 	},
 	{
 		"tematica": "Autores de canciones argentinas",
-		"pregunta": "Autores de canciones más famosos de Argentina.",
+		"pregunta": "Autores de canciones más famosos de Argentina",
 		"respuestas": {
 			"Charly Garcia": 45,
 			"Fito Paez": 30,
@@ -45,7 +45,7 @@
 	},
 	{
 		"tematica": "Escritores argentinos",
-		"pregunta": "Escritores argentinos más conocidos.",
+		"pregunta": "Escritores argentinos más conocidos",
 		"respuestas": {
 			"Jorge Luis Borges": 50,
 			"Julio Cortazar": 25,
@@ -56,7 +56,7 @@
 	},
 	{
 		"tematica": "Deportistas argentinos",
-		"pregunta": "Deportistas argentinos destacados.",
+		"pregunta": "Deportistas argentinos destacados",
 		"respuestas": {
 			"Lionel Messi": 45,
 			"Diego Maradona": 30,
@@ -67,7 +67,7 @@
 	},
 	{
 		"tematica": "Monumentos argentinos",
-		"pregunta": "Monumentos más icónicos de Argentina.",
+		"pregunta": "Monumentos más icónicos de Argentina",
 		"respuestas": {
 			"Obelisco": 45,
 			"Casa Rosada": 25,
@@ -78,7 +78,7 @@
 	},
 	{
 		"tematica": "Programas de TV argentinos",
-		"pregunta": "Programas de TV más populares de Argentina.",
+		"pregunta": "Programas de TV más populares de Argentina",
 		"respuestas": {
 			"Showmatch": 50,
 			"Susana Gimenez": 30,
@@ -89,7 +89,7 @@
 	},
 	{
 		"tematica": "Bebidas argentinas",
-		"pregunta": "Bebidas más consumidas en Argentina.",
+		"pregunta": "Bebidas más consumidas en Argentina",
 		"respuestas": {
 			"Mate": 50,
 			"Fernet": 30,
@@ -100,7 +100,7 @@
 	},
 	{
 		"tematica": "Equipos de fútbol argentinos",
-		"pregunta": "Equipos de fútbol argentinos más populares.",
+		"pregunta": "Equipos de fútbol argentinos más populares",
 		"respuestas": {
 			"River Plate": 50,
 			"Boca Juniors": 40,
@@ -111,7 +111,7 @@
 	},
 	{
 		"tematica": "Jugadores de fútbol argentinos",
-		"pregunta": "Jugadores de fútbol argentinos más famosos.",
+		"pregunta": "Jugadores de fútbol argentinos más famosos",
 		"respuestas": {
 			"Lionel Messi": 50,
 			"Diego Maradona": 40,
@@ -121,4 +121,3 @@
 		}
 	}
 ]
-

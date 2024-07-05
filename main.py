@@ -33,7 +33,7 @@ class Juego100ARG:
         self.max_rondas = 5
         self.comodin_usado = False
         self.oportunidades = 3
-        self.preguntas = cargar_archivo_json("preguntas.json")
+        self.preguntas = cargar_archivo_json("json\preguntas.json")
         self.respuestas_ingresadas = []
         self.puntajes_acumulados = []
         self.partidas_jugadas = 0
@@ -99,14 +99,15 @@ class Juego100ARG:
             y += texto_premio.get_height() + 5
         pygame.display.flip()  # Actualizar la pantalla
 
-        # # Guardar el puntaje en el archivo CSV
-        # with open('ranking.csv', 'a', newline='') as file:
-        #     writer = csv.writer(file)
-        #     writer.writerow([self.puntaje])
+        # Guardar el puntaje en el archivo CSV
+        with open('data\ranking.csv', 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([self.puntaje])
 
         # Mostrar el mensaje en pantalla
 
         # pygame.display.update()
+
 # ---------------------------------------------------------
 
     #     # Mostrar el mensaje en pantalla
@@ -273,7 +274,6 @@ class Juego100ARG:
             self.seleccionar_pregunta_aleatoriamente()
             # Resetear respuestas ingresadas para la nueva pregunta
             self.respuestas_ingresadas = []
-
 
 # ---------------------------------------------------------
 

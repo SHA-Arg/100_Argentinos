@@ -1,4 +1,6 @@
 import pygame
+import random
+from .utils import *
 # Dimensiones de la pantalla
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
@@ -32,18 +34,13 @@ WIDTH = 5
 # Frames Per Second
 FPS = 60
 
-# MUSICA
-# MUSIC_PATH = 'assets/sounds/music.mp3'
-# pygame.mixer.init()
-# pygame.mixer.music.load(MUSIC_PATH)
-# pygame.mixer.music.set_volume(0.5)
-# pygame.mixer.music.play(-1)
+
 # # MUSICA
-# MUSIC_PATH = 'assets\sounds\se-acabo-todo.mp3'
-# pygame.mixer.init()
-# pygame.mixer.music.load(MUSIC_PATH)
-# pygame.mixer.music.set_volume(0.5)
-# pygame.mixer.music.play(-1)
+MUSIC_PATH = 'assets\sounds\se-acabo-todo.mp3'
+pygame.mixer.init()
+pygame.mixer.music.load(MUSIC_PATH)
+pygame.mixer.music.set_volume(0.5)
+pygame.mixer.music.play(-1)
 
 # ------------------------------------------------------
 # Variables globales
@@ -52,14 +49,14 @@ FPS = 60
 # audio_incorrecto = pygame.mixer.Sound("assets\sounds\error.mp3")
 # pantalla = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 # pygame.display.set_caption("100 Argentinos dicen")
-# font = pygame.font.Font(FONT_PATH1, FONT_SIZE)
+# # font = pygame.font.Font(FONT_PATH1, FONT_SIZE)
 # clock = pygame.time.Clock()
 # font_instrucciones = pygame.font.Font(FONT_PATH2, FONT_INSTRUCCIONES)
-# # ------------------------------------------------------
-# # Dimensiones de la pantalla
+# # # ------------------------------------------------------
+# # # Dimensiones de la pantalla
 # pantalla = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 # pygame.display.set_caption('100 Argentinos dicen')
-# # ------------------------------------------------------
+# # # ------------------------------------------------------
 
 # puntaje = 0
 # tiempo_restante = RESPONSE_TIME

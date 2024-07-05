@@ -18,7 +18,7 @@ def renderizar_texto(pantalla, texto, font, color, posicion, padding=10):
 
 
 def cargar_archivo_json(ruta_archivo):
-    with open("preguntas.json", "r",  encoding="utf-8") as preguntas_json:
+    with open("json\preguntas.json", "r",  encoding="utf-8") as preguntas_json:
         pregunta = json.load(preguntas_json)
         return pregunta
 
