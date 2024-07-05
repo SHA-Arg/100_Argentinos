@@ -11,10 +11,10 @@ def ordenar_respuestas(respuestas):
     list: Lista de tuplas ordenada por puntos de mayor a menor.
     """
     for i in range(1, len(respuestas)):
-        key = respuestas[i]
+        cantidad_argdicen = respuestas[i]
         j = i - 1
-        while j >= 0 and key[1] > respuestas[j][1]:
+        while j >= 0 and cantidad_argdicen[1] > respuestas[j][1]:
             respuestas[j + 1] = respuestas[j]
             j -= 1
-        respuestas[j + 1] = key
+        respuestas[j + 1] = cantidad_argdicen
     return respuestas

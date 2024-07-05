@@ -20,18 +20,18 @@ def main_menu():
     """
     Función principal del menú. Muestra los botones y maneja la lógica de clics.
     """
+    # Crea botones
+    button_1 = crear_boton(SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2, 200, 50)
+    button_2 = crear_boton(
+        SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2 + 70, 200, 50)
+    button_3 = crear_boton(
+        SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2 + 140, 200, 50)
+
     while True:
         # Imágen de fondo
         pantalla.blit(fondo_menu, (0, 0))
 
         mx, my = pygame.mouse.get_pos()
-
-        # Crear botones
-        button_1 = crear_boton(SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2, 200, 50)
-        button_2 = crear_boton(
-            SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2 + 70, 200, 50)
-        button_3 = crear_boton(
-            SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2 + 140, 200, 50)
 
         # Verificar colisiones y ejecutar acciones
         if button_1.collidepoint((mx, my)):

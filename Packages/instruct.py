@@ -3,6 +3,12 @@ import sys
 from .recursos import *
 from .config import *
 
+"""
+    Muestra las instrucciones del juego en la pantalla.
+
+    Espera a que el usuario presione ESC para volver al menú principal.
+"""
+
 
 def instrucciones():
     running = True
@@ -36,5 +42,4 @@ def instrucciones():
             running = False
 
         pygame.display.update()
-
 # ------------------------------------------------------

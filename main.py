@@ -7,6 +7,8 @@ from Packages.utils import *
 from Packages.ordenamiento import *
 from Packages.recursos import pantalla, font, fondo_menu, escribir_texto, font_instrucciones, fondo_instrucciones
 
+# ---------------------------------------------------------
+
 
 class Juego100ARG:
     def __init__(self):
@@ -52,22 +54,74 @@ class Juego100ARG:
             "menos_votada": False,
             "multiplicar_puntos": False
         }
-        # self.contador_rondas = 0
+        self.contador_rondas = 0
         self.seleccionar_pregunta_aleatoriamente()
         self.respuestas_ingresadas = []
 
 # ---------------------------------------------------------
 # Selecciona una pregunta aleatoria del archivo de preguntas
     def seleccionar_pregunta_aleatoriamente(self):
-        if not self.preguntas:
-            raise ValueError(
-                "No hay preguntas disponibles en el archivo JSON.")
         self.pregunta_actual = random.choice(self.preguntas)
         self.tiempo_restante = RESPONSE_TIME
 
 # ---------------------------------------------------------
-# Calcula y muestra el premio ganado al finalizar el juego
+    """
+    Calcula y muestra el premio ganado al finalizar el juego. Este método determina el premio basado en el puntaje final del jugador.
+
+    Args:
+    None
+
+    Returns:
+    None
+    """
+
     def premio_ganado(self):
+        pozo_acumulado = 0
+        if self.puntaje >= 500:
+            self.premio = 1000000
+            mensaje = f"Usted ganó el gran premio\n de\n ${self.premio}"
+        elif self.puntaje > 0 and self.puntaje < 500:
+            pozo_acumulado = self.puntaje * 500
+            self.puntajes_acumulados.append(pozo_acumulado)
+            mensaje = f" Usted ganó \n ${pozo_acumulado}"
+        elif self.puntaje == 0:
+            mensaje = f" Usted ha perdido,\n no ganó nada! ${pozo_acumulado}\n"
+
+        volver_a_jugar = f"\n¿Desea volver a jugar? (S/N)"
+        mensaje += "\n" + volver_a_jugar
+
+        self.pantalla.blit(self.fondo_game_over, (0, 0))
+
+        # Dividir el mensaje en líneas
+        lineas = mensaje.split('\n')
+
+        # Posición inicial del texto
+        x, y = 300, 350
+
+        # Renderizar y dibujar cada línea de texto
+        for linea in lineas:
+            texto_premio = self.font.render(linea, True, WHITE)
+            texto_premio_rect = texto_premio.get_rect(topleft=(x, y))
+            self.pantalla.blit(texto_premio, texto_premio_rect)
+            # Ajustar la posición Y para la siguiente línea
+            y += texto_premio.get_height() + 5
+        pygame.display.flip()  # Actualizar la pantalla
+
+        # Guardar el puntaje en el archivo CSV
+        with open('data/ranking.csv', 'a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([self.puntaje])
+
+        pygame.display.update()
+        # Mostrar el mensaje en pantalla
+        self.pantalla.blit(self.fondo_game_over, (0, 0))
+        texto_premio = self.font.render(mensaje, True, WHITE)
+        texto_premio_rect = texto_premio.get_rect(
+            center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        self.pantalla.blit(texto_premio, texto_premio_rect)
+        pygame.display.update()
+    '''
+def premio_ganado(self):
         pozo_acumulado = 0
         if self.puntaje == 500:
             self.premio = 1000000
@@ -107,36 +161,34 @@ class Juego100ARG:
 
         # Mostrar el mensaje en pantalla
 
-        # pygame.display.update()
+        pygame.display.update()
+    '''
 
 # ---------------------------------------------------------
+    def mostrar_ranking(self):
+        with open('ranking.csv', 'r') as file:
+            reader = csv.reader(file)
+            ranking = ranking = ordenar_respuestas(reader)
 
-    #     # Mostrar el mensaje en pantalla
-    #     self.pantalla.blit(self.fondo_game_over, (0, 0))
-    #     texto_premio = self.font.render(mensaje, True, WHITE)
-    #     texto_premio_rect = texto_premio.get_rect(
-    #         center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
-    #     self.pantalla.blit(texto_premio, texto_premio_rect)
-    #     pygame.display.update()
-
-######################################################################
-
-    # def mostrar_ranking(self):
-    #     with open('ranking.csv', 'r') as file:
-    #         reader = csv.reader(file)
-    #         ranking = ranking = ordenar_respuestas(reader)
-
-    #     y_offset = 100
-    #     for i, row in enumerate(ranking):
-    #         texto_ranking = self.font.render(
-    #             f"{i+1}. {row[0]} puntos", True, WHITE)
-    #         texto_ranking_rect = texto_ranking.get_rect()
-    #         texto_ranking_rect.topleft = (50, y_offset)
-    #         self.pantalla.blit(texto_ranking, texto_ranking_rect)
-    #         y_offset += 40
+        y_offset = 100
+        for i, row in enumerate(ranking):
+            texto_ranking = self.font.render(
+                f"{i+1}. {row[0]} puntos", True, WHITE)
+            texto_ranking_rect = texto_ranking.get_rect()
+            texto_ranking_rect.topleft = (50, y_offset)
+            self.pantalla.blit(texto_ranking, texto_ranking_rect)
+            y_offset += 40
 
 # ---------------------------------------------------------
-# Muestra el contador de rondas en la pantalla
+    """
+    Muestra el contador de rondas en la pantalla del juego. Este metodo renderiza el número de la ronda actual en la esquina superior izquierda de la pantalla
+    Args:
+        None
+
+    Returns:
+        None
+    """
+
     def contador_rondas(self):
         texto_contador = self.font.render(
             f"Ronda: {self.contador_rondas}", True, WHITE)
@@ -145,10 +197,17 @@ class Juego100ARG:
         self.pantalla.blit(texto_contador, texto_contador_rect)
 
 # ---------------------------------------------------------
-# Muestra la pregunta actual en la pantalla
+    """
+    Muestra la pregunta actual en la pantalla del juego. Este método verifica si hay una pregunta seleccionada. Si no hay ninguna pregunta, lanza un ValueError
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
+
     def mostrar_pregunta(self):
-        if self.pregunta_actual is None:
-            raise ValueError("No se ha seleccionado ninguna pregunta.")
         texto_pregunta = self.font.render(
             self.pregunta_actual["pregunta"] + "?", True, WHITE)
         pregunta_rect = texto_pregunta.get_rect()
@@ -159,8 +218,19 @@ class Juego100ARG:
         pygame.draw.rect(self.pantalla, BLUE, fondo_pregunta)
         self.pantalla.blit(texto_pregunta, pregunta_rect)
 
+        print(self.pregunta_actual["respuestas"])
+
 # ---------------------------------------------------------
-# Muestra el reloj con el tiempo restante en la pantalla
+    """
+    Muestra el reloj de tiempo restante en la pantalla del juego. Este método renderiza el tiempo restante en segundos en la esquina superior izquierda de la pantalla.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
+
     def mostrar_reloj(self):
         texto_reloj = self.font.render(
             f"{int(self.tiempo_restante)}s", True, WHITE)
@@ -179,7 +249,16 @@ class Juego100ARG:
                                circle_center, RADIUS_Time, WIDTH)
 
 # ---------------------------------------------------------
-# Muestra las respuestas ingresadas en la pantalla, ordenadas por puntos
+    """
+    Muestra las respuestas ingresadas ordenadas en la pantalla del juego. Este método ordena las respuestas ingresadas por puntaje usando la función `ordenar_respuestas`
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
+
     def mostrar_respuestas_ingresadas(self):
         respuestas_ordenadas = ordenar_respuestas(self.respuestas_ingresadas)
 
@@ -196,7 +275,16 @@ class Juego100ARG:
             y_offset += 50
 
 # ---------------------------------------------------------
-# Muestra el campo de entrada de texto en la pantalla
+    """
+    Muestra el campo de entrada de respuesta en la pantalla del juego. Este método renderiza un rectángulo blanco como campo de entrada
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
+
     def mostrar_input(self):
         input_respuesta_rect = pygame.Rect(70, 110, 500, 50)
         pygame.draw.rect(self.pantalla, WHITE, input_respuesta_rect, 2)
@@ -207,12 +295,41 @@ class Juego100ARG:
         pygame.display.update(input_respuesta_rect)
 
 # ---------------------------------------------------------
+# Verifica la respuesta ingresada
+    def verificar_respuesta(self):
+        respuesta_ingresada = self.input_respuesta.strip().lower()
+        for respuesta in self.pregunta_actual["respuestas"]:
+            if respuesta_ingresada == respuesta["respuesta"].strip().lower():
+                if respuesta_ingresada not in self.respuestas_ingresadas:
+                    self.audio_correcto.play()
+                    self.puntaje += respuesta["puntos"]
+                    self.respuestas_ingresadas.append(
+                        (respuesta_ingresada, respuesta["puntos"]))
+                else:
+                    print("Respuesta ya ingresada.")
+                self.input_respuesta = ""
+                return True
+        self.audio_incorrecto.play()
+        self.oportunidades -= 1
+        self.input_respuesta = ""
+        return False
+
+# ---------------------------------------------------------
 # Limpia el campo de entrada de texto
     def limpiar_input_respuesta(self):
         self.input_respuesta = ""
 
 # ---------------------------------------------------------
-# Muestra la pantalla final del juego y permite al jugador elegir si quiere volver a jugar
+    """
+    Muestra la pantalla final del juego y gestiona la respuesta del jugador.Este método muestra el fondo de pantalla de juego terminado y un mensaje para preguntar al jugador si desea jugar otra vez.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
+
     def mostrar_pantalla_final(self):
         self.pantalla.blit(self.fondo_game_over, (0, 0))
         texto_pantalla_final = self.font.render(
@@ -233,9 +350,76 @@ class Juego100ARG:
                     elif event.key == pygame.K_n:
                         pygame.quit()
                         return
-# ---------------------------------------------------------
-# Verifica si la respuesta ingresada es correcta y actualiza el puntaje y las oportunidades
 
+        self.pantalla.blit(self.fondo_game_over, (0, 0))
+        texto_pantalla_final = self.font.render(
+            "¡Juego terminado! ¿Deseas jugar otra vez? (S/N)", True, WHITE)
+        texto_pantalla_final_rect = texto_pantalla_final.get_rect(
+            center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        self.pantalla.blit(texto_pantalla_final, texto_pantalla_final_rect)
+        pygame.display.update()
+
+        esperando_respuesta = True
+        while esperando_respuesta:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_s:
+                        self.rondas_jugadas = 0
+                        self.resetear_juego()
+                        esperando_respuesta = False
+                    elif event.key == pygame.K_n:
+                        pygame.quit()
+                        return
+
+# ---------------------------------------------------------
+    """
+    Chequea la respuesta ingresada por el jugador y gestiona las acciones correspondientes. Este método verifica si la respuesta ingresada por el jugador está en las respuestas válidas para la pregunta actual
+
+    Args:
+        input_respuesta (str): La respuesta ingresada por el jugador.
+
+    Returns:
+        None
+    """
+
+    def chequear_respuesta(self, input_respuesta):
+        respuestas = self.pregunta_actual["respuestas"]
+        if input_respuesta in respuestas:
+            self.audio_correcto.play()
+            puntos_obtenidos = respuestas[input_respuesta] * \
+                self.bonus_multiplicar
+
+            if input_respuesta not in [respuesta for respuesta, _ in self.respuestas_ingresadas]:
+                puntos_obtenidos = respuestas[input_respuesta] * \
+                    self.bonus_multiplicar
+                self.respuestas_ingresadas.append(
+                    (input_respuesta, puntos_obtenidos))
+                self.puntaje += puntos_obtenidos  # Sumar puntos al puntaje total
+                self.mostrar_respuestas_ingresadas()
+        else:
+            self.mostrar_animacion_cruz()
+            self.audio_incorrecto.play()
+            self.oportunidades -= 1
+            self.input_respuesta = ""
+            if self.oportunidades == 0:
+                pygame.time.wait(1000)
+                self.rondas_jugadas += 1
+                if self.rondas_jugadas >= self.max_rondas:
+                    self.mostrar_pantalla_final()
+                    return
+                self.resetear_juego()
+                return
+
+        self.limpiar_input_respuesta()
+
+        if len(self.respuestas_ingresadas) == len(respuestas):
+            self.seleccionar_pregunta_aleatoriamente()
+            self.respuestas_ingresadas = []
+
+        if self.puntaje >= 500:
+            self.mostrar_game_over()
+            self.premio_ganado()
+    '''
     def chequear_respuesta(self, input_respuesta):
         respuestas = self.pregunta_actual["respuestas"]
         if input_respuesta in respuestas:
@@ -275,8 +459,18 @@ class Juego100ARG:
             self.seleccionar_pregunta_aleatoriamente()
             # Resetear respuestas ingresadas para la nueva pregunta
             self.respuestas_ingresadas = []
+    '''
 
 # ---------------------------------------------------------
+    """
+    Muestra una animación de cruz roja en la pantalla del juego. Este método posiciona y muestra una animación de cruz roja
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
 
     def mostrar_animacion_cruz(self):
         cruz_rect = self.cruz_roja_gif.get_rect()
@@ -286,6 +480,15 @@ class Juego100ARG:
         pygame.time.delay(1000)
 
 # ---------------------------------------------------------
+    """
+    Muestra los comodines disponibles en la pantalla del juego. Este método los diferentes comodines disponibles.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
 
     def mostrar_comodines(self):
         texto_comodin_tiempo_extra = self.font.render(
@@ -319,7 +522,15 @@ class Juego100ARG:
                                self.comodin_multiplicar_puntos_rect)
 
 # ---------------------------------------------------------
-# Permite usar un comodín y actualiza las variables correspondientes
+    """
+    Usa el comodín seleccionado durante el juego, permite al jugador usar diferentes comodines según el tipo especificado
+    Args:
+        tipo (str): El tipo de comodín a usar.
+
+    Returns:
+        None
+    """
+
     def usar_comodin(self, tipo):
         if tipo == "tiempo_extra" and not self.used_hints[tipo]:
             self.tiempo_restante += 10
@@ -335,7 +546,15 @@ class Juego100ARG:
             self.used_hints[tipo] = True
 
 # ---------------------------------------------------------
-# Chequea si el juego ha llegado a su fin
+    """
+    Chequea si el juego ha llegado a su fin y realiza las acciones finales correspondientes.
+    Args:
+        None
+
+    Returns:
+        None
+    """
+
     def chequear_fin_juego(self):
         if self.contador_rondas == 0:
             self.mostrar_game_over()
@@ -345,7 +564,16 @@ class Juego100ARG:
             self.resetear_juego()
 
 # ---------------------------------------------------------
-# Maneja los eventos de Pygame, como la entrada de texto y las teclas especiales
+    """
+    Maneja los eventos del juego como presionar teclas o clics de ratón.
+
+    Args:
+        event (pygame.event): El evento pygame que se está gestionando.
+
+    Returns:
+        None
+    """
+
     def manejar_eventos(self, event):
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -369,7 +597,16 @@ class Juego100ARG:
                 self.usar_comodin("multiplicar_puntos")
 
 # ---------------------------------------------------------
-# Muestra el puntaje actual en la pantalla
+    """
+    Muestra el puntaje actual del jugador en la pantalla del juego.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
+
     def mostrar_puntaje(self):
         texto_puntaje = self.font.render(
             f"Puntos: {self.puntaje}", True, WHITE)
@@ -381,8 +618,38 @@ class Juego100ARG:
         pygame.draw.circle(self.pantalla, YELLOW,
                            circle_center, RADIUS_Puntaje, WIDTH)
         self.pantalla.blit(texto_puntaje, texto_puntaje_rect)
+
 # ---------------------------------------------------------
-# Muestra las oportunidades restantes en la pantalla
+# Verifica el estado del juego (ganar, perder, continuar)
+    def verificar_estado_juego(self):
+        if self.puntaje >= 500:
+            self.premio_ganado()
+            return True
+        elif self.rondas_jugadas >= self.max_rondas:
+            self.premio_ganado()
+            return True
+        elif self.oportunidades <= 0:
+            self.pantalla.blit(
+                self.cruz_roja_gif, (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 - 50))
+            pygame.display.flip()
+            pygame.time.wait(2000)
+            self.resetear_juego()
+            self.rondas_jugadas += 1
+            if self.rondas_jugadas >= self.max_rondas:
+                self.premio_ganado()
+                return True
+        return False
+
+# ---------------------------------------------------------
+    """
+    Muestra el número de oportunidades restantes en la pantalla del juego.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
 
     def mostrar_oportunidades(self):
         texto_oportunidades = self.font.render(
@@ -392,7 +659,17 @@ class Juego100ARG:
         self.pantalla.blit(texto_oportunidades, texto_oportunidades_rect)
 
 # ---------------------------------------------------------
-# Muestra la pantalla de Game Over si el jugador se queda sin oportunidades
+    """
+    Muestra la pantalla de juego terminado con el texto correspondiente y el premio ganado.
+
+    Args:
+        None
+
+    Returns:
+        None
+
+    """
+
     def mostrar_game_over(self):
         # Texto de Game Over
         game_over_text = self.font.render(
@@ -407,14 +684,23 @@ class Juego100ARG:
         self.premio_ganado()
         self.pantalla.blit(self.fondo_game_over, (0, 0))
 
-        # # Mostrar ranking
-        # self.mostrar_ranking()
+        # Mostrar ranking
+        self.mostrar_ranking()
 
         pygame.display.update()
         pygame.time.wait(2000)
 
 # ---------------------------------------------------------
-# Actualiza el reloj restando el tiempo transcurrido desde el último frame
+    """
+    Actualiza el reloj del juego y gestiona las acciones correspondientes cuando se agota el tiempo.
+
+    Args:
+        None
+
+    Returns:
+        None
+    """
+
     def actualizar_reloj(self):
         self.tiempo_restante -= 1 / FPS
         if self.tiempo_restante <= 0:
@@ -430,7 +716,16 @@ class Juego100ARG:
             self.resetear_juego()
 
 # ---------------------------------------------------------
-# Bucle principal del juego
+    """
+    Ejecuta el bucle principal del juego,donde se actualizan y muestran en pantalla todos los elementos del juego
+
+        Args:
+        None
+
+    Returns:
+        None
+    """
+
     def ejecutar(self):
         while True:
             self.pantalla.blit(self.fondo_preguntas, (0, 0))
@@ -449,6 +744,11 @@ class Juego100ARG:
                 self.partidas_jugadas += 1
                 self.chequear_fin_juego()
 
+            if self.puntaje >= 500:
+                self.mostrar_game_over()
+                self.premio_ganado()
+                break
+
             self.actualizar_reloj()
             pygame.display.update()
             self.clock.tick(FPS)
@@ -459,4 +759,5 @@ class Juego100ARG:
 if __name__ == "__main__":
     juego = Juego100ARG()
     juego.ejecutar()
-# # --------------------######################################################################-------------------------------#
+
+# ---------------------------------------------------------

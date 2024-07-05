@@ -22,7 +22,8 @@ RADIUS_Time = 30
 RADIUS_Puntaje = 60
 
 # Tiempo de respuesta
-RESPONSE_TIME = 10  # en segundos
+RESPONSE_TIME = 30
+# en segundos
 
 # Puntuación necesaria para ganar el premio mayor
 WINNING_SCORE = 500
@@ -36,11 +37,11 @@ FPS = 60
 
 
 # # MUSICA
-MUSIC_PATH = 'assets\sounds\se-acabo-todo.mp3'
-pygame.mixer.init()
-pygame.mixer.music.load(MUSIC_PATH)
-pygame.mixer.music.set_volume(0.5)
-pygame.mixer.music.play(-1)
+# MUSIC_PATH = 'assets\sounds\se-acabo-todo.mp3'
+# pygame.mixer.init()
+# pygame.mixer.music.load(MUSIC_PATH)
+# pygame.mixer.music.set_volume(0.5)
+# pygame.mixer.music.play(-1)
 
 # ------------------------------------------------------
 # Variables globales
