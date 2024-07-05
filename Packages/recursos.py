@@ -1,6 +1,6 @@
 # resources.py
 import pygame
-from config import SCREEN_WIDTH, SCREEN_HEIGHT, FONT_PATH1, FONT_PATH2, FONT_SIZE, FONT_INSTRUCCIONES, BLUE, WHITE
+from .config import SCREEN_WIDTH, SCREEN_HEIGHT, FONT_PATH1, FONT_PATH2, FONT_SIZE, FONT_INSTRUCCIONES, BLUE, WHITE
 
 # Inicializar Pygame
 pygame.init()

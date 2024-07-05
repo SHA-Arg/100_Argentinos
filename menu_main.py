@@ -4,32 +4,19 @@ import subprocess
 import os
 from Packages.config import *
 from Packages.utils import *
+from Packages.recursos import *
+from Packages.instruct import *
+
 # ------------------------------------------------------
 
 # Inicializa Pygame
 pygame.init()
 
-# Fuente
-font = pygame.font.Font(FONT_PATH1, FONT_SIZE)
-font_instrucciones = pygame.font.Font(FONT_PATH2, FONT_INSTRUCCIONES)
-# Dimensiones de la pantalla
-pantalla = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption('100 Argentinos dicen')
-
-# Cargar imágenes de fondo
-fondo_menu = pygame.image.load("assets/imgs/fondo_menu2.jpg")
-fondo_instrucciones = pygame.image.load("assets/imgs/fondo_instrucciones.jpg")
-
-fondo_menu = pygame.transform.scale(fondo_menu, (SCREEN_WIDTH, SCREEN_HEIGHT))
-fondo_instrucciones = pygame.transform.scale(
-    fondo_instrucciones, (SCREEN_WIDTH, SCREEN_HEIGHT))
-fondo_instrucciones.fill(BLUE)
-
-
 # ------------------------------------------------------
 
 
 def main_menu():
+    click = False
     while True:
         # Imágen de fondo
         pantalla.blit(fondo_menu, (0, 0))
@@ -63,7 +50,6 @@ def main_menu():
                        button_2.centerx, button_2.centery)
         escribir_texto('Salir', font, WHITE, pantalla,
                        button_3.centerx, button_3.centery)
-
         click = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -81,42 +67,6 @@ def main_menu():
 def jugar():
     # Ejecuta main.py
     subprocess.run(["python", "main.py"])
-
-# ------------------------------------------------------
-
-
-def instrucciones():
-    running = True
-    while running:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-
-        pantalla.blit(fondo_instrucciones, (290, 230))
-
-        # Instrucciones con fondo legible
-        instrucciones_texto = [
-            '',
-            '1-El juego seleccionara una temática al azar con su respectiva pregunta.',
-            '2-El jugador debe ingresar su respuesta ',
-            '"antes de que se acabe el tiempo, tiene 3 errores como maximo".',
-            '3-Ganara un punto por la cantidad de argentinos que',
-            'coninciden con las respuestas.',
-            '4-Al acumular 500 puntos gana el premio mayor.',
-            'Presiona ESC para volver al menú'
-        ]
-
-        # Posiciones dinámicas para los textos
-        for i, linea in enumerate(instrucciones_texto):
-            escribir_texto(linea, font_instrucciones, WHITE, pantalla,
-                           SCREEN_WIDTH // 1.5, SCREEN_HEIGHT // 4 + 50 * (i + 1))
-
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_ESCAPE]:
-            running = False
-
-        pygame.display.update()
 
 # ------------------------------------------------------
 

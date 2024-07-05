@@ -5,6 +5,7 @@ import sys
 from Packages.config import *
 from Packages.utils import *
 from Packages.ordenamiento import *
+from Packages.recursos import pantalla, font, fondo_menu, escribir_texto, font_instrucciones, fondo_instrucciones
 
 
 class Juego100ARG:
