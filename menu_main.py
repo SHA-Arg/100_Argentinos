@@ -6,6 +6,7 @@ from Packages.config import *
 from Packages.utils import *
 from Packages.recursos import *
 from Packages.instruct import *
+from Packages.botones import *
 
 # ------------------------------------------------------
 
@@ -16,19 +17,23 @@ pygame.init()
 
 
 def main_menu():
-    click = False
+    """
+    Función principal del menú. Muestra los botones y maneja la lógica de clics.
+    """
     while True:
         # Imágen de fondo
         pantalla.blit(fondo_menu, (0, 0))
 
         mx, my = pygame.mouse.get_pos()
 
-        button_1 = pygame.Rect(SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2, 200, 50)
-        button_2 = pygame.Rect(
+        # Crear botones
+        button_1 = crear_boton(SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2, 200, 50)
+        button_2 = crear_boton(
             SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2 + 70, 200, 50)
-        button_3 = pygame.Rect(
+        button_3 = crear_boton(
             SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2 + 140, 200, 50)
 
+        # Verificar colisiones y ejecutar acciones
         if button_1.collidepoint((mx, my)):
             if click:
                 jugar()
@@ -40,16 +45,11 @@ def main_menu():
                 pygame.quit()
                 sys.exit()
 
-        pygame.draw.rect(pantalla, BLUE, button_1)
-        pygame.draw.rect(pantalla, BLUE, button_2)
-        pygame.draw.rect(pantalla, BLUE, button_3)
+        # Dibujar botones
+        dibujar_boton(button_1, 'Jugar')
+        dibujar_boton(button_2, 'Instrucciones')
+        dibujar_boton(button_3, 'Salir')
 
-        escribir_texto('Jugar', font, WHITE, pantalla,
-                       button_1.centerx, button_1.centery)
-        escribir_texto('Instrucciones', font, WHITE, pantalla,
-                       button_2.centerx, button_2.centery)
-        escribir_texto('Salir', font, WHITE, pantalla,
-                       button_3.centerx, button_3.centery)
         click = False
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
