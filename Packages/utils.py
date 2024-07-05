@@ -22,6 +22,13 @@ def cargar_archivo_json(ruta_archivo):
         pregunta = json.load(preguntas_json)
         return pregunta
 
+
+def escribir_texto(text, font, color, surface, x, y):
+    textobj = font.render(text, True, color)
+    textrect = textobj.get_rect()
+    textrect.center = (x, y)
+    surface.blit(textobj, textrect)
+
 # import pygame
 # import json
 

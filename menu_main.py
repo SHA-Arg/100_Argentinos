@@ -2,9 +2,9 @@ import pygame
 import sys
 import subprocess
 import os
-from config import *
-from utils import *
-
+from Packages.config import *
+from Packages.utils import *
+# ------------------------------------------------------
 
 # Inicializa Pygame
 pygame.init()
@@ -25,14 +25,6 @@ fondo_instrucciones = pygame.transform.scale(
     fondo_instrucciones, (SCREEN_WIDTH, SCREEN_HEIGHT))
 fondo_instrucciones.fill(BLUE)
 
-# ------------------------------------------------------
-
-
-def escribir_texto(text, font, color, surface, x, y):
-    textobj = font.render(text, True, color)
-    textrect = textobj.get_rect()
-    textrect.center = (x, y)
-    surface.blit(textobj, textrect)
 
 # ------------------------------------------------------
 
