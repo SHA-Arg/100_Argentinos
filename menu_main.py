@@ -7,12 +7,9 @@ from Packages.utils import *
 from Packages.recursos import *
 from Packages.instruct import *
 from Packages.botones import *
-
 # ------------------------------------------------------
-
 # Inicializa Pygame
 pygame.init()
-
 # ------------------------------------------------------
 
 
@@ -68,7 +65,6 @@ def jugar():
     # Ejecuta main.py
     subprocess.run(["python", "main.py"])
 
+
 # ------------------------------------------------------
-
-
 main_menu()
