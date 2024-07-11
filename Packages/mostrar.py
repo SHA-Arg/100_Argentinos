@@ -6,6 +6,22 @@ from .ordenamiento import *
 from .utils import *
 from .inicializadores import *
 
+"""
+    Muestra el campo de entrada de texto en la pantalla del juego.
+
+    Este método dibuja un rectángulo que representa el campo de entrada de texto y 
+    muestra el texto actualmente ingresado por el usuario dentro de dicho rectángulo.
+
+    Parámetros:
+    - juego: Una instancia del objeto del juego que contiene los atributos necesarios 
+    - como la pantalla y el texto de entrada.
+
+    Acciones realizadas:
+    - Dibuja un rectángulo blanco que representa el campo de entrada de texto.
+    - Renderiza el texto actualmente ingresado por el usuario y lo muestra dentro del rectángulo.
+    - Actualiza la porción de la pantalla donde se encuentra el campo de entrada de texto
+"""
+
 
 def mostrar_input(juego):
     input_respuesta_rect = pygame.Rect(70, 110, 500, 50)
@@ -19,12 +35,43 @@ def mostrar_input(juego):
 # ---------------------------------------------------------
 
 
+"""
+Este método renderiza el texto que indica el número de rondas jugadas y lo muestra
+    en una posición específica de la pantalla del juego.
+
+    Parámetros:
+    - juego: Una instancia del objeto del juego que contiene los atributos necesarios 
+    - como la pantalla y el número de rondas jugadas.
+
+    Atributos utilizados:
+    - juego.pantalla: La superficie de Pygame donde se dibuja el texto.
+    - juego.rondas_jugadas (int): El número de rondas que se han jugado.
+    - juego.font: La fuente utilizada para renderizar el texto.
+"""
+
+
 def mostrar_rondas_jugadas(juego):
     texto_rondas = juego.font.render(
         f"Rondas jugadas: {juego.rondas_jugadas}", True, WHITE)
     texto_rondas_rect = texto_rondas.get_rect()
     texto_rondas_rect.topleft = (SCREEN_WIDTH - 370, 550)
     juego.pantalla.blit(texto_rondas, texto_rondas_rect)
+
+
+# ---------------------------------------------------------
+"""
+Este método lee los datos del ranking desde un archivo CSV, los ordena y los muestra
+    en una lista en la pantalla del juego.
+
+    Parámetros:
+    - juego: Una instancia del objeto del juego que contiene los atributos necesarios 
+    - como la pantalla y la fuente para renderizar el texto.
+
+    Notas:
+    - Se asume que el archivo CSV está ubicado en la ruta 'data/ranking.csv' y contiene
+    - los datos del ranking en un formato adecuado.
+    - La función `ordenar_respuestas` debe estar definida y ser capaz de ordenar los datos del ranking.
+"""
 
 
 def mostrar_ranking(juego):
@@ -51,7 +98,6 @@ def mostrar_ranking(juego):
     Returns:
         None
     """
-# ---------------------------------------------------------
 
 
 def mostrar_pregunta(juego):
@@ -78,7 +124,6 @@ def mostrar_pregunta(juego):
     Returns:
         None
     """
-# ---------------------------------------------------------
 
 
 def mostrar_reloj(juego):
@@ -97,6 +142,9 @@ def mostrar_reloj(juego):
     if juego.tiempo_restante <= 5:
         pygame.draw.circle(juego.pantalla, RED,
                            circle_center, RADIUS_Time, WIDTH)
+        sonido = pygame.mixer.Sound("assets/sounds/ClockTicking.mp3")
+        sonido.play()
+
 
 # ---------------------------------------------------------
     """
@@ -108,7 +156,6 @@ def mostrar_reloj(juego):
     Returns:
         None
     """
-# ---------------------------------------------------------
 
 
 def mostrar_respuestas_ingresadas(juego):
@@ -126,7 +173,21 @@ def mostrar_respuestas_ingresadas(juego):
 
         y_offset += 30
 
-    # ---------------------------------------------------------
+
+# ---------------------------------------------------------
+"""
+Este método muestra un mensaje de fin de juego en la pantalla y permite al jugador 
+    ingresar su nombre a través del teclado. El nombre ingresado se devuelve cuando 
+    el jugador presiona la tecla Enter.
+
+    Parámetros:
+    - juego: Una instancia del objeto del juego que contiene los atributos necesarios 
+    - como la pantalla, la fuente para renderizar el texto, y el fondo de "game over".
+
+    Retorna:
+    - str: El nombre ingresado por el jugador.
+
+"""
 
 
 def pedir_nombre_jugador(juego):
@@ -163,6 +224,7 @@ def pedir_nombre_jugador(juego):
         pygame.display.update()
 
     return nombre
+
     # ---------------------------------------------------------
     """
     Muestra la pantalla final del juego y gestiona la respuesta del jugador.Este método muestra el fondo de pantalla de juego terminado y un mensaje para preguntar al jugador si desea jugar otra vez.
@@ -185,6 +247,7 @@ def mostrar_pantalla_final(juego):
     texto_pantalla_final_rect = texto_pantalla_final.get_rect(
         center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50))
     juego.pantalla.blit(texto_pantalla_final, texto_pantalla_final_rect)
+    juego.premio_ganado()
     pygame.display.update()
 
     # Mostrar premio ganado
@@ -223,6 +286,7 @@ def mostrar_pantalla_final(juego):
     Returns:
         None
     """
+
 # ---------------------------------------------------------
 
 
@@ -244,19 +308,6 @@ Args:
     Returns:
         None
 """
-
-
-# def mostrar_comodines(juego):
-#     texto_tiempo_extra = juego.font.render(
-#         "Comodín: Tiempo Extra", True, WHITE if not juego.used_hints["tiempo_extra"] else RED)
-#     texto_menos_votada = juego.font.render(
-#         "Comodín: Menos Votada", True, WHITE if not juego.used_hints["menos_votada"] else RED)
-#     texto_multiplicar_puntos = juego.font.render(
-#         "Comodín: Multiplicar Puntos", True, WHITE if not juego.used_hints["multiplicar_puntos"] else RED)
-
-#     juego.pantalla.blit(texto_tiempo_extra, (50, SCREEN_HEIGHT - 150))
-#     juego.pantalla.blit(texto_menos_votada, (50, SCREEN_HEIGHT - 100))
-#     juego.pantalla.blit(texto_multiplicar_puntos, (50, SCREEN_HEIGHT - 50))
 
 
 def mostrar_comodines(juego):
@@ -338,6 +389,12 @@ def mostrar_oportunidades(juego):
 
 
 # ---------------------------------------------------------
+"""
+Este método limpia la pantalla, muestra un mensaje de agradecimiento en el centro,
+    actualiza la pantalla para mostrar el mensaje, espera 3 segundos y luego cierra el juego.
+"""
+
+
 def mostrar_pantalla_agradecimiento(juego):
     juego.pantalla.fill(BLACK)
     texto_agradecimiento = juego.font.render(

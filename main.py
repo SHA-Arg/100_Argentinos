@@ -13,10 +13,12 @@ from Packages.inicializadores import *
 
 
 class Juego100ARG:
+
     def __init__(self):
         # Inicializa pygame y los componentes del juego
         inicializar_pygame()
-        self.audio_correcto, self.audio_incorrecto = cargar_sonidos()
+        self.audio_correcto, self.audio_incorrecto, self.audio_tiempo, self.audio_fondo = cargar_sonidos()
+
         self.pantalla = inicializar_pantalla()
         self.font = cargar_fuente()
         self.clock = pygame.time.Clock()
@@ -42,6 +44,7 @@ class Juego100ARG:
         self.resetear_juego()
 
 # ---------------------------------------------------------
+
 # Reinicia las variables del juego para comenzar una nueva partida
     def resetear_juego(self):
         self.oportunidades = 3
@@ -52,13 +55,32 @@ class Juego100ARG:
         self.respuestas_ingresadas = []
 
 # ---------------------------------------------------------
-# Selecciona una pregunta aleatoria del archivo de preguntas
+
+    """
+    Reinicia el estado del juego a sus valores iniciales.
+
+    Este método es útil para comenzar una nueva partida o reiniciar el juego
+    después de que haya terminado.
+
+    Atributos modificados:
+    - oportunidades (int): Reestablece las oportunidades a 3.
+    - tiempo_restante (int): Reinicia el tiempo restante al valor predeterminado 
+    - definido por la constante RESPONSE_TIME.
+    - bonus_multiplicar (int): Establece el multiplicador de bonificación a 1.
+    - contador_rondas (int): Reinicia el contador de rondas a 0.
+    - respuestas_ingresadas (list): Limpia la lista de respuestas ingresadas.
+
+    Acciones realizadas:
+    - Llama al método seleccionar_pregunta_aleatoriamente() para elegir una nueva pregunta al azar.
+    """
+
     def seleccionar_pregunta_aleatoriamente(self):
         self.pregunta_actual = random.choice(self.preguntas)
         self.tiempo_restante = RESPONSE_TIME
         self.respuestas_ingresadas = []
 
 # ---------------------------------------------------------
+
     """
     Calcula y muestra el premio ganado al finalizar el juego. Este método determina el premio basado en el puntaje final del jugador.
 
@@ -124,7 +146,29 @@ class Juego100ARG:
                         # Llamar a la función de agradecimiento
                         mostrar_pantalla_agradecimiento(juego)
                         esperando_respuesta = False
+
 # ---------------------------------------------------------
+
+    """
+    Carga el ranking desde un archivo CSV y lo muestra en pantalla.
+
+    Este método lee los datos de puntaje desde un archivo CSV, los ordena de mayor a menor
+    y muestra los 10 mejores puntajes en la pantalla del juego.
+
+    Atributos modificados:
+    - ruta_ranking (str): Ruta del archivo CSV que contiene el ranking.
+    - ranking (list): Lista que almacena los datos del ranking leídos del archivo.
+    - ranking_ordenado (list): Lista que almacena los datos del ranking ordenados por puntaje.
+
+    Acciones realizadas:
+    - Lee el archivo de ranking y almacena los datos en una lista.
+    - Ordena la lista de ranking por puntaje en orden descendente.
+    - Muestra el fondo de pantalla de "game over".
+    - Muestra los 10 mejores puntajes en la pantalla, con un desplazamiento vertical entre cada uno.
+
+    Excepciones manejadas:
+    - FileNotFoundError: Si el archivo de ranking no existe, se inicializa una lista vacía.
+    """
 
     def cargar_y_mostrar_ranking(self):
         ruta_ranking = "data/ranking.csv"
@@ -171,11 +215,8 @@ class Juego100ARG:
         texto_contador_rect.topleft = (SCREEN_WIDTH - 800, 50)
         self.pantalla.blit(texto_contador, texto_contador_rect)
 
-
 # ---------------------------------------------------------
 
-
-# ---------------------------------------------------------
     """
     Chequea la respuesta ingresada por el jugador y gestiona las acciones correspondientes. Este método verifica si la respuesta ingresada por el jugador está en las respuestas válidas para la pregunta actual
 
@@ -228,14 +269,37 @@ class Juego100ARG:
             self.respuestas_ingresadas = []
 
 # ---------------------------------------------------------
-# Limpia el campo de entrada de texto
+
+    """
+    Limpia el campo de entrada de respuesta del usuario.
+
+    Este método establece la variable `input_respuesta` a una cadena vacía, 
+    reiniciando así cualquier respuesta previamente ingresada.
+
+    Atributos modificados:
+    - input_respuesta (str): Campo de entrada de respuesta del usuario.
+    """
+
     def limpiar_input_respuesta(self):
         self.input_respuesta = ""
 
 # ---------------------------------------------------------
+
+    """
+    Limpia la lista de respuestas ingresadas por el usuario.
+
+    Este método establece la variable `respuestas_ingresadas` a una lista vacía,
+    eliminando todas las respuestas que se han ingresado previamente.
+
+    Atributos modificados:
+    - respuestas_ingresadas (list): Lista de respuestas ingresadas por el usuario.
+    """
+
     def limpiar_respuestas_ingresadas(self):
         self.respuestas_ingresadas = []
-# # ---------------------------------------------------------
+
+# ---------------------------------------------------------
+
     """
     Usa el comodín seleccionado durante el juego, permite al jugador usar diferentes comodines según el tipo especificado
     Args:
@@ -261,6 +325,7 @@ class Juego100ARG:
             self.used_hints[tipo] = True
 
 # ---------------------------------------------------------
+
     """
     Chequea si el juego ha llegado a su fin y realiza las acciones finales correspondientes.
     Args:
@@ -278,6 +343,7 @@ class Juego100ARG:
             self.resetear_juego()
 
 # ---------------------------------------------------------
+
     """
     Maneja los eventos del juego como presionar teclas o clics de ratón.
 
@@ -311,7 +377,31 @@ class Juego100ARG:
                 self.usar_comodin("multiplicar_puntos")
 
 # ---------------------------------------------------------
-# Verifica el estado del juego (ganar, perder, continuar)
+
+    """
+    Este método evalúa diferentes condiciones para decidir si el juego debe terminar
+    o si se ha ganado un premio. También maneja la visualización de una imagen y
+    el reinicio del juego en caso de que se hayan agotado las oportunidades del jugador.
+
+    Retorna:
+    - bool: True si el juego ha terminado o se ha ganado un premio, False en caso contrario.
+
+    Condiciones verificadas:
+    - Si el puntaje es mayor o igual a 500, se llama al método premio_ganado() y se retorna True.
+    - Si el número de rondas jugadas es mayor o igual al máximo de rondas permitidas, se llama
+    - al método premio_ganado() y se retorna True.
+    - Si las oportunidades se han agotado:
+        - Muestra una imagen de cruz roja en la pantalla.
+        - Actualiza la pantalla y espera 2 segundos.
+        - Reinicia el juego llamando al método resetear_juego().
+        - Incrementa el contador de rondas jugadas.
+        - Si el número de rondas jugadas es mayor o igual al máximo de rondas permitidas,
+        - se llama al método premio_ganado() y se retorna True.
+
+    Atributos modificados:
+    - rondas_jugadas (int): Incrementa el contador de rondas jugadas si las oportunidades se han agotado.
+    """
+
     def verificar_estado_juego(self):
         if self.puntaje >= 500:
             self.premio_ganado()
@@ -332,6 +422,7 @@ class Juego100ARG:
         return False
 
 # ---------------------------------------------------------
+
     """
     Actualiza el reloj del juego y gestiona las acciones correspondientes cuando se agota el tiempo.
 
@@ -355,7 +446,6 @@ class Juego100ARG:
             pygame.time.wait(1000)
             self.resetear_juego()
 
-
 # ---------------------------------------------------------
     """
     Ejecuta el bucle principal del juego,donde se actualizan y muestran en pantalla todos los elementos del juego
@@ -370,6 +460,7 @@ class Juego100ARG:
     def ejecutar(self):
         while True:
             self.pantalla.blit(self.fondo_preguntas, (0, 0))
+            self.audio_fondo.play()
             mostrar_pregunta(self)
             mostrar_reloj(self)
             mostrar_input(self)
@@ -395,11 +486,13 @@ class Juego100ARG:
             pygame.display.update()
             self.clock.tick(FPS)
 
+
 # ---------------------------------------------------------
 
 
 if __name__ == "__main__":
     juego = Juego100ARG()
     juego.ejecutar()
+
 
 # ---------------------------------------------------------

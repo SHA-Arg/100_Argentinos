@@ -2,15 +2,46 @@ import pygame
 from .config import *
 from .utils import *
 
+# ----------------------------------------------------
+"""
+Esta función debe ser llamada al inicio del programa para inicializar
+    todas las funcionalidades de Pygame necesarias para el juego.
+"""
+
 
 def inicializar_pygame():
     pygame.init()
 
 
+# ----------------------------------------------------
+"""
+
+    Esta función carga y devuelve dos objetos de sonido: uno para el efecto de sonido
+    de respuesta correcta y otro para el efecto de sonido de respuesta incorrecta.
+
+    Retorna:
+    - audio_correcto: Objeto de sonido para el efecto de respuesta correcta.
+    - audio_incorrecto: Objeto de sonido para el efecto de respuesta incorrecta.
+"""
+
+
 def cargar_sonidos():
     audio_correcto = pygame.mixer.Sound("assets/sounds/correcto.mp3")
     audio_incorrecto = pygame.mixer.Sound("assets/sounds/error.mp3")
-    return audio_correcto, audio_incorrecto
+    audio_tiempo = pygame.mixer.Sound("assets/sounds/ClockTicking.mp3")
+    audio_fondo = pygame.mixer.Sound(
+        "assets/sounds/CORTINAMUSICAL100ARGDICEN.mp3")
+    return audio_correcto, audio_incorrecto, audio_tiempo, audio_fondo
+
+
+# ----------------------------------------------------
+"""
+Esta función configura la pantalla del juego con las dimensiones especificadas
+    y establece el título de la ventana.
+
+    Retorna:
+    - pantalla: La superficie de la pantalla inicializada para el juego.
+"""
 
 
 def inicializar_pantalla():
@@ -19,8 +50,29 @@ def inicializar_pantalla():
     return pantalla
 
 
+# ----------------------------------------------------
+"""
+Carga la fuente utilizada para renderizar texto en el juego.
+
+    Retorna:
+    - pygame.font.Font: Objeto de fuente cargado desde el archivo especificado.
+"""
+
+
 def cargar_fuente():
     return pygame.font.Font(FONT_PATH1, FONT_SIZE)
+
+
+# ----------------------------------------------------
+"""
+sta función carga varias imágenes necesarias para diferentes fondos y elementos del juego.
+
+    Retorna:
+    - fondo_menu: Imagen de fondo para el menú principal del juego.
+    - fondo_preguntas: Imagen de fondo para la pantalla de juego de preguntas.
+    - fondo_game_over: Imagen de fondo para la pantalla de juego terminado.
+    - cruz_roja_gif: Imagen animada de una cruz roja utilizada en el juego.
+"""
 
 
 def cargar_imagenes():
@@ -34,13 +86,23 @@ def cargar_imagenes():
     return fondo_menu, fondo_preguntas, fondo_game_over, cruz_roja_gif
 
 
+# ----------------------------------------------------
+"""
+Esta función devuelve un diccionario con las variables iniciales necesarias para
+    iniciar el juego, como el texto de entrada, puntaje, rondas jugadas, etc.
+
+    Retorna:
+    - dict: Diccionario con las variables iniciales del juego.
+"""
+
+
 def inicializar_variables():
     return {
         'input_respuesta': "",
         'puntaje': 0,
         'contador_rondas': 0,
         'rondas_jugadas': 0,
-        'max_rondas': 3,
+        'max_rondas': 1,
         'comodin_usado': False,
         'oportunidades': 3,
         'preguntas': cargar_archivo_json("json\preguntas.json"),

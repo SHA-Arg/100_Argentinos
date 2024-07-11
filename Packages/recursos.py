@@ -24,9 +24,9 @@ fondo_instrucciones = pygame.transform.scale(
     fondo_instrucciones, (SCREEN_WIDTH, SCREEN_HEIGHT))
 fondo_instrucciones.fill(BLUE)
 
+
+# ------------------------------------------------------------
 # Función para escribir texto
-
-
 def escribir_texto(texto, fuente, color, superficie, x, y):
     texto_obj = fuente.render(texto, True, color)
     texto_rect = texto_obj.get_rect()
