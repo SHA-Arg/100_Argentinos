@@ -91,16 +91,13 @@ def escribir_texto(text, font, color, surface, x, y):
 # ---------------------------------------------------------
 
 """
-with open('data/ranking.csv', 'a', newline='') as file:  # Abre el archivo CSV en modo de añadir
-            writer = csv.writer(file)  # Crea un objeto escritor para el archivo CSV
-            writer.writerow([self.puntaje])
+
 """
 
 
 def guardar_puntaje(nombre_jugador, puntaje):
-    with open('ranking.csv', 'a', newline='') as file:
+    with open('data/ranking.csv', 'a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([nombre_jugador, puntaje])
-
 
 # ---------------------------------------------------------

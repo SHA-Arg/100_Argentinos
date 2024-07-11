@@ -18,18 +18,19 @@ def mostrar_input(juego):
 # ---------------------------------------------------------
 
 
-def mostrar_ranking(juego):
-    with open('ranking.csv', 'r') as file:
+def mostrar_ranking(self):
+    with open('data/ranking.csv', 'r') as file:
         reader = csv.reader(file)
-        ranking = ordenar_ranking(list(reader))
-    y_offset = 100
-    for i, row in enumerate(ranking):
-        texto_ranking = juego.font.render(
-            f"{i+1}. {row[0]} puntos", True, WHITE)
-        texto_ranking_rect = texto_ranking.get_rect()
-        texto_ranking_rect.topleft = (50, y_offset)
-        juego.pantalla.blit(texto_ranking, texto_ranking_rect)
-        y_offset += 40
+        ranking = ordenar_respuestas(reader)
+        y_offset = 100
+        for i, row in enumerate(ranking):
+            texto_ranking = self.font.render(
+                f"{i+1}. {row[0]} puntos", True, WHITE)
+            texto_ranking_rect = texto_ranking.get_rect()
+            texto_ranking_rect.topleft = (50, y_offset)
+            self.pantalla.blit(texto_ranking, texto_ranking_rect)
+            y_offset += 40
+
 
 # ---------------------------------------------------------
     """
@@ -117,6 +118,43 @@ def mostrar_respuestas_ingresadas(juego):
         y_offset += 50
 
     # ---------------------------------------------------------
+
+
+def pedir_nombre_jugador(self):
+    nombre_jugador = ""
+    pedir_nombre_text = self.font.render("Ingresa tu nombre:", True, WHITE)
+    pedir_nombre_rect = pedir_nombre_text.get_rect(
+        center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50))
+
+    input_rect = pygame.Rect(
+        SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2, 200, 50)
+    activo = True
+
+    while activo:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                return
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    activo = False
+                elif event.key == pygame.K_BACKSPACE:
+                    nombre_jugador = nombre_jugador[:-1]
+                else:
+                    nombre_jugador += event.unicode
+
+        self.pantalla.blit(self.fondo_game_over, (0, 0))
+        self.pantalla.blit(pedir_nombre_text, pedir_nombre_rect)
+
+        pygame.draw.rect(self.pantalla, WHITE, input_rect, 2)
+        nombre_surface = self.font.render(nombre_jugador, True, WHITE)
+        self.pantalla.blit(
+            nombre_surface, (input_rect.x + 5, input_rect.y + 5))
+        input_rect.w = max(200, nombre_surface.get_width() + 10)
+
+        pygame.display.flip()
+
+    return nombre_jugador
     # ---------------------------------------------------------
     """
     Muestra la pantalla final del juego y gestiona la respuesta del jugador.Este método muestra el fondo de pantalla de juego terminado y un mensaje para preguntar al jugador si desea jugar otra vez.
@@ -127,42 +165,33 @@ def mostrar_respuestas_ingresadas(juego):
     Returns:
         None
     """
-# ---------------------------------------------------------
 
-
-# def mostrar_pantalla_final(juego):
-#     juego.pantalla.blit(juego.fondo_game_over, (0, 0))
-#     juego.premio_ganado()
-#     pygame.display.update()
-
-#     esperando_respuesta = True
-#     while esperando_respuesta:
-#         for event in pygame.event.get():
-#             if event.type == pygame.KEYDOWN:
-#                 if event.key == pygame.K_s:
-#                     juego.rondas_jugadas = 0
-#                     juego.resetear_juego()
-#                     esperando_respuesta = False
-#                 elif event.key == pygame.K_n:
-#                     pygame.quit()
-
-#                     return
 
 def mostrar_pantalla_final(juego):
+    # Mostrar fondo de pantalla final
     juego.pantalla.blit(juego.fondo_game_over, (0, 0))
+
+    # Mostrar texto de juego terminado y preguntar si desea jugar otra vez
     texto_pantalla_final = juego.font.render(
         "¡Juego terminado! ¿Deseas jugar otra vez? (S/N)", True, WHITE)
     texto_pantalla_final_rect = texto_pantalla_final.get_rect(
-        center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50))
     juego.pantalla.blit(texto_pantalla_final, texto_pantalla_final_rect)
     pygame.display.update()
 
+    # Mostrar premio ganado
+    juego.premio_ganado()
+
     # Pedir nombre del jugador
-    nombre_jugador = juego.pedir_nombre_jugador()
+    nombre_jugador = pedir_nombre_jugador(juego)
 
     # Guardar puntaje
-    guardar_puntaje(nombre_jugador, juego.puntaje)
+    guardar_puntaje(nombre_jugador, sum(juego.puntajes_acumulados))
 
+    # Actualizar la pantalla después de mostrar el premio y pedir el nombre
+    pygame.display.update()
+
+    # Preguntar si desea jugar otra vez
     esperando_respuesta = True
     while esperando_respuesta:
         for event in pygame.event.get():

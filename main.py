@@ -83,26 +83,32 @@ class Juego100ARG:
             self.puntajes_acumulados.append(pozo_acumulado)
             mensaje = f" Usted ganó  ${pozo_acumulado}"
 
-        volver_a_jugar = f"\n¿Desea volver a jugar? (S/N)"
-        mensaje += "\n" + volver_a_jugar
+        # Dividir el mensaje en líneas
+        lineas = mensaje.split("\n")
 
         # Posición inicial del texto
         x, y = 350, 320
 
-        texto_premio = self.font.render(linea, True, WHITE)
-        texto_premio_rect = texto_premio.get_rect(topleft=(x, y))
-        self.pantalla.blit(texto_premio, texto_premio_rect)
-        # Ajustar la posición Y para la siguiente línea
-        y += texto_premio.get_height() + 5
+        for linea in lineas:
+            texto_premio = self.font.render(linea, True, WHITE)
+            texto_premio_rect = texto_premio.get_rect(topleft=(x, y))
+            self.pantalla.blit(texto_premio, texto_premio_rect)
+            # Ajustar la posición Y para la siguiente línea
+            y += texto_premio.get_height() + 5
+
         pygame.display.flip()  # Actualizar la pantalla
 
-        # Se renderiza, posiciona y muestra el mensaje en pantalla|
-        x_volver, y_volver = 350, 400
-        volver_a_jugar = self.font.render(linea, True, WHITE)
-        texto_volver_a_jugar_rect = volver_a_jugar.get_rect(
-            topleft=(x_volver, y_volver))
-        self.pantalla.blit(volver_a_jugar, texto_volver_a_jugar_rect)
-
+        esperando_respuesta = True
+        while esperando_respuesta:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        self.rondas_jugadas = 0
+                        self.resetear_juego()
+                        esperando_respuesta = False
+                    elif event.key == pygame.K_n:
+                        pygame.quit()
+                        return
 
 # ---------------------------------------------------------
     """
@@ -122,42 +128,6 @@ class Juego100ARG:
     #     self.pantalla.blit(texto_contador, texto_contador_rect)
 
 # ---------------------------------------------------------
-    def pedir_nombre_jugador(self):
-        nombre_jugador = ""
-        pedir_nombre_text = self.font.render("Ingresa tu nombre:", True, WHITE)
-        pedir_nombre_rect = pedir_nombre_text.get_rect(
-            center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50))
-
-        input_rect = pygame.Rect(SCREEN_WIDTH // 2 - 100,
-                                 SCREEN_HEIGHT // 2, 200, 50)
-        activo = True
-
-        while activo:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    return
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_RETURN:
-                        activo = False
-                    elif event.key == pygame.K_BACKSPACE:
-                        nombre_jugador = nombre_jugador[:-1]
-                    else:
-                        nombre_jugador += event.unicode
-
-            self.pantalla.blit(self.fondo_game_over, (0, 0))
-            self.pantalla.blit(pedir_nombre_text, pedir_nombre_rect)
-
-            # Actualizar rectángulo de entrada
-            pygame.draw.rect(self.pantalla, WHITE, input_rect, 2)
-            nombre_surface = self.font.render(nombre_jugador, True, WHITE)
-            self.pantalla.blit(
-                nombre_surface, (input_rect.x + 5, input_rect.y + 5))
-            input_rect.w = max(200, nombre_surface.get_width() + 10)
-
-            pygame.display.flip()
-
-        return nombre_jugador
 
 
 # ---------------------------------------------------------
