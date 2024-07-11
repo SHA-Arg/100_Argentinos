@@ -101,3 +101,23 @@ def guardar_puntaje(nombre_jugador, puntaje):
         writer.writerow([nombre_jugador, puntaje])
 
 # ---------------------------------------------------------
+
+# ---------------------------------------------------------
+
+
+"""
+Carga el ranking desde un archivo CSV y lo muestra en pantalla.
+Este método lee los datos de puntaje desde un archivo CSV, los ordena de mayor a menor
+y muestra los 10 mejores puntajes en la pantalla del juego.
+Atributos modificados:
+- ruta_ranking (str): Ruta del archivo CSV que contiene el ranking.
+- ranking (list): Lista que almacena los datos del ranking leídos del archivo.
+- ranking_ordenado (list): Lista que almacena los datos del ranking ordenados por puntaje.
+Acciones realizadas:
+- Lee el archivo de ranking y almacena los datos en una lista.
+- Ordena la lista de ranking por puntaje en orden descendente.
+- Muestra el fondo de pantalla de "game over".
+- Muestra los 10 mejores puntajes en la pantalla, con un desplazamiento vertical entre cada uno.
+Excepciones manejadas:
+- FileNotFoundError: Si el archivo de ranking no existe, se inicializa una lista vacía.
+"""

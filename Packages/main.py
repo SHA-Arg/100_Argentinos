@@ -1,6 +1,5 @@
 import random
 import pygame
-import csv
 import sys
 from .config import *
 from .utils import *
@@ -91,95 +90,9 @@ class Juego100ARG:
     """
 
     def premio_ganado(self):
-        pozo_acumulado = 0
-        # Asegurarse de que se esté trabajando con el total
-        total_puntajes_acumulados = sum(self.puntajes_acumulados)
-
-        if total_puntajes_acumulados == 500:
-            self.premio = 1000000
-            mensaje = f"Usted ganó el gran premio de ${self.premio}"
-        elif total_puntajes_acumulados == 0:
-            mensaje = f" Usted ha perdido, no ganó nada! ${pozo_acumulado}\n"
-        else:
-            pozo_acumulado = total_puntajes_acumulados * 500
-            self.puntajes_acumulados.append(pozo_acumulado)
-            mensaje = f" Usted ganó  ${pozo_acumulado}"
-
-        # Dividir el mensaje en líneas
-        lineas = mensaje.split("\n")
-
-        # Posición inicial del texto
-        x, y = 350, 320
-
-        for linea in lineas:
-            texto_premio = self.font.render(linea, True, WHITE)
-            texto_premio_rect = texto_premio.get_rect(topleft=(x, y))
-            self.pantalla.blit(texto_premio, texto_premio_rect)
-            # Ajustar la posición Y para la siguiente línea
-            y += texto_premio.get_height() + 5
-
-        pygame.display.flip()  # Actualizar la pantalla
-
-        # Pedir nombre del jugador y guardar puntaje
-        nombre_jugador = pedir_nombre_jugador(self)
-        guardar_puntaje(nombre_jugador, sum(self.puntajes_acumulados))
-
-        # Mostrar el ranking
-        self.cargar_y_mostrar_ranking()
 
         pygame.display.update()
 
-
-# ---------------------------------------------------------
-
-    """
-    Carga el ranking desde un archivo CSV y lo muestra en pantalla.
-
-    Este método lee los datos de puntaje desde un archivo CSV, los ordena de mayor a menor
-    y muestra los 10 mejores puntajes en la pantalla del juego.
-
-    Atributos modificados:
-    - ruta_ranking (str): Ruta del archivo CSV que contiene el ranking.
-    - ranking (list): Lista que almacena los datos del ranking leídos del archivo.
-    - ranking_ordenado (list): Lista que almacena los datos del ranking ordenados por puntaje.
-
-    Acciones realizadas:
-    - Lee el archivo de ranking y almacena los datos en una lista.
-    - Ordena la lista de ranking por puntaje en orden descendente.
-    - Muestra el fondo de pantalla de "game over".
-    - Muestra los 10 mejores puntajes en la pantalla, con un desplazamiento vertical entre cada uno.
-
-    Excepciones manejadas:
-    - FileNotFoundError: Si el archivo de ranking no existe, se inicializa una lista vacía.
-    """
-
-    def cargar_y_mostrar_ranking(self):
-        ruta_ranking = "data/ranking.csv"
-        ranking = []
-
-        # Leer el archivo de ranking
-        try:
-            with open(ruta_ranking, mode='r') as file:
-                reader = csv.reader(file)
-                ranking = list(reader)
-        except FileNotFoundError:
-            ranking = []
-
-        # Ordenar el ranking por puntaje (de mayor a menor)
-        ranking_ordenado = sorted(
-            ranking, key=lambda x: int(x[1]), reverse=True)
-
-        # Mostrar el ranking en pantalla
-        self.pantalla.blit(self.fondo_game_over, (0, 0))
-        y_offset = 50
-        # Mostrar solo los 10 mejores
-        for nombre, puntaje in ranking_ordenado[:10]:
-            texto_ranking = self.font.render(
-                f"{nombre}: {puntaje}", True, WHITE)
-            self.pantalla.blit(texto_ranking, (50, y_offset))
-            y_offset += 30
-
-        pygame.display.update()
 
 # ---------------------------------------------------------
     """
@@ -386,24 +299,24 @@ class Juego100ARG:
     - rondas_jugadas (int): Incrementa el contador de rondas jugadas si las oportunidades se han agotado.
     """
 
-    def verificar_estado_juego(self):
-        if self.puntaje >= 500:
-            self.premio_ganado()
-            return True
-        elif self.rondas_jugadas >= self.max_rondas:
-            self.premio_ganado()
-            return True
-        elif self.oportunidades <= 0:
-            self.pantalla.blit(
-                self.cruz_roja_gif, (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 - 50))
-            pygame.display.flip()
-            pygame.time.wait(2000)
-            self.resetear_juego()
-            self.rondas_jugadas += 1
-            if self.rondas_jugadas >= self.max_rondas:
-                self.premio_ganado()
-                return True
-        return False
+    # def verificar_estado_juego(self):
+    #     if self.puntaje >= 500:
+    #         self.premio_ganado()
+    #         return True
+    #     elif self.rondas_jugadas >= self.max_rondas:
+    #         self.premio_ganado()
+    #         return True
+    #     elif self.oportunidades <= 0:
+    #         self.pantalla.blit(
+    #             self.cruz_roja_gif, (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 - 50))
+    #         pygame.display.flip()
+    #         pygame.time.wait(2000)
+    #         self.resetear_juego()
+    #         self.rondas_jugadas += 1
+    #         if self.rondas_jugadas >= self.max_rondas:
+    #             self.premio_ganado()
+    #             return True
+    #     return False
 
 # ---------------------------------------------------------
 
@@ -424,7 +337,7 @@ class Juego100ARG:
             self.tiempo_restante = RESPONSE_TIME
             if self.oportunidades > 0:
                 self.seleccionar_pregunta_aleatoriamente()
-                mostrar_pregunta(juego)
+                mostrar_pregunta(self)
 
         if self.oportunidades == 0:
             pygame.time.wait(1000)

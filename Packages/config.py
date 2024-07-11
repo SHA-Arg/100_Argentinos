@@ -20,7 +20,7 @@ RADIUS_Time = 30
 RADIUS_Puntaje = 60
 
 # Tiempo de respuesta
-RESPONSE_TIME = 30
+RESPONSE_TIME = 10
 # en segundos
 
 # Puntuación necesaria para ganar el premio mayor

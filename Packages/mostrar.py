@@ -5,7 +5,7 @@ from .config import *
 from .ordenamiento import *
 from .utils import *
 from .inicializadores import *
-
+from .main import *
 """
     Muestra el campo de entrada de texto en la pantalla del juego.
 
@@ -98,7 +98,7 @@ def mostrar_pregunta(juego):
 
 
 def mostrar_reloj(juego):
-    cargar_sonidos()
+
     texto_reloj = juego.font.render(
         f"{int(juego.tiempo_restante)}s", True, WHITE)
     texto_reloj_rect = texto_reloj.get_rect()
@@ -112,10 +112,9 @@ def mostrar_reloj(juego):
     juego.pantalla.blit(texto_reloj, texto_reloj_rect)
 
     if juego.tiempo_restante <= 5:
+
         pygame.draw.circle(juego.pantalla, RED,
                            circle_center, RADIUS_Time, WIDTH)
-        sonido = pygame.mixer.Sound("assets/sounds/ClockTicking.mp3")
-        sonido.play()
 
 
 # ---------------------------------------------------------
@@ -177,17 +176,16 @@ def pedir_nombre_jugador(juego):
                     nombre = nombre[:-1]
                 else:
                     nombre += event.unicode
-    # Limpiar la pantalla antes de dibujar el nuevo texto
-    juego.pantalla.blit(juego.fondo_game_over, (0, 0))
-    # Mostrar el nombre que se está ingresando
-    texto_ingreso_nombre = juego.font.render(
-        "Ingrese su nombre: " + nombre, True, WHITE)
-    texto_ingreso_nombre_rect = texto_ingreso_nombre.get_rect(
-        center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50))
-    juego.pantalla.blit(texto_ingreso_nombre, texto_ingreso_nombre_rect)
 
-    pygame.display.update()
-
+        # Renderizar y mostrar el nombre ingresado
+        juego.pantalla.blit(juego.fondo_game_over, (0, 0))
+        texto_pedir_nombre = juego.font.render(
+            "Ingrese su nombre:", True, WHITE)
+        texto_nombre = juego.font.render(nombre, True, WHITE)
+        juego.pantalla.blit(texto_pedir_nombre, (50, SCREEN_HEIGHT // 2 - 50))
+        juego.pantalla.blit(texto_nombre, (50, SCREEN_HEIGHT // 2))
+        pygame.display.flip()
+        pygame.display.update()
     return nombre
 
 
@@ -210,9 +208,9 @@ def mostrar_ranking(juego):
     with open('data/ranking.csv', 'r') as file:
         reader = csv.reader(file)
 
-        ranking = sorted(reader, key=lambda x: int(x[1]), reverse=True)
+        # ranking = sorted(reader, key=lambda x: int(x[1]), reverse=True)
+        ranking = ordenar_ranking(list(reader))
 
-        # ranking = ordenar_ranking(list(reader))
         y_offset = 100
         for i, row in enumerate(ranking):
             texto_ranking = juego.font.render(
@@ -240,36 +238,50 @@ def mostrar_pantalla_final(juego):
     # Mostrar fondo de pantalla final
     juego.pantalla.blit(juego.fondo_game_over, (0, 0))
 
-    # Mostrar texto de puntaje final
-    total_puntaje = sum(juego.puntajes_acumulados)
-    # Mostrar texto de juego terminado y preguntar si desea jugar otra vez
-    texto_pantalla_final = juego.font.render(
-        f"Puntaje: {total_puntaje}", True, WHITE)
-    texto_pantalla_final_rect = texto_pantalla_final.get_rect(
-        center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50))
-    juego.pantalla.blit(texto_pantalla_final, texto_pantalla_final_rect)
-    pygame.display.update()
+    # Calcular puntaje total
+    pozo_acumulado = 0
+    mensaje = ""
+    # Asegurarse de que se esté trabajando con el total
+    total_puntajes_acumulados = sum(juego.puntajes_acumulados)
+
+    if total_puntajes_acumulados == 500:
+        juego.premio = 1000000
+        mensaje = f"Usted ganó el gran premio de ${juego.premio}"
+
+    elif total_puntajes_acumulados == 0:
+        mensaje = f" Usted ha perdido, no ganó nada! ${pozo_acumulado}\n"
+
+    else:
+        pozo_acumulado = total_puntajes_acumulados * 500
+        mensaje = f" Usted ganó  ${pozo_acumulado}"
+
+        juego.pantalla.blit(juego.fondo_game_over, (0, 0))
 
     # Pedir nombre del jugador
     nombre_jugador = pedir_nombre_jugador(juego)
 
     # Guardar puntaje
-    guardar_puntaje(nombre_jugador, sum(juego.puntajes_acumulados))
-
+    guardar_puntaje(nombre_jugador, mensaje)
+    pygame.display.flip()
     # Mostrar ranking actualizado
     mostrar_ranking(juego)
-    pygame.display.update()
 
+    pygame.display.flip()
+    texto_pantalla_final = juego.font.render(
+        "¡Juego terminado! ¿Deseas jugar otra vez? (S/N)", True, WHITE)
+    texto_pantalla_final_rect = texto_pantalla_final.get_rect()
+    texto_pantalla_final_rect.topleft = (50, 50)
+    juego.pantalla.blit(texto_pantalla_final, texto_pantalla_final_rect)
     # Preguntar si desea jugar otra vez
     esperando_respuesta = True
     while esperando_respuesta:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
-                    juego.rondas_jugadas = 0
                     juego.resetear_juego()
                     esperando_respuesta = False
                 elif event.key == pygame.K_n:
+                    mostrar_pantalla_agradecimiento(juego)
                     pygame.quit()
                     sys.exit()
         pygame.display.update()
@@ -289,10 +301,10 @@ def mostrar_pantalla_final(juego):
 # ---------------------------------------------------------
 
 
-def mostrar_animacion_cruz(self):
-    cruz_rect = self.cruz_roja_gif.get_rect()
+def mostrar_animacion_cruz(juego):
+    cruz_rect = juego.cruz_roja_gif.get_rect()
     cruz_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
-    self.pantalla.blit(self.cruz_roja_gif, cruz_rect)
+    juego.pantalla.blit(juego.cruz_roja_gif, cruz_rect)
     pygame.display.update()
     pygame.time.delay(1000)
 
@@ -395,7 +407,6 @@ Este método limpia la pantalla, muestra un mensaje de agradecimiento en el cent
 
 
 def mostrar_pantalla_agradecimiento(juego):
-    juego.pantalla.blit(juego.fondo, (0, 0))
     texto_agradecimiento = juego.font.render(
         "Gracias por jugar. ¡Hasta la próxima!", True, WHITE)
     texto_agradecimiento_rect = texto_agradecimiento.get_rect(
@@ -403,7 +414,5 @@ def mostrar_pantalla_agradecimiento(juego):
     juego.pantalla.blit(texto_agradecimiento, texto_agradecimiento_rect)
     pygame.display.update()
     pygame.time.wait(3000)
-    pygame.quit()
-    sys.exit()
 
 # ---------------------------------------------------------
