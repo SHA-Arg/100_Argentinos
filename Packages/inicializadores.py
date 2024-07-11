@@ -40,7 +40,7 @@ def inicializar_variables():
         'puntaje': 0,
         'contador_rondas': 0,
         'rondas_jugadas': 0,
-        'max_rondas': 5,
+        'max_rondas': 1,
         'comodin_usado': False,
         'oportunidades': 3,
         'preguntas': cargar_archivo_json("json\preguntas.json"),

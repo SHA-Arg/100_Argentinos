@@ -6,7 +6,7 @@ from Packages.config import *
 from Packages.utils import *
 from Packages.ordenamiento import *
 from Packages.recursos import *
-from Packages.motrar import *
+from Packages.mostrar import *
 from Packages.inicializadores import *
 
 # ---------------------------------------------------------
@@ -22,7 +22,6 @@ class Juego100ARG:
         self.clock = pygame.time.Clock()
         (self.fondo_menu, self.fondo_preguntas,
          self.fondo_game_over, self.cruz_roja_gif) = cargar_imagenes()
-
         variables = inicializar_variables()
         self.input_respuesta = variables['input_respuesta']
         self.puntaje = variables['puntaje']
@@ -40,7 +39,6 @@ class Juego100ARG:
 # ---------------------------------------------------------
 # Reinicia las variables del juego para comenzar una nueva partida
     def resetear_juego(self):
-        self.puntaje = 0
         self.oportunidades = 3
         self.tiempo_restante = RESPONSE_TIME
         self.bonus_multiplicar = 1
@@ -72,92 +70,39 @@ class Juego100ARG:
 
     def premio_ganado(self):
         pozo_acumulado = 0
-        if self.puntaje >= 500:
+        # Asegurarse de que se esté trabajando con el total
+        total_puntajes_acumulados = sum(self.puntajes_acumulados)
+
+        if total_puntajes_acumulados == 500:
             self.premio = 1000000
-            mensaje = f"Usted ganó el gran premio\n de\n ${self.premio}"
-        elif self.puntaje > 0 and self.puntaje < 500:
-            pozo_acumulado = self.puntaje * 500
+            mensaje = f"Usted ganó el gran premio de ${self.premio}"
+        elif total_puntajes_acumulados == 0:
+            mensaje = f" Usted ha perdido, no ganó nada! ${pozo_acumulado}\n"
+        else:
+            pozo_acumulado = total_puntajes_acumulados * 500
             self.puntajes_acumulados.append(pozo_acumulado)
-            mensaje = f" Usted ganó \n ${pozo_acumulado}"
-        elif self.puntaje == 0:
-            mensaje = f" Usted ha perdido,\n no ganó nada! ${pozo_acumulado}\n"
+            mensaje = f" Usted ganó  ${pozo_acumulado}"
 
         volver_a_jugar = f"\n¿Desea volver a jugar? (S/N)"
         mensaje += "\n" + volver_a_jugar
 
-        self.pantalla.blit(self.fondo_game_over, (0, 0))
-
-        # Dividir el mensaje en líneas
-        lineas = mensaje.split('\n')
-
         # Posición inicial del texto
-        x, y = 300, 350
+        x, y = 350, 320
 
-        # Renderizar y dibujar cada línea de texto
-        for linea in lineas:
-            texto_premio = self.font.render(linea, True, WHITE)
-            texto_premio_rect = texto_premio.get_rect(topleft=(x, y))
-            self.pantalla.blit(texto_premio, texto_premio_rect)
-            # Ajustar la posición Y para la siguiente línea
-            y += texto_premio.get_height() + 5
-        pygame.display.flip()  # Actualizar la pantalla
-
-        # Guardar el puntaje en el archivo CSV
-        with open('data/ranking.csv', 'a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow([self.puntaje])
-
-        pygame.display.update()
-        # Mostrar el mensaje en pantalla
-        self.pantalla.blit(self.fondo_game_over, (0, 0))
-        texto_premio = self.font.render(mensaje, True, WHITE)
-        texto_premio_rect = texto_premio.get_rect(
-            center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        texto_premio = self.font.render(linea, True, WHITE)
+        texto_premio_rect = texto_premio.get_rect(topleft=(x, y))
         self.pantalla.blit(texto_premio, texto_premio_rect)
-        pygame.display.update()
-    '''
-def premio_ganado(self):
-        pozo_acumulado = 0
-        if self.puntaje == 500:
-            self.premio = 1000000
-            mensaje = f"Usted gano el gran premio\n de\n ${self.premio}"
-        elif self.puntaje > 0 and self.puntaje < 500:
-            pozo_acumulado = self.puntaje * 500
-            self.puntajes_acumulados.append(pozo_acumulado)
-            mensaje = f" Usted gano \n ${pozo_acumulado}"
-        elif self.puntaje == 0:
-            mensaje = f" Usted a perdido,\n no gano nada! ${
-                pozo_acumulado}\n"
-
-        volver_a_jugar = f"\n¿Desea volver a jugar? (S/N)"
-        mensaje += "\n" + volver_a_jugar
-
-        self.pantalla.blit(self.fondo_game_over, (0, 0))
-
-        # Dividir el mensaje en líneas
-        lineas = mensaje.split('\n')
-
-        # Posición inicial del texto
-        x, y = 300, 350
-
-        # Renderizar y dibujar cada línea de texto
-        for linea in lineas:
-            texto_premio = self.font.render(linea, True, WHITE)
-            texto_premio_rect = texto_premio.get_rect(topleft=(x, y))
-            self.pantalla.blit(texto_premio, texto_premio_rect)
-            # Ajustar la posición Y para la siguiente línea
-            y += texto_premio.get_height() + 5
+        # Ajustar la posición Y para la siguiente línea
+        y += texto_premio.get_height() + 5
         pygame.display.flip()  # Actualizar la pantalla
 
-        # Guardar el puntaje en el archivo CSV
-        with open('data\ranking.csv', 'a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow([self.puntaje])
+        # Se renderiza, posiciona y muestra el mensaje en pantalla|
+        x_volver, y_volver = 350, 400
+        volver_a_jugar = self.font.render(linea, True, WHITE)
+        texto_volver_a_jugar_rect = volver_a_jugar.get_rect(
+            topleft=(x_volver, y_volver))
+        self.pantalla.blit(volver_a_jugar, texto_volver_a_jugar_rect)
 
-        # Mostrar el mensaje en pantalla
-
-        pygame.display.update()
-    '''
 
 # ---------------------------------------------------------
     """
@@ -169,37 +114,51 @@ def premio_ganado(self):
         None
     """
 
-    def contador_rondas(self):
-        texto_contador = self.font.render(
-            f"Ronda: {self.contador_rondas}", True, WHITE)
-        texto_contador_rect = texto_contador.get_rect()
-        texto_contador_rect.topleft = (SCREEN_WIDTH - 800, 50)
-        self.pantalla.blit(texto_contador, texto_contador_rect)
+    # def contador_rondas(self):
+    #     texto_contador = self.font.render(
+    #         f"Ronda: {self.rondas_jugadas}", True, WHITE)
+    #     texto_contador_rect = texto_contador.get_rect()
+    #     texto_contador_rect.topleft = (SCREEN_WIDTH - 800, 50)
+    #     self.pantalla.blit(texto_contador, texto_contador_rect)
 
 # ---------------------------------------------------------
-# Verifica la respuesta ingresada
-    def verificar_respuesta(self):
-        respuesta_ingresada = self.input_respuesta.strip().lower()
-        for respuesta in self.pregunta_actual["respuestas"]:
-            if respuesta_ingresada == respuesta["respuesta"].strip().lower():
-                if respuesta_ingresada not in self.respuestas_ingresadas:
-                    self.audio_correcto.play()
-                    self.puntaje += respuesta["puntos"]
-                    self.respuestas_ingresadas.append(
-                        (respuesta_ingresada, respuesta["puntos"]))
-                else:
-                    print("Respuesta ya ingresada.")
-                self.input_respuesta = ""
-                return True
-        self.audio_incorrecto.play()
-        self.oportunidades -= 1
-        self.input_respuesta = ""
-        return False
+    def pedir_nombre_jugador(self):
+        nombre_jugador = ""
+        pedir_nombre_text = self.font.render("Ingresa tu nombre:", True, WHITE)
+        pedir_nombre_rect = pedir_nombre_text.get_rect(
+            center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50))
 
-# ---------------------------------------------------------
-# Limpia el campo de entrada de texto
-    def limpiar_input_respuesta(self):
-        self.input_respuesta = ""
+        input_rect = pygame.Rect(SCREEN_WIDTH // 2 - 100,
+                                 SCREEN_HEIGHT // 2, 200, 50)
+        activo = True
+
+        while activo:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    return
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_RETURN:
+                        activo = False
+                    elif event.key == pygame.K_BACKSPACE:
+                        nombre_jugador = nombre_jugador[:-1]
+                    else:
+                        nombre_jugador += event.unicode
+
+            self.pantalla.blit(self.fondo_game_over, (0, 0))
+            self.pantalla.blit(pedir_nombre_text, pedir_nombre_rect)
+
+            # Actualizar rectángulo de entrada
+            pygame.draw.rect(self.pantalla, WHITE, input_rect, 2)
+            nombre_surface = self.font.render(nombre_jugador, True, WHITE)
+            self.pantalla.blit(
+                nombre_surface, (input_rect.x + 5, input_rect.y + 5))
+            input_rect.w = max(200, nombre_surface.get_width() + 10)
+
+            pygame.display.flip()
+
+        return nombre_jugador
+
 
 # ---------------------------------------------------------
     """
@@ -219,68 +178,31 @@ def premio_ganado(self):
             puntos_obtenidos = respuestas[input_respuesta] * \
                 self.bonus_multiplicar
 
+            # Verificar si la respuesta ya está en respuestas_ingresadas
             if input_respuesta not in [respuesta for respuesta, _ in self.respuestas_ingresadas]:
                 puntos_obtenidos = respuestas[input_respuesta] * \
                     self.bonus_multiplicar
+                self.puntaje += puntos_obtenidos  # Sumar puntos al puntaje total
+                self.puntajes_acumulados.append(puntos_obtenidos)
                 self.respuestas_ingresadas.append(
                     (input_respuesta, puntos_obtenidos))
-                self.puntaje += puntos_obtenidos  # Sumar puntos al puntaje total
+                # Mostrar respuestas ingresadas ordenadas por puntos
                 mostrar_respuestas_ingresadas(juego)
+
         else:
-            # self.mostrar_animacion_cruz(juego)
+            mostrar_animacion_cruz(juego)
             self.audio_incorrecto.play()
             self.oportunidades -= 1
             self.input_respuesta = ""
+            # Si se acaban las oportunidades, mostrar "Game Over" y reiniciar el juego
             if self.oportunidades == 0:
                 pygame.time.wait(1000)
                 self.rondas_jugadas += 1
                 if self.rondas_jugadas >= self.max_rondas:
                     mostrar_pantalla_final(self)
-                    return
+                    return  # Salir de la función si el juego ha terminado
                 self.resetear_juego()
-                return
-
-        self.limpiar_input_respuesta()
-
-        if len(self.respuestas_ingresadas) == len(respuestas):
-            self.seleccionar_pregunta_aleatoriamente()
-            self.respuestas_ingresadas = []
-
-        if self.puntaje >= 500:
-            mostrar_game_over(self)
-            self.premio_ganado()
-    '''
-    def chequear_respuesta(self, input_respuesta):
-        respuestas = self.pregunta_actual["respuestas"]
-        if input_respuesta in respuestas:
-            self.audio_correcto.play()
-            puntos_obtenidos = respuestas[input_respuesta] * \
-                self.bonus_multiplicar
-
-            # Verificar si la respuesta ya está en respuestas_ingresadas
-            if input_respuesta not in [respuesta for respuesta, _ in self.respuestas_ingresadas]:
-                puntos_obtenidos = respuestas[input_respuesta] * \
-                    self.bonus_multiplicar
-                self.respuestas_ingresadas.append(
-                    (input_respuesta, puntos_obtenidos))
-                self.puntaje += puntos_obtenidos  # Sumar puntos al puntaje total
-                # Mostrar respuestas ingresadas ordenadas por puntos
-                self.mostrar_respuestas_ingresadas()
-        else:
-            self.mostrar_animacion_cruz()
-            self.audio_incorrecto.play()
-            self.oportunidades -= 1
-            self.input_respuesta = ""
-            if self.oportunidades == 0:
-                # Si se acaban las oportunidades, mostrar "Game Over" y reiniciar el juego
-                if self.oportunidades == 0:
-                    pygame.time.wait(1000)
-                    self.rondas_jugadas += 1
-                    if self.rondas_jugadas >= self.max_rondas:
-                        self.mostrar_pantalla_final()
-                        return  # Salir de la función si el juego ha terminado
-                    self.resetear_juego()
-                    return  # Salir de la función si el juego se reinicia
+                return  # Salir de la función si el juego se reinicia
 
         self.limpiar_input_respuesta()  # Limpiar el input después de procesar la respuesta
 
@@ -289,8 +211,15 @@ def premio_ganado(self):
             self.seleccionar_pregunta_aleatoriamente()
             # Resetear respuestas ingresadas para la nueva pregunta
             self.respuestas_ingresadas = []
-    '''
 
+# ---------------------------------------------------------
+# Limpia el campo de entrada de texto
+    def limpiar_input_respuesta(self):
+        self.input_respuesta = ""
+
+# ---------------------------------------------------------
+    def limpiar_respuestas_ingresadas(self):
+        self.respuestas_ingresadas = []
 # # ---------------------------------------------------------
     """
     Usa el comodín seleccionado durante el juego, permite al jugador usar diferentes comodines según el tipo especificado
@@ -327,7 +256,6 @@ def premio_ganado(self):
 
     def chequear_fin_juego(self):
         if self.contador_rondas == 0:
-            mostrar_game_over(juego)
             self.premio_ganado()
             self.puntaje_total = sum(self.puntajes_acumulados)
             pygame.time.wait(2000)
@@ -408,8 +336,7 @@ def premio_ganado(self):
                 mostrar_pregunta(juego)
 
         if self.oportunidades == 0:
-            mostrar_game_over(juego)
-            pygame.time.wait(2000)
+            pygame.time.wait(1000)
             self.resetear_juego()
 
 
@@ -434,6 +361,7 @@ def premio_ganado(self):
             mostrar_oportunidades(self)
             mostrar_comodines(self)
             mostrar_puntaje(self)
+
             mostrar_respuestas_ingresadas(self)
             for event in pygame.event.get():
                 self.manejar_eventos(event)
@@ -444,7 +372,6 @@ def premio_ganado(self):
                 self.chequear_fin_juego()
 
             if self.puntaje >= 500:
-                mostrar_game_over(self)
                 self.premio_ganado()
                 break
 

@@ -1,6 +1,7 @@
 import pygame
 import json
-
+import csv
+from .config import *
 # ---------------------------------------------------------
 """
 Carga una imagen desde la ruta especificada y la redimensiona al tamaño deseado.
@@ -85,3 +86,21 @@ def escribir_texto(text, font, color, surface, x, y):
     textrect = textobj.get_rect()
     textrect.center = (x, y)
     surface.blit(textobj, textrect)
+
+
+# ---------------------------------------------------------
+
+"""
+with open('data/ranking.csv', 'a', newline='') as file:  # Abre el archivo CSV en modo de añadir
+            writer = csv.writer(file)  # Crea un objeto escritor para el archivo CSV
+            writer.writerow([self.puntaje])
+"""
+
+
+def guardar_puntaje(nombre_jugador, puntaje):
+    with open('ranking.csv', 'a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([nombre_jugador, puntaje])
+
+
+# ---------------------------------------------------------
