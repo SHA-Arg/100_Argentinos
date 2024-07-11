@@ -1,4 +1,3 @@
-# ordenamiento.py
 
 def ordenar_respuestas(respuestas):
     """

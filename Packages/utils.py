@@ -3,27 +3,29 @@ import json
 import csv
 from .config import *
 # ---------------------------------------------------------
-"""
-Carga una imagen desde la ruta especificada y la redimensiona al tamaño deseado.
-
-Args:
-    path (str): Ruta de la imagen a cargar.
-    width (int): Ancho deseado de la imagen.
-    height (int): Alto deseado de la imagen.
-
-Returns:
-    pygame.Surface: Superficie de la imagen cargada y redimensionada.
-"""
 
 
 def cargar_imagen(path, width, height):
+    """
+    Carga una imagen desde la ruta especificada y la redimensiona al tamaño deseado.
+
+    Args:
+        path (str): Ruta de la imagen a cargar.
+        width (int): Ancho deseado de la imagen.
+        height (int): Alto deseado de la imagen.
+
+    Returns:
+        pygame.Surface: Superficie de la imagen cargada y redimensionada.
+    """
     imagen = pygame.image.load(path)
     return pygame.transform.scale(imagen, (width, height))
 
-
 # ---------------------------------------------------------
-"""
-Renderiza texto en una superficie dada con un fondo rectángular coloreado.
+
+
+def renderizar_texto(pantalla, texto, font, color, posicion, padding=10):
+    """
+    Renderiza texto en una superficie dada con un fondo rectángular coloreado.
 
     Args:
         pantalla (pygame.Surface): Superficie donde se dibujará el texto.
@@ -35,10 +37,7 @@ Renderiza texto en una superficie dada con un fondo rectángular coloreado.
 
     Returns:
         None
-"""
-
-
-def renderizar_texto(pantalla, texto, font, color, posicion, padding=10):
+    """
     texto_render = font.render(texto, True, color)
     texto_rect = texto_render.get_rect()
     texto_rect.topleft = posicion
@@ -47,77 +46,59 @@ def renderizar_texto(pantalla, texto, font, color, posicion, padding=10):
     pygame.draw.rect(pantalla, (0, 0, 255), fondo)  # Fondo azul
     pantalla.blit(texto_render, texto_rect)
 
-
 # ---------------------------------------------------------
-"""
-Carga un archivo JSON desde la ruta especificada.
-Args:
-    ruta_archivo (str): Ruta del archivo JSON a cargar.
-Returns:
-    dict: Datos cargados desde el archivo JSON.
-"""
 
 
 def cargar_archivo_json(ruta_archivo):
+    """
+    Carga un archivo JSON desde la ruta especificada.
+    Args:
+        ruta_archivo (str): Ruta del archivo JSON a cargar.
+    Returns:
+        dict: Datos cargados desde el archivo JSON.
+    """
     with open("json\preguntas.json", "r",  encoding="utf-8") as preguntas_json:
         pregunta = json.load(preguntas_json)
         return pregunta
 
 
 # ---------------------------------------------------------
-"""
-Renderiza y dibuja texto en una superficie dada en la posición especificada.
-
-Args:
-    texto (str): Texto a renderizar.
-    font (pygame.font.Font): Fuente del texto.
-    color (tuple): Color del texto en formato RGB.
-    surface (pygame.Surface): Superficie donde se dibujará el texto.
-    x (int): Coordenada X de la posición del texto.
-    y (int): Coordenada Y de la posición del texto.
-
-Returns:
-    None
-"""
-
 
 def escribir_texto(text, font, color, surface, x, y):
+    """
+    Renderiza y dibuja texto en una superficie dada en la posición especificada.
+
+    Args:
+        texto (str): Texto a renderizar.
+        font (pygame.font.Font): Fuente del texto.
+        color (tuple): Color del texto en formato RGB.
+        surface (pygame.Surface): Superficie donde se dibujará el texto.
+        x (int): Coordenada X de la posición del texto.
+        y (int): Coordenada Y de la posición del texto.
+
+    Returns:
+        None
+    """
     textobj = font.render(text, True, color)
     textrect = textobj.get_rect()
     textrect.center = (x, y)
     surface.blit(textobj, textrect)
 
-
 # ---------------------------------------------------------
-
-"""
-
-"""
 
 
 def guardar_puntaje(nombre_jugador, puntaje):
+    """
+    Esta función guarda el puntaje de un jugador en un archivo CSV.
+    Args:
+        nombre_jugador (str): Nombre del jugador.
+        puntaje (int): Puntaje obtenido por el jugador.
+
+    Returns:
+        None
+    """
     with open('data/ranking.csv', 'a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([nombre_jugador, puntaje])
 
 # ---------------------------------------------------------
-
-# ---------------------------------------------------------
-
-
-"""
-Carga el ranking desde un archivo CSV y lo muestra en pantalla.
-Este método lee los datos de puntaje desde un archivo CSV, los ordena de mayor a menor
-y muestra los 10 mejores puntajes en la pantalla del juego.
-Atributos modificados:
-- ruta_ranking (str): Ruta del archivo CSV que contiene el ranking.
-- ranking (list): Lista que almacena los datos del ranking leídos del archivo.
-- ranking_ordenado (list): Lista que almacena los datos del ranking ordenados por puntaje.
-Acciones realizadas:
-- Lee el archivo de ranking y almacena los datos en una lista.
-- Ordena la lista de ranking por puntaje en orden descendente.
-- Muestra el fondo de pantalla de "game over".
-- Muestra los 10 mejores puntajes en la pantalla, con un desplazamiento vertical entre cada uno.
-Excepciones manejadas:
-- FileNotFoundError: Si el archivo de ranking no existe, se inicializa una lista vacía.
-"""

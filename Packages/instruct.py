@@ -2,15 +2,17 @@ import pygame
 import sys
 from .recursos import *
 from .config import *
+from .utils import *
 
-"""
+# ---------------------------------------------------------
+
+
+def instrucciones():
+    """
     Muestra las instrucciones del juego en la pantalla.
 
     Espera a que el usuario presione ESC para volver al menú principal.
 """
-
-
-def instrucciones():
     running = True
     while running:
         for event in pygame.event.get():

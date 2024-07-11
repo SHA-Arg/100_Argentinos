@@ -1,6 +1,5 @@
 # resources.py
 import pygame
-import random
 from .config import SCREEN_WIDTH, SCREEN_HEIGHT, FONT_PATH1, FONT_PATH2, FONT_SIZE, FONT_INSTRUCCIONES, BLUE, WHITE
 
 
@@ -23,11 +22,3 @@ fondo_instrucciones = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
 fondo_instrucciones.fill(BLUE)
 
 # ------------------------------------------------------------
-# Función para escribir texto
-
-
-def escribir_texto(texto, fuente, color, superficie, x, y):
-    texto_obj = fuente.render(texto, True, color)
-    texto_rect = texto_obj.get_rect()
-    texto_rect.center = (x, y)
-    superficie.blit(texto_obj, texto_rect)

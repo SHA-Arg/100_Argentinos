@@ -7,11 +7,13 @@ from Packages.utils import *
 from Packages.recursos import *
 from Packages.instruct import *
 from Packages.botones import *
-from Packages.main import *
+from Packages.juego import *
 from Packages.inicializadores import *
 
 # Inicializa Pygame
 pygame.init()
+
+# ---------------------------------------------------------
 
 
 def main_menu():
@@ -60,10 +62,14 @@ def main_menu():
 
         pygame.display.update()
 
+# ---------------------------------------------------------
+
 
 def jugar():
     juego = Juego100ARG()
     juego.ejecutar()
+
+# ---------------------------------------------------------
 
 
 main_menu()
