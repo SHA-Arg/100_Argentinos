@@ -184,7 +184,6 @@ def pedir_nombre_jugador(juego):
         texto_nombre = juego.font.render(nombre, True, WHITE)
         juego.pantalla.blit(texto_pedir_nombre, (50, SCREEN_HEIGHT // 2 - 50))
         juego.pantalla.blit(texto_nombre, (50, SCREEN_HEIGHT // 2))
-        pygame.display.flip()
         pygame.display.update()
     return nombre
 
@@ -222,7 +221,6 @@ def mostrar_ranking(juego):
 
 
 # ---------------------------------------------------------
-# ---------------------------------------------------------
 """
     Muestra la pantalla final del juego y gestiona la respuesta del jugador.Este método muestra el fondo de pantalla de juego terminado y un mensaje para preguntar al jugador si desea jugar otra vez.
 
@@ -235,12 +233,10 @@ def mostrar_ranking(juego):
 
 
 def mostrar_pantalla_final(juego):
-    # Mostrar fondo de pantalla final
-    juego.pantalla.blit(juego.fondo_game_over, (0, 0))
-
     # Calcular puntaje total
     pozo_acumulado = 0
     mensaje = ""
+
     # Asegurarse de que se esté trabajando con el total
     total_puntajes_acumulados = sum(juego.puntajes_acumulados)
 
@@ -259,10 +255,10 @@ def mostrar_pantalla_final(juego):
 
     # Pedir nombre del jugador
     nombre_jugador = pedir_nombre_jugador(juego)
+    pygame.display.flip()
 
     # Guardar puntaje
     guardar_puntaje(nombre_jugador, mensaje)
-    pygame.display.flip()
     # Mostrar ranking actualizado
     mostrar_ranking(juego)
 
@@ -270,20 +266,26 @@ def mostrar_pantalla_final(juego):
     texto_pantalla_final = juego.font.render(
         "¡Juego terminado! ¿Deseas jugar otra vez? (S/N)", True, WHITE)
     texto_pantalla_final_rect = texto_pantalla_final.get_rect()
-    texto_pantalla_final_rect.topleft = (50, 50)
+    texto_pantalla_final_rect.topleft = (100, 100)
     juego.pantalla.blit(texto_pantalla_final, texto_pantalla_final_rect)
+
+    pygame.display.flip()
     # Preguntar si desea jugar otra vez
     esperando_respuesta = True
     while esperando_respuesta:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
+
+                    juego.rondas_jugadas = 0
                     juego.resetear_juego()
                     esperando_respuesta = False
                 elif event.key == pygame.K_n:
-                    mostrar_pantalla_agradecimiento(juego)
+                    pygame.display.flip()
+
                     pygame.quit()
-                    sys.exit()
+            mostrar_pantalla_agradecimiento(juego)
+            sys.exit()
         pygame.display.update()
 
 
@@ -297,8 +299,6 @@ def mostrar_pantalla_final(juego):
     Returns:
         None
     """
-
-# ---------------------------------------------------------
 
 
 def mostrar_animacion_cruz(juego):
@@ -410,7 +410,7 @@ def mostrar_pantalla_agradecimiento(juego):
     texto_agradecimiento = juego.font.render(
         "Gracias por jugar. ¡Hasta la próxima!", True, WHITE)
     texto_agradecimiento_rect = texto_agradecimiento.get_rect(
-        center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+        center=(SCREEN_WIDTH // 4, SCREEN_HEIGHT // 4))
     juego.pantalla.blit(texto_agradecimiento, texto_agradecimiento_rect)
     pygame.display.update()
     pygame.time.wait(3000)

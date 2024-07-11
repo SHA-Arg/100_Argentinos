@@ -1,12 +1,12 @@
 import random
 import pygame
 import sys
+from .mostrar import *
 from .config import *
 from .utils import *
 from .ordenamiento import *
-from .recursos import *
-from .mostrar import *
 from .inicializadores import *
+from .recursos import *
 
 # ---------------------------------------------------------
 
@@ -43,17 +43,6 @@ class Juego100ARG:
 
 # ---------------------------------------------------------
 
-# Reinicia las variables del juego para comenzar una nueva partida
-    def resetear_juego(self):
-        self.oportunidades = 3
-        self.tiempo_restante = RESPONSE_TIME
-        self.bonus_multiplicar = 1
-        self.contador_rondas = 0
-        self.seleccionar_pregunta_aleatoriamente()
-        self.respuestas_ingresadas = []
-
-# ---------------------------------------------------------
-
     """
     Reinicia el estado del juego a sus valores iniciales.
 
@@ -72,27 +61,24 @@ class Juego100ARG:
     - Llama al método seleccionar_pregunta_aleatoriamente() para elegir una nueva pregunta al azar.
     """
 
+    def resetear_juego(self):
+        self.oportunidades = 3
+        self.tiempo_restante = RESPONSE_TIME
+        self.bonus_multiplicar = 1
+        self.contador_rondas = 0
+        self.seleccionar_pregunta_aleatoriamente()
+        self.respuestas_ingresadas = []
+
+# ---------------------------------------------------------
+    """
+    Este método selecciona una pregunta de manera aleatoria de la lista de preguntas 
+    cargadas, resetea el tiempo restante para responder y limpia las respuestas ingresadas anteriormente.
+    """
+
     def seleccionar_pregunta_aleatoriamente(self):
         self.pregunta_actual = random.choice(self.preguntas)
         self.tiempo_restante = RESPONSE_TIME
         self.respuestas_ingresadas = []
-
-# ---------------------------------------------------------
-
-    """
-    Calcula y muestra el premio ganado al finalizar el juego. Este método determina el premio basado en el puntaje final del jugador.
-
-    Args:
-    None
-
-    Returns:
-    None
-    """
-
-    def premio_ganado(self):
-
-        pygame.display.update()
-
 
 # ---------------------------------------------------------
     """
@@ -124,23 +110,28 @@ class Juego100ARG:
     """
 
     def chequear_respuesta(self, input_respuesta):
-        respuestas = self.pregunta_actual["respuestas"]
+        # Convertir la respuesta del usuario a minúsculas
+        input_respuesta = input_respuesta.lower()
+        # Convertir las respuestas correctas a minúsculas
+        respuestas = {key.lower(): value for key,
+                      value in self.pregunta_actual["respuestas"].items()}
+        # Mapeo de respuestas minúsculas a originales
+        respuesta_original = {
+            key.lower(): key for key in self.pregunta_actual["respuestas"]}
+
         if input_respuesta in respuestas:
             self.audio_correcto.play()
             puntos_obtenidos = respuestas[input_respuesta] * \
                 self.bonus_multiplicar
 
             # Verificar si la respuesta ya está en respuestas_ingresadas
-            if input_respuesta not in [respuesta for respuesta, _ in self.respuestas_ingresadas]:
-                puntos_obtenidos = respuestas[input_respuesta] * \
-                    self.bonus_multiplicar
+            if input_respuesta not in [respuesta.lower() for respuesta, _ in self.respuestas_ingresadas]:
                 self.puntaje += puntos_obtenidos  # Sumar puntos al puntaje total
                 self.puntajes_acumulados.append(puntos_obtenidos)
                 self.respuestas_ingresadas.append(
-                    (input_respuesta, puntos_obtenidos))
+                    (respuesta_original[input_respuesta], puntos_obtenidos))
                 # Mostrar respuestas ingresadas ordenadas por puntos
                 mostrar_respuestas_ingresadas(self)
-
         else:
             self.audio_incorrecto.play()
             mostrar_animacion_cruz(self)
@@ -163,6 +154,7 @@ class Juego100ARG:
             self.seleccionar_pregunta_aleatoriamente()
             # Resetear respuestas ingresadas para la nueva pregunta
             self.respuestas_ingresadas = []
+
 
 # ---------------------------------------------------------
 
@@ -272,51 +264,6 @@ class Juego100ARG:
                 self.usar_comodin("menos_votada")
             if self.comodin_multiplicar_puntos_rect.collidepoint(mouse_pos):
                 self.usar_comodin("multiplicar_puntos")
-
-# ---------------------------------------------------------
-
-    """
-    Este método evalúa diferentes condiciones para decidir si el juego debe terminar
-    o si se ha ganado un premio. También maneja la visualización de una imagen y
-    el reinicio del juego en caso de que se hayan agotado las oportunidades del jugador.
-
-    Retorna:
-    - bool: True si el juego ha terminado o se ha ganado un premio, False en caso contrario.
-
-    Condiciones verificadas:
-    - Si el puntaje es mayor o igual a 500, se llama al método premio_ganado() y se retorna True.
-    - Si el número de rondas jugadas es mayor o igual al máximo de rondas permitidas, se llama
-    - al método premio_ganado() y se retorna True.
-    - Si las oportunidades se han agotado:
-        - Muestra una imagen de cruz roja en la pantalla.
-        - Actualiza la pantalla y espera 2 segundos.
-        - Reinicia el juego llamando al método resetear_juego().
-        - Incrementa el contador de rondas jugadas.
-        - Si el número de rondas jugadas es mayor o igual al máximo de rondas permitidas,
-        - se llama al método premio_ganado() y se retorna True.
-
-    Atributos modificados:
-    - rondas_jugadas (int): Incrementa el contador de rondas jugadas si las oportunidades se han agotado.
-    """
-
-    # def verificar_estado_juego(self):
-    #     if self.puntaje >= 500:
-    #         self.premio_ganado()
-    #         return True
-    #     elif self.rondas_jugadas >= self.max_rondas:
-    #         self.premio_ganado()
-    #         return True
-    #     elif self.oportunidades <= 0:
-    #         self.pantalla.blit(
-    #             self.cruz_roja_gif, (SCREEN_WIDTH // 2 - 50, SCREEN_HEIGHT // 2 - 50))
-    #         pygame.display.flip()
-    #         pygame.time.wait(2000)
-    #         self.resetear_juego()
-    #         self.rondas_jugadas += 1
-    #         if self.rondas_jugadas >= self.max_rondas:
-    #             self.premio_ganado()
-    #             return True
-    #     return False
 
 # ---------------------------------------------------------
 
