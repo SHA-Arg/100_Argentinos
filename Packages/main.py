@@ -2,12 +2,12 @@ import random
 import pygame
 import csv
 import sys
-from Packages.config import *
-from Packages.utils import *
-from Packages.ordenamiento import *
-from Packages.recursos import *
-from Packages.mostrar import *
-from Packages.inicializadores import *
+from .config import *
+from .utils import *
+from .ordenamiento import *
+from .recursos import *
+from .mostrar import *
+from .inicializadores import *
 
 # ---------------------------------------------------------
 
@@ -17,8 +17,7 @@ class Juego100ARG:
     def __init__(self):
         # Inicializa pygame y los componentes del juego
         inicializar_pygame()
-        self.audio_correcto, self.audio_incorrecto, self.audio_tiempo, self.audio_fondo = cargar_sonidos()
-
+        self.audio_correcto, self.audio_incorrecto, self.audio_comodin = cargar_sonidos()
         self.pantalla = inicializar_pantalla()
         self.font = cargar_fuente()
         self.clock = pygame.time.Clock()
@@ -128,24 +127,8 @@ class Juego100ARG:
         # Mostrar el ranking
         self.cargar_y_mostrar_ranking()
 
-        # Preguntar si desea jugar otra vez
-        texto_volver_jugar = self.font.render(
-            "¿Deseas jugar otra vez? (S/N)", True, WHITE)
-        self.pantalla.blit(texto_volver_jugar, (350, y + 50))
         pygame.display.update()
 
-        esperando_respuesta = True
-        while esperando_respuesta:
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_s:
-                        self.rondas_jugadas = 0
-                        self.resetear_juego()
-                        esperando_respuesta = False
-                    elif event.key == pygame.K_n:
-                        # Llamar a la función de agradecimiento
-                        mostrar_pantalla_agradecimiento(juego)
-                        esperando_respuesta = False
 
 # ---------------------------------------------------------
 
@@ -243,11 +226,11 @@ class Juego100ARG:
                 self.respuestas_ingresadas.append(
                     (input_respuesta, puntos_obtenidos))
                 # Mostrar respuestas ingresadas ordenadas por puntos
-                mostrar_respuestas_ingresadas(juego)
+                mostrar_respuestas_ingresadas(self)
 
         else:
-            mostrar_animacion_cruz(juego)
             self.audio_incorrecto.play()
+            mostrar_animacion_cruz(self)
             self.oportunidades -= 1
             self.input_respuesta = ""
             # Si se acaban las oportunidades, mostrar "Game Over" y reiniciar el juego
@@ -323,6 +306,7 @@ class Juego100ARG:
 
             # Marcar el comodín como usado
             self.used_hints[tipo] = True
+            self.audio_comodin.play()
 
 # ---------------------------------------------------------
 
@@ -460,7 +444,6 @@ class Juego100ARG:
     def ejecutar(self):
         while True:
             self.pantalla.blit(self.fondo_preguntas, (0, 0))
-            self.audio_fondo.play()
             mostrar_pregunta(self)
             mostrar_reloj(self)
             mostrar_input(self)

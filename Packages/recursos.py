@@ -17,16 +17,15 @@ pygame.display.set_caption('100 Argentinos dicen')
 
 # Cargar imágenes de fondo
 fondo_menu = pygame.image.load("assets/imgs/fondo_menu2.jpg")
-fondo_instrucciones = pygame.image.load("assets/imgs/fondo_instrucciones.jpg")
-
 fondo_menu = pygame.transform.scale(fondo_menu, (SCREEN_WIDTH, SCREEN_HEIGHT))
-fondo_instrucciones = pygame.transform.scale(
-    fondo_instrucciones, (SCREEN_WIDTH, SCREEN_HEIGHT))
-fondo_instrucciones.fill(BLUE)
 
+fondo_instrucciones = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
+fondo_instrucciones.fill(BLUE)
 
 # ------------------------------------------------------------
 # Función para escribir texto
+
+
 def escribir_texto(texto, fuente, color, superficie, x, y):
     texto_obj = fuente.render(texto, True, color)
     texto_rect = texto_obj.get_rect()

@@ -59,36 +59,7 @@ def mostrar_rondas_jugadas(juego):
 
 
 # ---------------------------------------------------------
-"""
-Este método lee los datos del ranking desde un archivo CSV, los ordena y los muestra
-    en una lista en la pantalla del juego.
 
-    Parámetros:
-    - juego: Una instancia del objeto del juego que contiene los atributos necesarios 
-    - como la pantalla y la fuente para renderizar el texto.
-
-    Notas:
-    - Se asume que el archivo CSV está ubicado en la ruta 'data/ranking.csv' y contiene
-    - los datos del ranking en un formato adecuado.
-    - La función `ordenar_respuestas` debe estar definida y ser capaz de ordenar los datos del ranking.
-"""
-
-
-def mostrar_ranking(juego):
-    with open('data/ranking.csv', 'r') as file:
-        reader = csv.reader(file)
-        ranking = ordenar_respuestas(reader)
-        y_offset = 100
-        for i, row in enumerate(ranking):
-            texto_ranking = juego.font.render(
-                f"{i+1}. {row[0]} puntos", True, WHITE)
-            texto_ranking_rect = texto_ranking.get_rect()
-            texto_ranking_rect.topleft = (50, y_offset)
-            juego.pantalla.blit(texto_ranking, texto_ranking_rect)
-            y_offset += 40
-
-
-# ---------------------------------------------------------
     """
     Muestra la pregunta actual en la pantalla del juego. Este método verifica si hay una pregunta seleccionada. Si no hay ninguna pregunta, lanza un ValueError
 
@@ -127,6 +98,7 @@ def mostrar_pregunta(juego):
 
 
 def mostrar_reloj(juego):
+    cargar_sonidos()
     texto_reloj = juego.font.render(
         f"{int(juego.tiempo_restante)}s", True, WHITE)
     texto_reloj_rect = texto_reloj.get_rect()
@@ -195,6 +167,9 @@ def pedir_nombre_jugador(juego):
     pedir_nombre = True
     while pedir_nombre:
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     pedir_nombre = False
@@ -202,31 +177,55 @@ def pedir_nombre_jugador(juego):
                     nombre = nombre[:-1]
                 else:
                     nombre += event.unicode
+    # Limpiar la pantalla antes de dibujar el nuevo texto
+    juego.pantalla.blit(juego.fondo_game_over, (0, 0))
+    # Mostrar el nombre que se está ingresando
+    texto_ingreso_nombre = juego.font.render(
+        "Ingrese su nombre: " + nombre, True, WHITE)
+    texto_ingreso_nombre_rect = texto_ingreso_nombre.get_rect(
+        center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50))
+    juego.pantalla.blit(texto_ingreso_nombre, texto_ingreso_nombre_rect)
 
-        # Limpiar la pantalla antes de dibujar el nuevo texto
-        juego.pantalla.fill(BLACK)
-        juego.pantalla.blit(juego.fondo_game_over, (0, 0))
-
-        # Mostrar el mensaje de juego terminado
-        texto_pantalla_final = juego.font.render(
-            "¡Juego terminado! ¿Deseas jugar otra vez? (S/N)", True, WHITE)
-        texto_pantalla_final_rect = texto_pantalla_final.get_rect(
-            center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50))
-        juego.pantalla.blit(texto_pantalla_final, texto_pantalla_final_rect)
-
-        # Mostrar el nombre que se está ingresando
-        texto_ingreso_nombre = juego.font.render(
-            "Ingrese su nombre: " + nombre, True, WHITE)
-        texto_ingreso_nombre_rect = texto_ingreso_nombre.get_rect(
-            center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 50))
-        juego.pantalla.blit(texto_ingreso_nombre, texto_ingreso_nombre_rect)
-
-        pygame.display.update()
+    pygame.display.update()
 
     return nombre
 
-    # ---------------------------------------------------------
-    """
+
+"""
+Este método lee los datos del ranking desde un archivo CSV, los ordena y los muestra
+    en una lista en la pantalla del juego.
+
+    Parámetros:
+    - juego: Una instancia del objeto del juego que contiene los atributos necesarios 
+    - como la pantalla y la fuente para renderizar el texto.
+
+    Notas:
+    - Se asume que el archivo CSV está ubicado en la ruta 'data/ranking.csv' y contiene
+    - los datos del ranking en un formato adecuado.
+    - La función `ordenar_respuestas` debe estar definida y ser capaz de ordenar los datos del ranking.
+"""
+
+
+def mostrar_ranking(juego):
+    with open('data/ranking.csv', 'r') as file:
+        reader = csv.reader(file)
+
+        ranking = sorted(reader, key=lambda x: int(x[1]), reverse=True)
+
+        # ranking = ordenar_ranking(list(reader))
+        y_offset = 100
+        for i, row in enumerate(ranking):
+            texto_ranking = juego.font.render(
+                f"{i+1}. {row[0]}: {row[1]} puntos", True, WHITE)
+            texto_ranking_rect = texto_ranking.get_rect()
+            texto_ranking_rect.topleft = (50, y_offset)
+            juego.pantalla.blit(texto_ranking, texto_ranking_rect)
+            y_offset += 40
+
+
+# ---------------------------------------------------------
+# ---------------------------------------------------------
+"""
     Muestra la pantalla final del juego y gestiona la respuesta del jugador.Este método muestra el fondo de pantalla de juego terminado y un mensaje para preguntar al jugador si desea jugar otra vez.
 
     Args:
@@ -241,17 +240,15 @@ def mostrar_pantalla_final(juego):
     # Mostrar fondo de pantalla final
     juego.pantalla.blit(juego.fondo_game_over, (0, 0))
 
+    # Mostrar texto de puntaje final
+    total_puntaje = sum(juego.puntajes_acumulados)
     # Mostrar texto de juego terminado y preguntar si desea jugar otra vez
     texto_pantalla_final = juego.font.render(
-        f"{mostrar_puntaje} ¿Deseas jugar otra vez? (S/N)", True, WHITE)
+        f"Puntaje: {total_puntaje}", True, WHITE)
     texto_pantalla_final_rect = texto_pantalla_final.get_rect(
         center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50))
     juego.pantalla.blit(texto_pantalla_final, texto_pantalla_final_rect)
-    juego.premio_ganado()
     pygame.display.update()
-
-    # Mostrar premio ganado
-    juego.premio_ganado()
 
     # Pedir nombre del jugador
     nombre_jugador = pedir_nombre_jugador(juego)
@@ -259,7 +256,8 @@ def mostrar_pantalla_final(juego):
     # Guardar puntaje
     guardar_puntaje(nombre_jugador, sum(juego.puntajes_acumulados))
 
-    # Actualizar la pantalla después de mostrar el premio y pedir el nombre
+    # Mostrar ranking actualizado
+    mostrar_ranking(juego)
     pygame.display.update()
 
     # Preguntar si desea jugar otra vez
@@ -273,7 +271,8 @@ def mostrar_pantalla_final(juego):
                     esperando_respuesta = False
                 elif event.key == pygame.K_n:
                     pygame.quit()
-                    return
+                    sys.exit()
+        pygame.display.update()
 
 
 # ---------------------------------------------------------
@@ -290,10 +289,10 @@ def mostrar_pantalla_final(juego):
 # ---------------------------------------------------------
 
 
-def mostrar_animacion_cruz(juego):
-    cruz_rect = juego.cruz_roja_gif.get_rect()
+def mostrar_animacion_cruz(self):
+    cruz_rect = self.cruz_roja_gif.get_rect()
     cruz_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
-    juego.pantalla.blit(juego.cruz_roja_gif, cruz_rect)
+    self.pantalla.blit(self.cruz_roja_gif, cruz_rect)
     pygame.display.update()
     pygame.time.delay(1000)
 
@@ -396,7 +395,7 @@ Este método limpia la pantalla, muestra un mensaje de agradecimiento en el cent
 
 
 def mostrar_pantalla_agradecimiento(juego):
-    juego.pantalla.fill(BLACK)
+    juego.pantalla.blit(juego.fondo, (0, 0))
     texto_agradecimiento = juego.font.render(
         "Gracias por jugar. ¡Hasta la próxima!", True, WHITE)
     texto_agradecimiento_rect = texto_agradecimiento.get_rect(

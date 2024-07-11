@@ -28,10 +28,8 @@ def inicializar_pygame():
 def cargar_sonidos():
     audio_correcto = pygame.mixer.Sound("assets/sounds/correcto.mp3")
     audio_incorrecto = pygame.mixer.Sound("assets/sounds/error.mp3")
-    audio_tiempo = pygame.mixer.Sound("assets/sounds/ClockTicking.mp3")
-    audio_fondo = pygame.mixer.Sound(
-        "assets/sounds/CORTINAMUSICAL100ARGDICEN.mp3")
-    return audio_correcto, audio_incorrecto, audio_tiempo, audio_fondo
+    audio_comodin = pygame.mixer.Sound("assets/sounds/ButtonClick.mp3")
+    return audio_correcto, audio_incorrecto, audio_comodin
 
 
 # ----------------------------------------------------

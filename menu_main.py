@@ -7,10 +7,11 @@ from Packages.utils import *
 from Packages.recursos import *
 from Packages.instruct import *
 from Packages.botones import *
-# ------------------------------------------------------
+from Packages.main import *
+from Packages.inicializadores import *
+
 # Inicializa Pygame
 pygame.init()
-# ------------------------------------------------------
 
 
 def main_menu():
@@ -37,6 +38,7 @@ def main_menu():
         if button_2.collidepoint((mx, my)):
             if click:
                 instrucciones()
+
         if button_3.collidepoint((mx, my)):
             if click:
                 pygame.quit()
@@ -58,13 +60,10 @@ def main_menu():
 
         pygame.display.update()
 
-# ------------------------------------------------------
-
 
 def jugar():
-    # Ejecuta main.py
-    subprocess.run(["python", "main.py"])
+    juego = Juego100ARG()
+    juego.ejecutar()
 
 
-# ------------------------------------------------------
 main_menu()

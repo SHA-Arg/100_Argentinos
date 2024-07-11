@@ -19,7 +19,6 @@ def instrucciones():
                 sys.exit()
 
         pantalla.blit(fondo_instrucciones, (290, 230))
-
         # Instrucciones con fondo legible
         instrucciones_texto = [
             '',
