@@ -1,7 +1,5 @@
 import pygame
 import sys
-import subprocess
-import os
 from Packages.config import *
 from Packages.utils import *
 from Packages.recursos import *
@@ -18,7 +16,7 @@ pygame.init()
 
 def main_menu():
     """
-    Función principal del menú. Muestra los botones y maneja la lógica de clics.
+    Función principal del menú. Muestra los botones y maneja la lógica de clics del menu.
     """
     # Crea botones
     button_1 = crear_boton(SCREEN_WIDTH - 300, SCREEN_HEIGHT // 2, 200, 50)

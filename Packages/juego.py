@@ -239,7 +239,8 @@ class Juego100ARG:
             sys.exit()
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                juego.menu_main()
+                pygame.quit()
+                sys.exit()
             elif event.key == pygame.K_BACKSPACE:
                 self.input_respuesta = self.input_respuesta[:-1]
             elif event.key == pygame.K_RETURN:
