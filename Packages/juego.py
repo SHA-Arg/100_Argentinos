@@ -34,6 +34,11 @@ class Juego100ARG:
         self.respuestas_ingresadas = variables['respuestas_ingresadas']
         self.puntajes_acumulados = variables['puntajes_acumulados']
         self.partidas_jugadas = variables['partidas_jugadas']
+        self.used_hints = {
+            "tiempo_extra": False,
+            "menos_votada": False,
+            "multiplicar_puntos": False
+        }
         self.resetear_juego()
 
 # ---------------------------------------------------------
@@ -63,14 +68,10 @@ class Juego100ARG:
         self.contador_rondas = 0
         self.seleccionar_pregunta_aleatoriamente()
         self.respuestas_ingresadas = []
-        self.used_hints = {
-            "tiempo_extra": False,
-            "menos_votada": False,
-            "multiplicar_puntos": False
-        }
 
 
 # ---------------------------------------------------------
+
 
     def seleccionar_pregunta_aleatoriamente(self):
         """
@@ -155,6 +156,7 @@ class Juego100ARG:
 
 
 # ---------------------------------------------------------
+
 
     def limpiar_input_respuesta(self):
         """

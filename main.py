@@ -1,8 +1,4 @@
 import pygame
-import sys
-from Packages.config import *
-from Packages.utils import *
-from Packages.recursos import *
 from Packages.instruct import *
 from Packages.botones import *
 from Packages.juego import *
