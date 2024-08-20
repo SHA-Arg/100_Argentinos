@@ -1,0 +1,5 @@
+
+# ignorar python cache
+__pycache__/
+
+.idea/
