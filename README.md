@@ -41,17 +41,19 @@ Para ejecutar el juego, necesitas tener instalados los siguientes paquetes de Py
 
 Estructura del Proyecto
 
-> 100-argentinos-dicen/
-> │
-> ├── assets/ # Imágenes y otros archivos de medios
-> │ ├── fondo_menu.jpg # Imagen de fondo para el menú
-> │ └── fondo_preguntas.jpg # Imagen de fondo para las preguntas
-> │
-> ├── config.py # Configuraciones y constantes globales
-> ├── preguntas.py # Archivo que contiene las preguntas y respuestas del juego
-> ├── game.py # Lógica principal del juego
-> ├── main.py # Archivo principal para ejecutar el menú y el juego
-> └── requirements.txt # Dependencias necesarias para ejecutar el juego
+```markdown
+100-argentinos-dicen/
+│
+├── assets/ # Imágenes y otros archivos de medios
+│ ├── fondo_menu.jpg # Imagen de fondo para el menú
+│ └── fondo_preguntas.jpg # Imagen de fondo para las preguntas
+│
+├── config.py # Configuraciones y constantes globales
+├── preguntas.py # Archivo que contiene las preguntas y respuestas del juego
+├── game.py # Lógica principal del juego
+├── main.py # Archivo principal para ejecutar el menú y el juego
+└── requirements.txt # Dependencias necesarias para ejecutar el juego
+```
 
 ## Controles
 
