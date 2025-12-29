@@ -62,12 +62,12 @@ El juego cargará con una interfaz gráfica donde podrás moverte con el teclado
 
 ```text
 100_Argentinos/
-├── assets/ # Imágenes y recursos gráficos
-├── data/ # Datos de preguntas o respuestas
-├── json/ # Respuestas guardadas en formato JSON
-├── main.py # Punto de entrada
-├── requeriments.txt# Dependencias del proyecto
-├── README.md # Este archivo
+        ├── assets/ # Imágenes y recursos gráficos
+        ├── data/ # Datos de preguntas o respuestas
+        ├── json/ # Respuestas guardadas en formato JSON
+        ├── main.py # Punto de entrada
+        ├── requeriments.txt# Dependencias del proyecto
+        ├── README.md # Este archivo
 ```
 
 🧪 Funcionalidades destacadas
