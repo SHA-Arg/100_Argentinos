@@ -1,7 +1,7 @@
 # 🎮 100 Argentinos Dicen - Juego en Python
 
 **Juego interactivo desarrollado en Python con Pygame**, inspirado en el clásico programa _“100 Argentinos Dicen”_.  
-El objetivo es adivinar las respuestas más populares dadas por 100 personas a preguntas de cultura general, acertando suficientes respuestas para ganar puntos y avanzar. :contentReference[oaicite:1]{index=1}
+El objetivo es adivinar las respuestas más populares dadas por 100 personas a preguntas de cultura general, acertando suficientes respuestas para ganar puntos y avanzar.
 
 ---
 
@@ -59,6 +59,8 @@ python main.py
 El juego cargará con una interfaz gráfica donde podrás moverte con el teclado y responder las preguntas.
 
 📂 Estructura del proyecto
+
+```text
 100_Argentinos/
 ├── assets/ # Imágenes y recursos gráficos
 ├── data/ # Datos de preguntas o respuestas
@@ -66,6 +68,7 @@ El juego cargará con una interfaz gráfica donde podrás moverte con el teclado
 ├── main.py # Punto de entrada
 ├── requeriments.txt# Dependencias del proyecto
 ├── README.md # Este archivo
+```
 
 🧪 Funcionalidades destacadas
 
@@ -92,5 +95,10 @@ Desarrollador junior orientado a Python, Linux y seguridad informática.
 Visita mi portfolio: https://sha-arg.github.io
 
 Mi perfil GitHub: https://github.com/SHA-Arg
+
+---
+
+⭐ Proyecto desarrollado con fines educativos y de práctica en Python.
+Siempre abierto a sugerencias y mejoras.
 
 ---
