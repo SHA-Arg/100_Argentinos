@@ -1,66 +1,126 @@
-# 100 Argentinos Dicen - El Juego
+# 🎮 100 Argentinos Dicen - Juego en Python
 
-Este proyecto es una implementación del clásico juego "100 Argentinos Dicen" en Python utilizando Pygame. El objetivo del juego es adivinar las respuestas más populares de un grupo de 100 personas a preguntas sobre diferentes temáticas. Si el jugador alcanza los 500 puntos en cinco rondas, gana el premio mayor de $1,000,000.
+**Juego interactivo desarrollado en Python con Pygame**, inspirado en el clásico programa _“100 Argentinos Dicen”_.  
+El objetivo es adivinar las respuestas más populares dadas por 100 personas a preguntas de cultura general, acertando suficientes respuestas para ganar puntos y avanzar. :contentReference[oaicite:1]{index=1}
 
-## Características
+---
 
-- **Selección Aleatoria de Preguntas**: El juego selecciona aleatoriamente una pregunta de una temática específica para cada ronda.
-- **Respuestas de Usuarios**: Los jugadores ingresan sus respuestas utilizando el teclado.
-- **Sistema de Puntuación y Oportunidades**: El jugador gana puntos basados en la popularidad de su respuesta. Tiene tres oportunidades por ronda y puede ganar oportunidades extra por cada 50 puntos acumulados.
-- **Comodines**: Los jugadores pueden usar comodines como tiempo extra, mostrar la respuesta menos votada o multiplicar sus puntos.
-- **Interfaz Gráfica**: El juego cuenta con una interfaz gráfica interactiva, con imágenes de fondo para el menú y las preguntas.
+## 🧩 Descripción del proyecto
 
-## Requisitos
+Este proyecto implementa un juego de preguntas y respuestas con interfaz gráfica utilizando **Python y Pygame**.  
+El jugador debe:
 
-Para ejecutar el juego, necesitas tener instalados los siguientes paquetes de Python. Puedes instalar las dependencias usando el archivo `requirements.txt`:
+- Adivinar respuestas populares en rondas sucesivas.
+- Acumular puntos con respuestas correctas.
+- Usar **comodines** estratégicamente para mejorar resultados.
 
-**pip install -r requirements.txt **
+💡 Ideal para practicar lógica de programación, manejo de listas y diccionarios, estructuras de control y eventos gráficos con Pygame.
 
-### Requisitos del Sistema
+---
 
-**Python 3.7 o superior**
-**Pygame 2.0.0 o superior**
+## 🛠️ Tecnologías utilizadas
 
-## Instalación
+- 🐍 **Python** – Lenguaje principal del proyecto
+- 🎨 **Pygame** – Biblioteca para gráficos y control de eventos
+- 💻 **Git & GitHub** – Control de versiones y repositorio
+- 🐧 Testing en entornos Linux / Windows es posible
 
-### Clona el repositorio:
+---
 
-**git clone https://github.com/tu_usuario/100-argentinos-dicen.git**
+## ⚙️ Instalación y ejecución
 
-### Navega al directorio del proyecto:
+### 📥 Clonar el repositorio
 
-**cd 100-argentinos-dicen**
+```bash
+git clone https://github.com/SHA-Arg/100_Argentinos.git
+cd 100_Argentinos
 
-## Instala las dependencias:
+📦 Instalar dependencias
 
-**pip install -r requirements.txt**
+Asegurate de tener Python 3.7 o superior:
 
-## Ejecuta el juego:
+pip install -r requeriments.txt
 
-**python game.py**
 
-Estructura del Proyecto
+💡 Si estás en Linux, podes usar virtualenv para aislar el entorno:
 
-```markdown
-100-argentinos-dicen/
-│
-├── assets/ # Imágenes y otros archivos de medios
-│ ├── fondo_menu.jpg # Imagen de fondo para el menú
-│ └── fondo_preguntas.jpg # Imagen de fondo para las preguntas
-│
-├── config.py # Configuraciones y constantes globales
-├── preguntas.py # Archivo que contiene las preguntas y respuestas del juego
-├── game.py # Lógica principal del juego
-├── main.py # Archivo principal para ejecutar el menú y el juego
-└── requirements.txt # Dependencias necesarias para ejecutar el juego
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requeriments.txt
+
+▶️ Ejecutar el juego
 ```
 
-## Controles
+python main.py
+El juego cargará con una interfaz gráfica donde podrás moverte con el teclado y responder las preguntas.
+GitHub
 
-**Teclado:** Ingresar la respuesta a las preguntas.
-**Enter:** Confirmar la respuesta.
-**Esc:** Salir del juego.
+📂 Estructura del proyecto
+100_Argentinos/
+├── assets/ # Imágenes y recursos gráficos
+├── data/ # Datos de preguntas o respuestas
+├── json/ # Respuestas guardadas en formato JSON
+├── main.py # Punto de entrada
+├── requeriments.txt# Dependencias del proyecto
+├── README.md # Este archivo
 
-## Licencia
+🧪 Funcionalidades destacadas
 
-Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo LICENSE para obtener más detalles.
+✔️ Selección aleatoria de preguntas
+✔️ Sistema de puntuaciones y oportunidades
+✔️ Comodines para ayudar al jugador
+✔️ Interfaz gráfica con Pygame
+✔️ Control de eventos por teclado y lógica de juego implementada
+
+📌 Aprendizajes y habilidades
+
+En este proyecto ejercité y mejoré las siguientes habilidades técnicas:
+
+✅ Lógica de programación con Python
+✅ Estructuras de datos (listas, diccionarios, etc.)
+✅ Control de eventos y gráficos con Pygame
+✅ Manejo de dependencias y entornos Python
+✅ Uso de Git y GitHub para control de versiones
+
+📫 Sobre mí
+
+Sebastian Hereñu Amaral
+Desarrollador junior orientado a Python, Linux y seguridad informática.
+Visita mi portfolio: https://sha-arg.github.io
+
+Mi perfil GitHub: https://github.com/SHA-Arg
+
+---
+
+## ✨ Por qué este README es útil para reclutadores IT
+
+🔹 **Habla en términos técnicos concretos** (Python, Pygame, entornos)  
+🔹 **Explica qué hace tu proyecto claramente**  
+🔹 **Muestra cómo instalar y ejecutar** (🔑 clave para exhibir buen uso de herramientas)  
+🔹 **Lista aprendizajes y habilidades concretas**  
+🔹 **Incluye tu información para networking**
+
+Esto convierte un proyecto “de hobby” en un **aporte profesional** — ideal para un perfil junior en Python. :contentReference[oaicite:3]{index=3}
+
+---
+
+## 👣 ¿Qué podes mejorar en el repo después?
+
+### 📌 1. Incluir un **LICENSE**
+
+Un archivo de licencia (por ejemplo MIT) profesionaliza el repo.
+
+### 📌 2. Agregar capturas o GIF
+
+Incluí una carpeta `docs/` con imágenes de la UI gráfica del juego.
+
+### 📌 3. Añadir tests (si podés)
+
+Aunque no sea obligatorio, un simple test unitario con pytest vale puntos.
+
+---
+
+## 🚀 ¿Seguimos con el siguiente repo?
+
+Mandame el **siguiente link** que quieras documentar y te hago otro README igual de profesional 💪
+::contentReference[oaicite:4]{index=4}
