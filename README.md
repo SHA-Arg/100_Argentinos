@@ -34,26 +34,31 @@ El jugador debe:
 ```bash
 git clone https://github.com/SHA-Arg/100_Argentinos.git
 cd 100_Argentinos
+```
 
 📦 Instalar dependencias
 
 Asegurate de tener Python 3.7 o superior:
 
+```bash
 pip install -r requeriments.txt
-
+```
 
 💡 Si estás en Linux, podes usar virtualenv para aislar el entorno:
 
+```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requeriments.txt
-
-▶️ Ejecutar el juego
 ```
 
+▶️ Ejecutar el juego
+
+```bash
 python main.py
+```
+
 El juego cargará con una interfaz gráfica donde podrás moverte con el teclado y responder las preguntas.
-GitHub
 
 📂 Estructura del proyecto
 100_Argentinos/
