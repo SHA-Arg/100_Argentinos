@@ -88,13 +88,14 @@ En este proyecto ejercité y mejoré las siguientes habilidades técnicas:
 ✅ Manejo de dependencias y entornos Python
 ✅ Uso de Git y GitHub para control de versiones
 
-📫 Sobre mí
+👤 Autores
 
 Sebastian Hereñu Amaral
-Desarrollador junior orientado a Python, Linux y seguridad informática.
-Visita mi portfolio: https://sha-arg.github.io
+🔗 https://github.com/SHA-Arg
 
-Mi perfil GitHub: https://github.com/SHA-Arg
+Lorenzo Gomez Martins
+🔗 https://github.com/Lorenzogomezmartins
+
 
 ---
 
