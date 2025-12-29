@@ -14,8 +14,6 @@ El jugador debe:
 - Acumular puntos con respuestas correctas.
 - Usar **comodines** estratégicamente para mejorar resultados.
 
-💡 Ideal para practicar lógica de programación, manejo de listas y diccionarios, estructuras de control y eventos gráficos con Pygame.
-
 ---
 
 ## 🛠️ Tecnologías utilizadas
@@ -96,36 +94,3 @@ Visita mi portfolio: https://sha-arg.github.io
 Mi perfil GitHub: https://github.com/SHA-Arg
 
 ---
-
-## ✨ Por qué este README es útil para reclutadores IT
-
-🔹 **Habla en términos técnicos concretos** (Python, Pygame, entornos)  
-🔹 **Explica qué hace tu proyecto claramente**  
-🔹 **Muestra cómo instalar y ejecutar** (🔑 clave para exhibir buen uso de herramientas)  
-🔹 **Lista aprendizajes y habilidades concretas**  
-🔹 **Incluye tu información para networking**
-
-Esto convierte un proyecto “de hobby” en un **aporte profesional** — ideal para un perfil junior en Python. :contentReference[oaicite:3]{index=3}
-
----
-
-## 👣 ¿Qué podes mejorar en el repo después?
-
-### 📌 1. Incluir un **LICENSE**
-
-Un archivo de licencia (por ejemplo MIT) profesionaliza el repo.
-
-### 📌 2. Agregar capturas o GIF
-
-Incluí una carpeta `docs/` con imágenes de la UI gráfica del juego.
-
-### 📌 3. Añadir tests (si podés)
-
-Aunque no sea obligatorio, un simple test unitario con pytest vale puntos.
-
----
-
-## 🚀 ¿Seguimos con el siguiente repo?
-
-Mandame el **siguiente link** que quieras documentar y te hago otro README igual de profesional 💪
-::contentReference[oaicite:4]{index=4}
