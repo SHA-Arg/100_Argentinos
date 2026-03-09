@@ -1,3 +1,4 @@
+import os
 import pygame
 # Dimensiones de la pantalla
 SCREEN_WIDTH = 800
@@ -35,7 +36,7 @@ FPS = 60
 
 
 # MUSICA
-MUSIC_PATH = 'assets\sounds\CORTINA MUSICAL.mp3'
+MUSIC_PATH = os.path.join('assets', 'sounds', 'CORTINA MUSICAL.mp3')
 pygame.mixer.init()
 pygame.mixer.music.load(MUSIC_PATH)
 pygame.mixer.music.set_volume(0.1)

@@ -75,15 +75,17 @@ class Juego100ARG:
 
     def seleccionar_pregunta_aleatoriamente(self):
         """
-    Este método selecciona una pregunta de manera aleatoria de la lista de preguntas 
-    cargadas, resetea el tiempo restante para responder y limpia las respuestas ingresadas anteriormente.
+    Este método selecciona una pregunta de manera aleatoria de la lista de preguntas
+    cargadas, evitando repetir la pregunta anterior, y resetea el tiempo y las respuestas.
     """
-        self.pregunta_actual = random.choice(self.preguntas)
+        pregunta_anterior = getattr(self, 'pregunta_actual', None)
+        disponibles = [p for p in self.preguntas if p != pregunta_anterior]
+        self.pregunta_actual = random.choice(disponibles if disponibles else self.preguntas)
         self.tiempo_restante = RESPONSE_TIME
         self.respuestas_ingresadas = []
 
 # ---------------------------------------------------------
-    def contador_rondas(self):
+    def mostrar_contador_rondas(self):
         """
     Muestra el contador de rondas en la pantalla del juego. Este metodo renderiza el número de la ronda actual en la esquina superior izquierda de la pantalla
     Args:
@@ -109,26 +111,26 @@ class Juego100ARG:
     Returns:
         None
     """
-        # Convertir la respuesta del usuario a minúsculas
-        input_respuesta = input_respuesta.lower()
-        # Convertir las respuestas correctas a minúsculas
-        respuestas = {key.lower(): value for key,
+        # Normalizar la respuesta del usuario (sin tildes, minúsculas)
+        input_norm = normalizar_texto(input_respuesta)
+        # Normalizar las respuestas correctas para comparación
+        respuestas = {normalizar_texto(key): value for key,
                       value in self.pregunta_actual["respuestas"].items()}
-        # Mapeo de respuestas minúsculas a originales
+        # Mapeo de respuestas normalizadas a originales
         respuesta_original = {
-            key.lower(): key for key in self.pregunta_actual["respuestas"]}
+            normalizar_texto(key): key for key in self.pregunta_actual["respuestas"]}
 
-        if input_respuesta in respuestas:
+        if input_norm in respuestas:
             self.audio_correcto.play()
-            puntos_obtenidos = respuestas[input_respuesta] * \
+            puntos_obtenidos = respuestas[input_norm] * \
                 self.bonus_multiplicar
 
             # Verificar si la respuesta ya está en respuestas_ingresadas
-            if input_respuesta not in [respuesta.lower() for respuesta, _ in self.respuestas_ingresadas]:
+            if input_norm not in [normalizar_texto(respuesta) for respuesta, _ in self.respuestas_ingresadas]:
                 self.puntaje += puntos_obtenidos  # Sumar puntos al puntaje total
                 self.puntajes_acumulados.append(puntos_obtenidos)
                 self.respuestas_ingresadas.append(
-                    (respuesta_original[input_respuesta], puntos_obtenidos))
+                    (respuesta_original[input_norm], puntos_obtenidos))
                 # Mostrar respuestas ingresadas ordenadas por puntos
                 mostrar_respuestas_ingresadas(self)
         else:
@@ -218,10 +220,9 @@ class Juego100ARG:
     Returns:
         None
     """
-        if self.contador_rondas == 0:
-            self.premio_ganado()
-            self.puntaje_total = sum(self.puntajes_acumulados)
-            pygame.time.wait(2000)
+        if self.rondas_jugadas >= self.max_rondas:
+            mostrar_pantalla_final(self)
+        else:
             self.resetear_juego()
 
 # ---------------------------------------------------------
@@ -275,11 +276,6 @@ class Juego100ARG:
             self.tiempo_restante = RESPONSE_TIME
             if self.oportunidades > 0:
                 self.seleccionar_pregunta_aleatoriamente()
-                mostrar_pregunta(self)
-
-        if self.oportunidades == 0:
-            pygame.time.wait(1000)
-            self.resetear_juego()
 
 # ---------------------------------------------------------
     def ejecutar(self):
@@ -294,7 +290,6 @@ class Juego100ARG:
             mostrar_puntaje(self)
             mostrar_oportunidades(self)
             mostrar_comodines(self)
-            mostrar_puntaje(self)
             mostrar_rondas_jugadas(self)
             mostrar_respuestas_ingresadas(self)
             for event in pygame.event.get():
@@ -303,6 +298,7 @@ class Juego100ARG:
             if self.oportunidades == 0:
                 self.limpiar_input_respuesta()
                 self.partidas_jugadas += 1
+                self.rondas_jugadas += 1
                 self.chequear_fin_juego()
 
             self.actualizar_reloj()

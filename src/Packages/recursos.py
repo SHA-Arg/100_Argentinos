@@ -15,7 +15,7 @@ pantalla = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('100 Argentinos dicen')
 
 # Cargar imágenes de fondo
-fondo_menu = pygame.image.load("assets/imgs/fondo_menu2.jpg")
+fondo_menu = pygame.image.load("assets/imgs/Fondo_violeta.jpg")
 fondo_menu = pygame.transform.scale(fondo_menu, (SCREEN_WIDTH, SCREEN_HEIGHT))
 
 fondo_instrucciones = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))

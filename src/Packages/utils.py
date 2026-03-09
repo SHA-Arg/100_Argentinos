@@ -1,8 +1,19 @@
+import os
+import unicodedata
 import pygame
 import json
 import csv
 from .config import *
 # ---------------------------------------------------------
+
+
+def normalizar_texto(texto):
+    """
+    Normaliza texto a minúsculas y sin tildes para comparación flexible.
+    Permite que 'Médico', 'medico' y 'médico' sean equivalentes.
+    """
+    sin_tildes = unicodedata.normalize('NFD', texto).encode('ascii', 'ignore').decode('utf-8')
+    return sin_tildes.lower().strip()
 
 
 def cargar_imagen(path, width, height):
@@ -57,7 +68,7 @@ def cargar_archivo_json(ruta_archivo):
     Returns:
         dict: Datos cargados desde el archivo JSON.
     """
-    with open("json\preguntas.json", "r",  encoding="utf-8") as preguntas_json:
+    with open(ruta_archivo, "r", encoding="utf-8") as preguntas_json:
         pregunta = json.load(preguntas_json)
         return pregunta
 

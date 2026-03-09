@@ -1,3 +1,4 @@
+import os
 import pygame
 from .config import *
 from .utils import *
@@ -61,7 +62,7 @@ sta función carga varias imágenes necesarias para diferentes fondos y elemento
     - cruz_roja_gif: Imagen animada de una cruz roja utilizada en el juego.
 """
     fondo_menu = cargar_imagen(
-        "assets/imgs/fondo_menu2.jpg", SCREEN_WIDTH, SCREEN_HEIGHT)
+        "assets/imgs/Fondo_violeta.jpg", SCREEN_WIDTH, SCREEN_HEIGHT)
     fondo_preguntas = cargar_imagen(
         "assets/imgs/Fondo_Juego_100Arg.png", SCREEN_WIDTH, SCREEN_HEIGHT)
     fondo_game_over = cargar_imagen(
@@ -87,7 +88,7 @@ Esta función devuelve un diccionario con las variables iniciales necesarias par
         'max_rondas': 1,
         'comodin_usado': False,
         'oportunidades': 3,
-        'preguntas': cargar_archivo_json("json\preguntas.json"),
+        'preguntas': cargar_archivo_json(os.path.join("data", "json", "preguntas.json")),
         'respuestas_ingresadas': [],
         'puntajes_acumulados': [],
         'partidas_jugadas': 0
