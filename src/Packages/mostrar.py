@@ -13,13 +13,13 @@ def mostrar_pregunta(juego):
     AMARILLO = (255, 215, 0)
     font_preg = pygame.font.Font(FONT_PATH1, 20)
 
-    panel = pygame.Surface((790, 44), pygame.SRCALPHA)
-    panel.fill((10, 10, 30, 225))
-    juego.pantalla.blit(panel, (5, 5))
-    pygame.draw.rect(juego.pantalla, AMARILLO, (5, 5, 790, 44), 1, border_radius=6)
+    panel = pygame.Surface((760, 44), pygame.SRCALPHA)
+    panel.fill((10, 10, 30, 210))
+    juego.pantalla.blit(panel, (20, 10))
+    pygame.draw.rect(juego.pantalla, AMARILLO, (20, 10, 760, 44), 1, border_radius=8)
 
     txt = font_preg.render(juego.pregunta_actual["pregunta"] + "?", True, WHITE)
-    juego.pantalla.blit(txt, txt.get_rect(midleft=(16, 27)))
+    juego.pantalla.blit(txt, txt.get_rect(center=(400, 32)))
 
 # ---------------------------------------------------------
 
@@ -31,13 +31,13 @@ def mostrar_input(juego):
     font_input = pygame.font.Font(FONT_PATH1, 20)
     font_hint = pygame.font.Font(FONT_PATH1, 16)
 
-    rect = pygame.Rect(5, 57, 580, 42)
-    pygame.draw.rect(juego.pantalla, (18, 18, 48), rect, border_radius=6)
-    pygame.draw.rect(juego.pantalla, AMARILLO, rect, 2, border_radius=6)
+    rect = pygame.Rect(20, 64, 560, 42)
+    pygame.draw.rect(juego.pantalla, (18, 18, 48), rect, border_radius=8)
+    pygame.draw.rect(juego.pantalla, AMARILLO, rect, 2, border_radius=8)
 
     if juego.input_respuesta:
         txt = font_input.render(juego.input_respuesta, True, WHITE)
-        juego.pantalla.blit(txt, (rect.x + 10, rect.y + 11))
+        juego.pantalla.blit(txt, (rect.x + 12, rect.y + 12))
     else:
         hint = font_hint.render("Escribi tu respuesta y presiona ENTER...", True, GRIS)
         juego.pantalla.blit(hint, (rect.x + 10, rect.y + 13))
@@ -88,17 +88,17 @@ def mostrar_respuestas_ingresadas(juego):
 
     respuestas_ordenadas = ordenar_respuestas(juego.respuestas_ingresadas)
 
-    y = 112
+    y = 120
     for respuesta, puntos in respuestas_ordenadas:
-        fila = pygame.Rect(10, y, 576, 28)
-        pygame.draw.rect(juego.pantalla, (18, 18, 50), fila, border_radius=4)
-        pygame.draw.rect(juego.pantalla, AMARILLO, (10, y, 4, 28), border_radius=2)
+        fila = pygame.Rect(20, y, 560, 28)
+        pygame.draw.rect(juego.pantalla, (18, 18, 50), fila, border_radius=6)
+        pygame.draw.rect(juego.pantalla, AMARILLO, (20, y, 4, 28), border_radius=3)
 
         txt = font_resp.render(f"{respuesta}:", True, WHITE)
-        juego.pantalla.blit(txt, (22, y + 5))
+        juego.pantalla.blit(txt, (34, y + 6))
         pts = font_resp.render(str(puntos), True, AMARILLO)
-        juego.pantalla.blit(pts, pts.get_rect(midright=(580, y + 14)))
-        y += 32
+        juego.pantalla.blit(pts, pts.get_rect(midright=(570, y + 14)))
+        y += 34
 
 # ---------------------------------------------------------
 
@@ -371,19 +371,22 @@ def mostrar_animacion_cruz(juego):
 
 
 def mostrar_puntaje(juego):
-    """Muestra el puntaje en un panel estilizado en la columna derecha."""
+    """Muestra el puntaje en la esquina inferior izquierda de la pantalla."""
     AMARILLO = (255, 215, 0)
     font_lbl = pygame.font.Font(FONT_PATH1, 13)
     font_pts = pygame.font.Font(FONT_PATH1, 24)
 
-    panel = pygame.Rect(605, 135, 188, 68)
+    # Posición esquina inferior izquierda
+    x = 20
+    y = SCREEN_HEIGHT - 70
+    panel = pygame.Rect(x, y, 160, 60)
     pygame.draw.rect(juego.pantalla, (10, 10, 30), panel, border_radius=6)
     pygame.draw.rect(juego.pantalla, AMARILLO, panel, 2, border_radius=6)
 
     lbl = font_lbl.render("PUNTAJE", True, AMARILLO)
-    juego.pantalla.blit(lbl, lbl.get_rect(center=(panel.centerx, panel.y + 18)))
+    juego.pantalla.blit(lbl, (x + 10, y + 10))
     pts = font_pts.render(str(juego.puntaje), True, WHITE)
-    juego.pantalla.blit(pts, pts.get_rect(center=(panel.centerx, panel.y + 48)))
+    juego.pantalla.blit(pts, (x + 10, y + 30))
 
 # ---------------------------------------------------------
 

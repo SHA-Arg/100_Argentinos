@@ -64,7 +64,7 @@ sta función carga varias imágenes necesarias para diferentes fondos y elemento
     fondo_menu = cargar_imagen(
         "assets/imgs/Fondo_violeta.jpg", SCREEN_WIDTH, SCREEN_HEIGHT)
     fondo_preguntas = cargar_imagen(
-        "assets/imgs/Fondo_Juego_100Arg.png", SCREEN_WIDTH, SCREEN_HEIGHT)
+        "assets/imgs/Fondo_violeta.jpg", SCREEN_WIDTH, SCREEN_HEIGHT)
     fondo_game_over = cargar_imagen(
         "assets/imgs/Fondo_de_Pantalla_con_Frase_e_Imagen_.jpg", SCREEN_WIDTH, SCREEN_HEIGHT)
     cruz_roja_gif = cargar_imagen("assets/imgs/cruz_roja.gif", 100, 100)
